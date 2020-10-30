@@ -11,6 +11,24 @@ router.get('/', function (req, res) {
   });
 });
 
+router.post('/mixitup', function (req, res) {
+  app.mixItUp({
+    brand: req.body.brand,
+    surveyId: req.body.surveyId
+  });
+
+  res.send('{ result : OK }');
+});
+
+router.get('/mixitup', function (req, res) {
+  app.mixItUp({
+    brand: req.body.brand,
+    surveyId: req.body.surveyId
+  });
+
+  res.send('{ result : OK }');
+});
+
 router.post('/save', function (req, res) {
   app.addSubscriber({
     name: req.body.name,

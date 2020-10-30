@@ -18,6 +18,11 @@ class App {
     return JSON.parse(db.toString());
   }
 
+  mixItUp (data) {
+    // Use Qualtrics API to get all SE member
+    // write buddy name and id to XMD
+  }
+
   addSubscriber (data) {
     const storage = this.getStorage();
     storage.subscribers.push(data);

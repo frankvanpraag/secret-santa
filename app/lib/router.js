@@ -25,6 +25,7 @@ app.use(session({
 }));
 
 app.use('/', indexController);
+app.use('/mixitup', indexController);
 app.use('/admin', adminController);
 
 const port = process.env.PORT || 3000;

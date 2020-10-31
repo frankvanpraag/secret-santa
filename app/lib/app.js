@@ -41,18 +41,13 @@ class App {
 
     request(options, function (error, response, body) {
       if (error) throw new Error(error);
-      personList = body.elements;
+      console.log("RESPONSE: " + response);
+      console.log("BODY: " + body);
+      personList = body;
+      console.log("PERSONLIST: " + personList)
     });
 
-    // 
-    console.log(personList);
-    personList.forEach(obj => {
-        Object.entries(obj).forEach(([key, value]) => {
-            console.log(`${key} ${value}`);
-        });
-        console.log('-------------------');
-    });
-
+    console.log("personList: " + personList);
   }
 
   addSubscriber (data) {

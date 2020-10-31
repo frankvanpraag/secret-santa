@@ -1,6 +1,7 @@
 const fs = require('fs');
 const ejs = require('ejs');
 const SendGridAdapter = require('../adapters/send-grid');
+const https = require('https')
 
 class App {
   constructor () {
@@ -19,8 +20,42 @@ class App {
   }
 
   mixItUp (data) {
-    // Use Qualtrics API to get all SE member
     // write buddy name and id to XMD
+    let brand = data.brand;
+    let api = data.api;
+    let key = data.key;
+    let survey = data.survey;
+    const pool = "POOL_2sNvzmrYrdn9RQ1/mailinglists/CG_eKce12cVmjCadxj";
+    const mailingList = "CG_eKce12cVmjCadxj";
+    const getMailingListContacts = "https://syd1.qualtrics.com/API/v3/directories/" + pool + "/mailinglists/" + mailintList + "/contacts";
+    
+    // Use Qualtrics API to get all SE members
+    const qapireq = {
+                      "method": "get",
+                      "url": getMailingListContacts,
+                      "query": {
+                        "pageSize": "100"
+                      },
+                      "headers": {
+                        "X-API-TOKEN": key
+                      }
+                    };
+
+      const req = https.request(qapireq, res => {
+        console.log(`statusCode: ${res.statusCode}`)
+
+        res.on('data', d => {
+          process.stdout.write(d)
+        })
+      })
+
+      req.on('error', error => {
+        console.error(error)
+      })
+
+      req.end()
+
+
   }
 
   addSubscriber (data) {

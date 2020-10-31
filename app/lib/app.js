@@ -25,7 +25,7 @@ class App {
     let api = data.api;
     let key = data.key;
     let survey = data.survey;
-    const pool = "POOL_2sNvzmrYrdn9RQ1/mailinglists/CG_eKce12cVmjCadxj";
+    const pool = "POOL_2sNvzmrYrdn9RQ1";
     const mailingList = "CG_eKce12cVmjCadxj";
     const getMailingListContacts = "https://syd1.qualtrics.com/API/v3/directories/" + pool + "/mailinglists/" + mailingList + "/contacts";
     

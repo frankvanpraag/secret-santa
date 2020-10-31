@@ -21,10 +21,11 @@ class App {
 
   mixItUp (data) {
     // write buddy name and id to XMD
-    let brand = data.brand;
-    let api = data.api;
-    let key = data.key;
-    console.log("XXXX "+key);
+    var brand = data.brand;
+    var api = data.api;
+    var key = data.key;
+    console.log("DATA: "+data);
+    console.log("XXXX: "+key);
     let survey = data.survey;
     const pool = "POOL_2sNvzmrYrdn9RQ1";
     const mailingList = "CG_eKce12cVmjCadxj";

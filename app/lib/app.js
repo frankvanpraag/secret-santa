@@ -35,9 +35,9 @@ class App {
     // Use Qualtrics API to get all SE members
     var options = {
       method: 'GET',
+      headers: {'x-api-token': key},
       url: 'https://syd1.qualtrics.com/API/v3/directories/POOL_2sNvzmrYrdn9RQ1/mailinglists/CG_eKce12cVmjCadxj/contacts',
-      qs: {pageSize: '100'},
-      headers: {'x-api-token': key}
+      qs: {pageSize: '100'}
     };
 
     request(options, function (error, response, body) {

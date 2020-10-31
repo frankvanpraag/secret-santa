@@ -57,7 +57,7 @@ class App {
         request(options2, function (error, response, body) {
           if (error) throw new Error(error);
           console.log(body);
-          let previousMatches = JSON.parse(body).result.embeddedData."Previous matches";
+          let previousMatches = JSON.parse(body).result.embeddedData.previousMatches;
           // Construct short list of contacts
           var contacts = [];
           personList.forEach((item,index)=>{

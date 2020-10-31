@@ -24,6 +24,7 @@ class App {
     let brand = data.brand;
     let api = data.api;
     let key = data.key;
+    console.log("XXXX "+key);
     let survey = data.survey;
     const pool = "POOL_2sNvzmrYrdn9RQ1";
     const mailingList = "CG_eKce12cVmjCadxj";
@@ -36,7 +37,7 @@ class App {
     
     var options = {
       method: 'GET',
-      headers: {'X-API-TOKEN': key, 'accept': '*/*'},
+      headers: { 'accept': '*/*', 'X-API-TOKEN': key, 'xxx': 'hello' },
       url: 'https://2aee86ecb4940555cf2afa068d2ba5a8.m.pipedream.net/API/v3/directories/POOL_2sNvzmrYrdn9RQ1/mailinglists/CG_eKce12cVmjCadxj/contacts',
       qs: {pageSize: '100'}
     };
@@ -49,7 +50,7 @@ class App {
 
     var options = {
       method: 'GET',
-      headers: {'X-API-TOKEN': key, 'accept': '*/*'},
+      headers: { 'accept': '*/*', 'X-API-TOKEN': key},
       url: 'https://syd1.qualtrics.com/API/v3/directories/POOL_2sNvzmrYrdn9RQ1/mailinglists/CG_eKce12cVmjCadxj/contacts',
       qs: {pageSize: '100'}
     };

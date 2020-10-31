@@ -27,21 +27,19 @@ class App {
     let survey = data.survey;
     const pool = "POOL_2sNvzmrYrdn9RQ1";
     const mailingList = "CG_eKce12cVmjCadxj";
-    const getMailingListContacts = "https://syd1.qualtrics.com/API/v3/directories/" + pool + "/mailinglists/" + mailingList + "/contacts";
+    const hostname = "syd1.qualtrics.com";
+    const getMailingListContactsQuery = "/API/v3/directories/" + pool + "/mailinglists/" + mailingList + "/contacts";
     
     // Use Qualtrics API to get all SE members
-    const qapireq = {
-                      "method": "get",
-                      "url": getMailingListContacts,
-                      "query": {
-                        "pageSize": "100"
-                      },
-                      "headers": {
-                        "X-API-TOKEN": key
-                      }
-                    };
+    const options = {
+      hostname: hostname,
+      port: 443,
+      path: getMailingListContactsQuery,
+      method: 'GET'
+    }
 
-      const req = https.request(qapireq, res => {
+
+    const req = https.request(qapireq, res => {
         console.log(`statusCode: ${res.statusCode}`)
 
         res.on('data', d => {

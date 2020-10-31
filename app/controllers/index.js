@@ -13,14 +13,12 @@ router.get('/', function (req, res) {
 
 router.post('/mixitup', function (req, res) {
   //app.mixItUp({
-  //  brand: req.params.brand,
-  //  key: req.params.key,
-   // api: req.params.api,
-  //  surveyId: req.params.surveyId
+  //  brand: req.body.brand,
+  //  key: req.body.key,
+  //  api: req.body.api,
+  //  surveyId: req.body.surveyId
   //});
-  app.mixItUp(req.params.brand, req.params.key, req.params.api, req.params.surveyId);
-
-
+  app.mixItUp(req.params.brand, req.body.key, req.body.api, req.body.surveyId);
   res.send('{ result : OK }');
 });
 

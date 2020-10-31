@@ -31,7 +31,7 @@ class App {
     const getMailingListContactsQuery = "/API/v3/directories/" + pool + "/mailinglists/" + mailingList + "/contacts";
     
     // Use Qualtrics API to get all SE members
-    const options = {
+    const qapireq = {
       hostname: hostname,
       port: 443,
       path: getMailingListContactsQuery,

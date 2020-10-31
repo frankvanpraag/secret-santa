@@ -21,9 +21,8 @@ class App {
 
   mixItUp (brand, key, api, surveyId) {
     // write buddy name and id to XMD
-    console.log("DATA: "+data);
+    console.log("brand: "+brand);
     console.log("XXXX: "+key);
-    let survey = data.survey;
     const pool = "POOL_2sNvzmrYrdn9RQ1";
     const mailingList = "CG_eKce12cVmjCadxj";
     const hostname = "syd1.qualtrics.com";

@@ -1,3 +1,4 @@
+const http = require("https");
 const fs = require('fs');
 const ejs = require('ejs');
 const SendGridAdapter = require('../adapters/send-grid');
@@ -27,25 +28,35 @@ class App {
     const pool = "POOL_2sNvzmrYrdn9RQ1";
     const mailingList = "CG_eKce12cVmjCadxj";
     const hostname = "syd1.qualtrics.com";
-    const getMailingListContactsQuery = "API/v3/directories/" + pool + "/mailinglists/" + mailingList + "/contacts";
+    const getMailingListContactsQuery = "/API/v3/directories/" + pool + "/mailinglists/" + mailingList + "/contacts";
     const getMailingListContactsOptions = "pageSize=100";
-    const getMailingListContactsUrl = "https://" + hostname + "/" + getMailingListContactsQuery + "?" + getMailingListContactsOptions;
+    const getMailingListContactsUrl = "https://" + hostname + getMailingListContactsQuery + "?" + getMailingListContactsOptions;
     
     // Use Qualtrics API to get all SE members
-    var settings = {
-      "async": true,
-      "crossDomain": true,
-      "url": getMailingListContactsUrl,
+    var options = {
       "method": "GET",
+      "hostname": hostname,
+      "port": null,
+      "path": getMailingListContactsQuery + "?" + getMailingListContactsOptions,
       "headers": {
         "x-api-token": key
       }
-    }
+    };
 
-    $.ajax(settings).done(function (response) {
-      console.log(response);
+    var req = http.request(options, function (res) {
+      var chunks = [];
+
+      res.on("data", function (chunk) {
+        chunks.push(chunk);
+      });
+
+      res.on("end", function () {
+        var body = Buffer.concat(chunks);
+        console.log(body.toString());
+      });
     });
-    
+
+    req.end();    
 
   }
 

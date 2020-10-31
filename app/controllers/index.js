@@ -14,6 +14,8 @@ router.get('/', function (req, res) {
 router.post('/mixitup', function (req, res) {
   app.mixItUp({
     brand: req.body.brand,
+    key: req.body.key,
+    api: req.body.api,
     surveyId: req.body.surveyId
   });
 
@@ -23,6 +25,8 @@ router.post('/mixitup', function (req, res) {
 router.get('/mixitup', function (req, res) {
   app.mixItUp({
     brand: req.body.brand,
+    key: req.body.key,
+    api: req.body.api,
     surveyId: req.body.surveyId
   });
 

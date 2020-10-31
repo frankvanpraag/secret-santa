@@ -21,42 +21,37 @@ class App {
 
   mixItUp (brand, key, api, surveyId) {
     // write buddy name and id to XMD
-    console.log("brand: "+brand);
-    console.log("XXXX: "+key);
+    var personList;
+
+    
     const pool = "POOL_2sNvzmrYrdn9RQ1";
     const mailingList = "CG_eKce12cVmjCadxj";
     const hostname = "syd1.qualtrics.com";
+    // const hostname = "2aee86ecb4940555cf2afa068d2ba5a8.m.pipedream.net";
     const getMailingListContactsQuery = "/API/v3/directories/" + pool + "/mailinglists/" + mailingList + "/contacts";
-    const getMailingListContactsOptions = "pageSize=100";
-    const getMailingListContactsUrl = "https://" + hostname + getMailingListContactsQuery + "?" + getMailingListContactsOptions;
+    const getMailingListContactsUrl = "https://" + hostname + getMailingListContactsQuery;
     
-    // Use Qualtrics API to get all SE members
-    
-    var options = {
-      method: 'GET',
-      headers: { 'accept': '*/*', 'X-API-TOKEN': key, 'xxx': 'hello' },
-      url: 'https://2aee86ecb4940555cf2afa068d2ba5a8.m.pipedream.net/API/v3/directories/POOL_2sNvzmrYrdn9RQ1/mailinglists/CG_eKce12cVmjCadxj/contacts',
-      qs: {pageSize: '100'}
-    };
-
-    request(options, function (error, response, body) {
-      if (error) throw new Error(error);
-
-      console.log(body);
-    });
-
+    // Use Qualtrics API to get all SE members (max 200)
     var options = {
       method: 'GET',
       headers: { 'accept': '*/*', 'X-API-TOKEN': key},
-      url: 'https://syd1.qualtrics.com/API/v3/directories/POOL_2sNvzmrYrdn9RQ1/mailinglists/CG_eKce12cVmjCadxj/contacts',
-      qs: {pageSize: '100'}
+      url: getMailingListContactsUrl,
+      qs: {pageSize: '200'}
     };
 
     request(options, function (error, response, body) {
       if (error) throw new Error(error);
-
-      console.log(body);
+      // Create an array of SEs
+      body.forEach(function(body) {
+        personList = body.elements;
+      });
     });
+
+    // 
+    console.log(personList);
+    for (let i = 0; i < personList.length; i++) {
+      console.log(personList[i].extRef);
+    }
 
   }
 

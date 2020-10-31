@@ -41,17 +41,17 @@ class App {
 
     request(options, function (error, response, body) {
       if (error) throw new Error(error);
-      // Create an array of SEs
-      body.forEach(function(body) {
-        personList = body.elements;
-      });
+      personList = body.elements;
     });
 
     // 
     console.log(personList);
-    for (let i = 0; i < personList.length; i++) {
-      console.log(personList[i].extRef);
-    }
+    personList.forEach(obj => {
+        Object.entries(obj).forEach(([key, value]) => {
+            console.log(`${key} ${value}`);
+        });
+        console.log('-------------------');
+    });
 
   }
 

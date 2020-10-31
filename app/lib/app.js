@@ -1,7 +1,6 @@
 const fs = require('fs');
 const ejs = require('ejs');
 const SendGridAdapter = require('../adapters/send-grid');
-const https = require('https')
 
 class App {
   constructor () {
@@ -28,31 +27,25 @@ class App {
     const pool = "POOL_2sNvzmrYrdn9RQ1";
     const mailingList = "CG_eKce12cVmjCadxj";
     const hostname = "syd1.qualtrics.com";
-    const getMailingListContactsQuery = "/API/v3/directories/" + pool + "/mailinglists/" + mailingList + "/contacts";
+    const getMailingListContactsQuery = "API/v3/directories/" + pool + "/mailinglists/" + mailingList + "/contacts";
+    const getMailingListContactsOptions = "pageSize=100";
+    const getMailingListContactsUrl = "https://" + hostname + "/" + getMailingListContactsQuery + "?" + getMailingListContactsOptions;
     
     // Use Qualtrics API to get all SE members
-    const qapireq = {
-      hostname: hostname,
-      port: 443,
-      path: getMailingListContactsQuery,
-      method: 'GET'
+    var settings = {
+      "async": true,
+      "crossDomain": true,
+      "url": getMailingListContactsUrl,
+      "method": "GET",
+      "headers": {
+        "x-api-token": key
+      }
     }
 
-
-    const req = https.request(qapireq, res => {
-        console.log(`statusCode: ${res.statusCode}`)
-
-        res.on('data', d => {
-          process.stdout.write(d)
-        })
-      })
-
-      req.on('error', error => {
-        console.error(error)
-      })
-
-      req.end()
-
+    $.ajax(settings).done(function (response) {
+      console.log(response);
+    });
+    
 
   }
 

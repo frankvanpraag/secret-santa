@@ -19,11 +19,8 @@ class App {
     return JSON.parse(db.toString());
   }
 
-  mixItUp (data) {
+  mixItUp (brand, key, api, surveyId) {
     // write buddy name and id to XMD
-    var brand = data.brand;
-    var api = data.api;
-    var key = data.key;
     console.log("DATA: "+data);
     console.log("XXXX: "+key);
     let survey = data.survey;

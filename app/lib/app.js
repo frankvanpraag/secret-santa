@@ -39,11 +39,11 @@ class App {
     request(options, function (error, response, body) {
       if (error) throw new Error(error);
       console.log(body);
-      let personList = JSON.parse(body).result;
+      let personList = JSON.parse(body).result.elements;
       console.log("PERSONLIST: " + JSON.stringify(personList, undefined, 2)); // {"result":{"elements":[{"contactId":"CID_3pIMBkMDJUt5qWp","firstName":"Eeee","lastName":"Egbert","email":"q5@vanpraag.com","phone":null,"extRef":"q5@vanpraag.com","language":null,"unsubscribed":false},{"contactId":"CID_2rypp6zL9UdbiLj","firstName":"Aaaa","lastName":"Aardvaark","email":"q1@vanpraag.com","phone":null,"extRef":"q1@vanpraag.com","language":null,"unsubscribed":false},{"contactId":"CID_aggZq9ziA7j6iiN","firstName":"Bbbb","lastName":"Bullwark","email":"q2@vanpraag.com","phone":null,"extRef":"q2@vanpraag.com","language":null,"unsubscribed":false},{"contactId":"CID_81VryhahElQBxXL","firstName":"Dddd","lastName":"Dopermine","email":"q4@vanpraag.com","phone":null,"extRef":"q4@vanpraag.com","language":null,"unsubscribed":false},{"contactId":"CID_2mWrnio45kZYTTn","firstName":"Cccc","lastName":"Chipotle","email":"q3@vanpraag.com","phone":null,"extRef":"q3@vanpraag.com","language":null,"unsubscribed":false}]
-      console.log("RESULT: " + JSON.stringify(personList.result, undefined, 2));
-      //console.log("RESULT[1]: " + JSON.stringify(personList.result[1], undefined, 2));
-      //console.log("RESULT[1].firstName: " + JSON.stringify(personList.result[1].firstName);
+      console.log("RESULT: " + JSON.stringify(personList, undefined, 2));
+      console.log("RESULT[1]: " + JSON.stringify(personList[1], undefined, 2));
+      console.log("RESULT[1].firstName: " + JSON.stringify(personList[1].firstName);
     });
   }
 

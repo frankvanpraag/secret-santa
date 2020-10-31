@@ -18,8 +18,6 @@ router.post('/mixitup', function (req, res) {
    // api: req.params.api,
   //  surveyId: req.params.surveyId
   //});
-  console.log("req: "+req);
-  console.log("req.params: "+req.params);
   app.mixItUp(req.params.brand, req.params.key, req.params.api, req.params.surveyId);
 
 
@@ -27,7 +25,9 @@ router.post('/mixitup', function (req, res) {
 });
 
 router.get('/mixitup', function (req, res) {
-  app.mixItUp(req.body.brand, req.body.key, req.body.api, req.body.surveyId);
+  console.log("req: "+req);
+  console.log("req.params: "+req.params);
+  app.mixItUp(req.params.brand, req.params.key, req.params.api, req.params.surveyId);
   res.send('{ result : OK }');
 });
 

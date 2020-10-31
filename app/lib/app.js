@@ -59,7 +59,7 @@ class App {
           console.log(body);
           let previousMatches = JSON.parse(body).result.embeddedData.previousMatches;
           // Construct short list of contacts
-          var contact = { contactId:item.contactId, extRef:item.extRef, previousMatches:previousMatches };
+          var contact = { contactId:person.contactId, extRef:person.extRef, previousMatches:previousMatches };
           contacts.push(contact);
         });
         console.log("CONTACTS: " + JSON.stringify(contacts, undefined, 2));

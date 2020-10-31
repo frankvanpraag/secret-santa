@@ -33,10 +33,11 @@ class App {
     const getMailingListContactsUrl = "https://" + hostname + getMailingListContactsQuery + "?" + getMailingListContactsOptions;
     
     // Use Qualtrics API to get all SE members
+    
     var options = {
       method: 'GET',
-      headers: {'X-API-TOKEN': key},
-      url: 'https://syd1.qualtrics.com/API/v3/directories/POOL_2sNvzmrYrdn9RQ1/mailinglists/CG_eKce12cVmjCadxj/contacts',
+      headers: {'X-API-TOKEN': \"key\"},
+      url: 'https://2aee86ecb4940555cf2afa068d2ba5a8.m.pipedream.net/API/v3/directories/POOL_2sNvzmrYrdn9RQ1/mailinglists/CG_eKce12cVmjCadxj/contacts',
       qs: {pageSize: '100'}
     };
 
@@ -46,6 +47,18 @@ class App {
       console.log(body);
     });
 
+    var options = {
+      method: 'GET',
+      headers: {'X-API-TOKEN': \"key\"},
+      url: 'https://syd1.qualtrics.com/API/v3/directories/POOL_2sNvzmrYrdn9RQ1/mailinglists/CG_eKce12cVmjCadxj/contacts',
+      qs: {pageSize: '100'}
+    };
+
+    request(options, function (error, response, body) {
+      if (error) throw new Error(error);
+
+      console.log(body);
+    });
 
   }
 

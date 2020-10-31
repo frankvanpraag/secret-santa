@@ -12,24 +12,20 @@ router.get('/', function (req, res) {
 });
 
 router.post('/mixitup', function (req, res) {
-  app.mixItUp({
-    brand: req.body.brand,
-    key: req.body.key,
-    api: req.body.api,
-    surveyId: req.body.surveyId
-  });
+  //app.mixItUp({
+  //  brand: req.body.brand,
+  //  key: req.body.key,
+   // api: req.body.api,
+  //  surveyId: req.body.surveyId
+  //});
+  app.mixItUp(req.body.brand, req.body.key, req.body.api, req.body.surveyId);
+
 
   res.send('{ result : OK }');
 });
 
 router.get('/mixitup', function (req, res) {
-  app.mixItUp({
-    brand: req.body.brand,
-    key: req.body.key,
-    api: req.body.api,
-    surveyId: req.body.surveyId
-  });
-
+  app.mixItUp(req.body.brand, req.body.key, req.body.api, req.body.surveyId);
   res.send('{ result : OK }');
 });
 

@@ -62,9 +62,11 @@ class App {
           var contact = { contactId:person.contactId, extRef:person.extRef, previousMatches:previousMatches };
           console.log("CONTACT: " + JSON.stringify(contact, undefined, 2));
           contacts.push(contact);
+          console.log("CONTACTS: " + JSON.stringify(contacts, undefined, 2));
+          console.log("---");
         });
       });
-      console.log("CONTACTS: " + JSON.stringify(contacts, undefined, 2));
+      console.log("CONTACTS FINAL: " + JSON.stringify(contacts, undefined, 2));
     });
   }
 

@@ -36,7 +36,7 @@ class App {
     
     var options = {
       method: 'GET',
-      headers: {'X-API-TOKEN': key},
+      headers: {'X-API-TOKEN': key, 'accept': '*/*'},
       url: 'https://2aee86ecb4940555cf2afa068d2ba5a8.m.pipedream.net/API/v3/directories/POOL_2sNvzmrYrdn9RQ1/mailinglists/CG_eKce12cVmjCadxj/contacts',
       qs: {pageSize: '100'}
     };
@@ -49,7 +49,7 @@ class App {
 
     var options = {
       method: 'GET',
-      headers: {'X-API-TOKEN': key},
+      headers: {'X-API-TOKEN': key, 'accept': '*/*'},
       url: 'https://syd1.qualtrics.com/API/v3/directories/POOL_2sNvzmrYrdn9RQ1/mailinglists/CG_eKce12cVmjCadxj/contacts',
       qs: {pageSize: '100'}
     };

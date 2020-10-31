@@ -46,6 +46,7 @@ class App {
       //console.log("RESULT[1]: " + JSON.stringify(personList[1], undefined, 2));
       //console.log("RESULT[1].firstName: " + JSON.stringify(personList[1].firstName, undefined, 2));
       
+      var contacts = [];
       personList.forEach((person,index)=>{
         // Retrieve previous matches to avoid
         var options2 = {
@@ -53,7 +54,6 @@ class App {
           headers: { 'accept': '*/*', 'X-API-TOKEN': key},
           url: getMailingListContactsUrl+"/"+person.contactId
         };
-        var contacts = [];
         request(options2, function (error, response, body) {
           if (error) throw new Error(error);
           //console.log(body);

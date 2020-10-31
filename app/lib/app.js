@@ -36,6 +36,7 @@ class App {
       qs: {pageSize: '200'}
     };
 
+    // Get all contacts in SE buddy list
     request(options, function (error, response, body) {
       if (error) throw new Error(error);
       console.log(body);
@@ -47,13 +48,26 @@ class App {
       
       var contacts = [];
       personList.forEach((item,index)=>{
-        var contact;
-        contact={ contactId:item.conactId };
-        contacts.push(contact);
+        // Retrieve previous matches to avoid
+        var options2 = {
+          method: 'GET',
+          headers: { 'accept': '*/*', 'X-API-TOKEN': key},
+          url: getMailingListContactsUrl+"/"+item.contactId
+        };
+        request(options2, function (error, response, body) {
+          if (error) throw new Error(error);
+          console.log(body);
+          let previousMatches = JSON.parse(body).result.embeddedData."Previous matches";
+          // Construct short list of contacts
+          var contacts = [];
+          personList.forEach((item,index)=>{
+            var contact;
+            contact={ contactId:item.contactId, extRef:item.extRef, previousMatches:previousMatches };
+            contacts.push(contact);
+          });
+          console.log("CONTACTSa: " + JSON.stringify(contacts, undefined, 2));
+        });
       });
-      console.log("CONTACTS: " + JSON.stringify(contacts, undefined, 2));
-
-      
     });
   }
 

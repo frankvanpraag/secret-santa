@@ -46,27 +46,23 @@ class App {
       //console.log("RESULT[1]: " + JSON.stringify(personList[1], undefined, 2));
       //console.log("RESULT[1].firstName: " + JSON.stringify(personList[1].firstName, undefined, 2));
       
-      var contacts = [];
-      personList.forEach((item,index)=>{
+      personList.forEach((person,index)=>{
         // Retrieve previous matches to avoid
         var options2 = {
           method: 'GET',
           headers: { 'accept': '*/*', 'X-API-TOKEN': key},
-          url: getMailingListContactsUrl+"/"+item.contactId
+          url: getMailingListContactsUrl+"/"+person.contactId
         };
+        var contacts = [];
         request(options2, function (error, response, body) {
           if (error) throw new Error(error);
           console.log(body);
           let previousMatches = JSON.parse(body).result.embeddedData.previousMatches;
           // Construct short list of contacts
-          var contacts = [];
-          personList.forEach((item,index)=>{
-            var contact;
-            contact={ contactId:item.contactId, extRef:item.extRef, previousMatches:previousMatches };
-            contacts.push(contact);
-          });
-          console.log("CONTACTSa: " + JSON.stringify(contacts, undefined, 2));
+          var contact = { contactId:item.contactId, extRef:item.extRef, previousMatches:previousMatches };
+          contacts.push(contact);
         });
+        console.log("CONTACTS: " + JSON.stringify(contacts, undefined, 2));
       });
     });
   }

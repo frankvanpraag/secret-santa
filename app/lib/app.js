@@ -1,7 +1,7 @@
-const http = require("https");
 const fs = require('fs');
 const ejs = require('ejs');
 const SendGridAdapter = require('../adapters/send-grid');
+var request = require('request');
 
 class App {
   constructor () {
@@ -34,29 +34,18 @@ class App {
     
     // Use Qualtrics API to get all SE members
     var options = {
-      "method": "GET",
-      "hostname": hostname,
-      "port": null,
-      "path": getMailingListContactsQuery + "?" + getMailingListContactsOptions,
-      "headers": {
-        "x-api-token": key
-      }
+      method: 'GET',
+      url: 'https://syd1.qualtrics.com/API/v3/directories/POOL_2sNvzmrYrdn9RQ1/mailinglists/CG_eKce12cVmjCadxj/contacts',
+      qs: {pageSize: '100'},
+      headers: {'x-api-token': key}
     };
 
-    var req = http.request(options, function (res) {
-      var chunks = [];
+    request(options, function (error, response, body) {
+      if (error) throw new Error(error);
 
-      res.on("data", function (chunk) {
-        chunks.push(chunk);
-      });
-
-      res.on("end", function () {
-        var body = Buffer.concat(chunks);
-        console.log(body.toString());
-      });
+      console.log(body);
     });
 
-    req.end();    
 
   }
 

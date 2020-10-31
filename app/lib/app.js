@@ -27,7 +27,7 @@ class App {
     let survey = data.survey;
     const pool = "POOL_2sNvzmrYrdn9RQ1/mailinglists/CG_eKce12cVmjCadxj";
     const mailingList = "CG_eKce12cVmjCadxj";
-    const getMailingListContacts = "https://syd1.qualtrics.com/API/v3/directories/" + pool + "/mailinglists/" + mailintList + "/contacts";
+    const getMailingListContacts = "https://syd1.qualtrics.com/API/v3/directories/" + pool + "/mailinglists/" + mailingList + "/contacts";
     
     // Use Qualtrics API to get all SE members
     const qapireq = {

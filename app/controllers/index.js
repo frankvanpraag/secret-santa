@@ -27,17 +27,9 @@ router.post('/mixitup', function (req, res) {
 router.get('/mixitup', function (req, res) {
   Promise.all([
     app.getContacts(req.query.brand, req.query.key, req.query.api, req.query.surveyId)
-  ]).then(function (responses) {
-    // Get a JSON object from each of the responses
-    return Promise.all(responses.map(function (response) {
-      console.log("stringify response: " + JSON.stringify(response, undefined, 2));
-      return response();
-    }));
-  }).then(function (data) {
-    // Log the data to the console
-    // You would do something with both sets of data here
-    console.log("data: " + data);
-    console.log("stringify data: " + JSON.stringify(data, undefined, 2));
+  ]).then(function (result) {
+    console.log("result: " + result);
+    console.log("stringify result: " + JSON.stringify(result, undefined, 2));
   }).catch(function (error) {
     // if there's an error, log it
     console.log(error);

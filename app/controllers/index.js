@@ -25,16 +25,20 @@ router.post('/mixitup', function (req, res) {
 });
 
 router.get('/mixitup', function (req, res) {
-  Promise.all([
-    app.getContacts(req.query.brand, req.query.key, req.query.api, req.query.surveyId)
-  ]).then(function (result) {
-    console.log("result: " + result);
-    console.log("stringify result: " + JSON.stringify(result, undefined, 2));
-  }).catch(function (error) {
-    // if there's an error, log it
-    console.log(error);
-  });
-  res.send(JSON.stringify(data, undefined, 2));
+  var result = app.getContacts(req.query.brand, req.query.key, req.query.api, req.query.surveyId);
+  console.log("stringify result: " + JSON.stringify(result, undefined, 2));
+  
+  //Promise.all([
+  //  app.getContacts(req.query.brand, req.query.key, req.query.api, req.query.surveyId)
+  //]).then(function (result) {
+  //  console.log("result: " + result);
+  //  console.log("stringify result: " + JSON.stringify(result, undefined, 2));
+  //}).catch(function (error) {
+  //  // if there's an error, log it
+  //  console.log(error);
+  //});
+  
+  res.send(JSON.stringify(result, undefined, 2));
 });
 
 router.post('/save', function (req, res) {

@@ -20,19 +20,33 @@ class App {
     return JSON.parse(db.toString());
   }
 
+  const pool = "POOL_2sNvzmrYrdn9RQ1";
+  const mailingList = "CG_eKce12cVmjCadxj";
+  const hostname = "syd1.qualtrics.com";
+  // const hostname = "2aee86ecb4940555cf2afa068d2ba5a8.m.pipedream.net";
+  const getMailingListContactsQuery = "/API/v3/directories/" + pool + "/mailinglists/" + mailingList + "/contacts";
+  const getMailingListContactsUrl = "https://" + hostname + getMailingListContactsQuery;
+
+  getContacts(key) {    
+    // Use Qualtrics API to get all SE members (max 200)
+    var options = {
+      method: 'GET',
+      headers: { 'accept': '*/*', 'X-API-TOKEN': key},
+      url: getMailingListContactsUrl,
+      qs: {pageSize: '200'}
+    };
+    // Get all contacts in SE buddy list
+    let personList = request(options, function (error, response, body) {
+      if (error) throw new Error(error);
+      console.log(body);
+      return JSON.parse(body).result.elements;
+    });
+    return personList;
+  }
+         
   mixItUp(brand, key, api, surveyId) {
-    fetch('https://syd1.qualtrics.com/API/v3/directories/POOL_2sNvzmrYrdn9RQ1/mailinglists/CG_eKce12cVmjCadxj/contacts/CID_3pIMBkMDJUt5qWp', {
-      "method": "GET",
-      "query": {},
-      "headers": {
-        "Content-Type": "application/json",
-        "X-API-TOKEN": api
-      }
-    }).then(res => {
-      return res.json()
-    })
-    .then(data => console.log(data))
-    .catch(error => console.log('ERROR'))
+    let contacts = getContacts(key);
+    console.log("FINAL: " + body);
   }
 
   mixItUpXXX (brand, key, api, surveyId) {

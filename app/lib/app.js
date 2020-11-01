@@ -54,8 +54,9 @@ class App {
     }
     
     let contacts = getContacts(key);
-    console.log("FINAL: " + contacts);
-    console.log("SHUFFLE: " + shuffle(contacts));
+    console.log("FINAL: " + JSON.stringify(contacts, undefined, 2));
+    console.log("----");
+    console.log("SHUFFLE: " + JSON.stringify(shuffle(contacts), undefined, 2));
   }
 
   mixItUpXXX (brand, key, api, surveyId) {

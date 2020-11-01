@@ -70,7 +70,8 @@ async function asyncCall() {
   // expected output: "resolved"
 }
 
-
+asyncCall()
+      
       var contacts = [];
       personList.forEach((person,index)=>{
         // Retrieve previous matches to avoid

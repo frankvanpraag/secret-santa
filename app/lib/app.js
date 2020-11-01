@@ -70,7 +70,7 @@ async function asyncCall() {
   // expected output: "resolved"
 }
 
-asyncCall()
+//asyncCall()
       
       var contacts = [];
 
@@ -91,7 +91,7 @@ Promise.all([
 return Promise.all(contacts.map(function (contact) {
   return contact.json();
 }));
-          //console.log("CONTACT: " + JSON.stringify(contact, undefined, 2));
+          console.log("CONTACT: " + JSON.stringify(contact, undefined, 2));
      //     contacts.push(contact);
           //console.log("CONTACTS: " + JSON.stringify(contacts, undefined, 2));
           //console.log("---");

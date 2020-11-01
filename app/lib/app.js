@@ -19,7 +19,22 @@ class App {
     return JSON.parse(db.toString());
   }
 
-  mixItUp (brand, key, api, surveyId) {
+  mixItUp(brand, key, api, surveyId) {
+    fetch('https://syd1.qualtrics.com/API/v3/directories/POOL_2sNvzmrYrdn9RQ1/mailinglists/CG_eKce12cVmjCadxj/contacts/CID_3pIMBkMDJUt5qWp', {
+      "method": "GET",
+      "query": {},
+      "headers": {
+        "Content-Type": "application/json',
+        "X-API-TOKEN": api
+      }
+    }).then(res => {
+      return res.json()
+    })
+    .then(data => console.log(data))
+    .catch(error => console.log('ERROR'))
+  }
+
+  mixItUpXXX (brand, key, api, surveyId) {
     // write buddy name and id to XMD
     const pool = "POOL_2sNvzmrYrdn9RQ1";
     const mailingList = "CG_eKce12cVmjCadxj";
@@ -65,7 +80,7 @@ class App {
           console.log("CONTACTS: " + JSON.stringify(contacts, undefined, 2));
           console.log("---");
         });
-        console.log("CONTACTS FINAL: " + JSON.stringify(contacts, undefined, 2));
+        console.log("CONTACTS FINAL: " + JSON.stringify(contacts, undefined, 2)); // XXX WHY IS THIS PRINTED FRIST (and hence EMPTY)!?
       });
     });
   }

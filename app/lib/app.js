@@ -1,4 +1,3 @@
-const axios = require('axios');
 const fs = require('fs');
 const ejs = require('ejs');
 const SendGridAdapter = require('../adapters/send-grid');
@@ -25,8 +24,8 @@ class App {
     let db = fs.readFileSync(this.storageLocation);
     return JSON.parse(db.toString());
   }
-         
-  mixItUp(brand, key, api, surveyId) {
+
+  mixItUp (brand, key, api, surveyId) {
     function shuffle(sourceArray) {
       for (var i = 0; i < sourceArray.length - 1; i++) {
           var j = i + Math.floor(Math.random() * (sourceArray.length - i));
@@ -37,38 +36,7 @@ class App {
       return sourceArray;
     }
 
-    function getContacts(key) {    
-      // Use Qualtrics API to get all SE members (max 200)
-      var options = {
-        method: 'GET',
-        headers: { 'accept': '*/*', 'X-API-TOKEN': key},
-        url: getMailingListContactsUrl,
-        qs: {pageSize: '200'}
-      };
-      // Get all contacts in SE buddy list
-      let personList = request(options, function (error, response, body) {
-        if (error) throw new Error(error);
-        console.log(body);
-        return JSON.parse(body).result.elements;
-      });
-      return personList;
-    }
-    
-    let contacts = getContacts(key);
-    console.log("FINAL: " + JSON.stringify(contacts, undefined, 2));
-    console.log("----");
-    console.log("SHUFFLE: " + JSON.stringify(shuffle(contacts), undefined, 2));
-  }
-
-  mixItUpXXX (brand, key, api, surveyId) {
     // write buddy name and id to XMD
-    const pool = "POOL_2sNvzmrYrdn9RQ1";
-    const mailingList = "CG_eKce12cVmjCadxj";
-    const hostname = "syd1.qualtrics.com";
-    // const hostname = "2aee86ecb4940555cf2afa068d2ba5a8.m.pipedream.net";
-    const getMailingListContactsQuery = "/API/v3/directories/" + pool + "/mailinglists/" + mailingList + "/contacts";
-    const getMailingListContactsUrl = "https://" + hostname + getMailingListContactsQuery;
-    
     // Use Qualtrics API to get all SE members (max 200)
     var options = {
       method: 'GET',

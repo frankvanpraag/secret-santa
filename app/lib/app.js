@@ -73,8 +73,10 @@ class App {
           contacts.push(contact);
           console.log("CONTACTS: " + JSON.stringify(contacts, undefined, 2));
           console.log("---");
+          console.log("Shuffled CONTACTS: " + JSON.stringify(shuffle(contacts), undefined, 2));
+          console.log("---");
         });
-        console.log("CONTACTS FINAL: " + JSON.stringify(contacts, undefined, 2)); // XXX WHY IS THIS PRINTED FRIST (and hence EMPTY)!?
+        //console.log("CONTACTS FINAL: " + JSON.stringify(contacts, undefined, 2)); // XXX WHY IS THIS PRINTED FRIST (and hence EMPTY)!?
       });
     });
   }

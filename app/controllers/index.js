@@ -25,9 +25,23 @@ router.post('/mixitup', function (req, res) {
 });
 
 router.get('/mixitup', function (req, res) {
-  var personList = app.getContacts(req.query.brand, req.query.key, req.query.api, req.query.surveyId);
-  console.log("personList: " + JSON.stringify(personList, undefined, 2));
-  res.send('{ personList : personList }');
+  Promise.all([
+    app.getContacts(req.query.brand, req.query.key, req.query.api, req.query.surveyId)
+  ]).then(function (responses) {
+    // Get a JSON object from each of the responses
+    return Promise.all(responses.map(function (response) {
+      return response.json();
+    }));
+  }).then(function (data) {
+    // Log the data to the console
+    // You would do something with both sets of data here
+    console.log("data: " + data);
+    console.log("stringify data: " + JSON.stringify(data, undefined, 2));
+  }).catch(function (error) {
+    // if there's an error, log it
+    console.log(error);
+  });
+  res.send(JSON.stringify(data, undefined, 2));
 });
 
 router.post('/save', function (req, res) {

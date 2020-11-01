@@ -54,7 +54,7 @@ class App {
          
   mixItUp(brand, key, api, surveyId) {
     let contacts = getContacts(key);
-    console.log("FINAL: " + body);
+    console.log("FINAL: " + contacts);
   }
 
   mixItUpXXX (brand, key, api, surveyId) {

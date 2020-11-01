@@ -24,37 +24,38 @@ class App {
     let db = fs.readFileSync(this.storageLocation);
     return JSON.parse(db.toString());
   }
-
-  shuffle(sourceArray) {
-    for (var i = 0; i < sourceArray.length - 1; i++) {
-        var j = i + Math.floor(Math.random() * (sourceArray.length - i));
-        var temp = sourceArray[j];
-        sourceArray[j] = sourceArray[i];
-        sourceArray[i] = temp;
-    }
-    return sourceArray;
-  }
-
-  getContacts(key) {    
-    // Use Qualtrics API to get all SE members (max 200)
-    var options = {
-      method: 'GET',
-      headers: { 'accept': '*/*', 'X-API-TOKEN': key},
-      url: getMailingListContactsUrl,
-      qs: {pageSize: '200'}
-    };
-    // Get all contacts in SE buddy list
-    let personList = request(options, function (error, response, body) {
-      if (error) throw new Error(error);
-      console.log(body);
-      return JSON.parse(body).result.elements;
-    });
-    return personList;
-  }
          
   mixItUp(brand, key, api, surveyId) {
+    function shuffle(sourceArray) {
+      for (var i = 0; i < sourceArray.length - 1; i++) {
+          var j = i + Math.floor(Math.random() * (sourceArray.length - i));
+          var temp = sourceArray[j];
+          sourceArray[j] = sourceArray[i];
+          sourceArray[i] = temp;
+      }
+      return sourceArray;
+    }
+
+    function getContacts(key) {    
+      // Use Qualtrics API to get all SE members (max 200)
+      var options = {
+        method: 'GET',
+        headers: { 'accept': '*/*', 'X-API-TOKEN': key},
+        url: getMailingListContactsUrl,
+        qs: {pageSize: '200'}
+      };
+      // Get all contacts in SE buddy list
+      let personList = request(options, function (error, response, body) {
+        if (error) throw new Error(error);
+        console.log(body);
+        return JSON.parse(body).result.elements;
+      });
+      return personList;
+    }
+    
     let contacts = getContacts(key);
     console.log("FINAL: " + contacts);
+    console.log("SHUFFLE: " + shuffle(contacts));
   }
 
   mixItUpXXX (brand, key, api, surveyId) {

@@ -24,7 +24,7 @@ class App {
       "method": "GET",
       "query": {},
       "headers": {
-        "Content-Type": "application/json',
+        "Content-Type": "application/json",
         "X-API-TOKEN": api
       }
     }).then(res => {

@@ -25,8 +25,9 @@ router.post('/mixitup', function (req, res) {
 });
 
 router.get('/mixitup', function (req, res) {
-  app.mixItUp(req.query.brand, req.query.key, req.query.api, req.query.surveyId);
-  res.send('{ result : OK }');
+  var personList = app.mixItUp(req.query.brand, req.query.key, req.query.api, req.query.surveyId);
+  console.log("personList: " + JSON.stringify(personList, undefined, 2));
+  res.send('{ personList : personList }');
 });
 
 router.post('/save', function (req, res) {

@@ -25,7 +25,44 @@ class App {
     return JSON.parse(db.toString());
   }
 
-  mixItUp (brand, key, api, surveyId) {
+	
+  getContacts(brand, key, api, surveyId) {
+    // Helper fuction
+    function shuffle(sourceArray) {
+      for (var i = 0; i < sourceArray.length - 1; i++) {
+          var j = i + Math.floor(Math.random() * (sourceArray.length - i));
+          var temp = sourceArray[j];
+          sourceArray[j] = sourceArray[i];
+          sourceArray[i] = temp;
+      }
+      return sourceArray;
+    }
+
+    // write buddy name and id to XMD
+    // Use Qualtrics API to get all SE members (max 200)
+    var options = {
+      method: 'GET',
+      headers: { 'accept': '*/*', 'X-API-TOKEN': key},
+      url: getMailingListContactsUrl,
+      qs: {pageSize: '200'}
+    };
+
+    // Get all contacts in SE buddy list
+    request(options, function (error, response, body) {
+      if (error) throw new Error(error);
+      console.log(body);
+      let personList = JSON.parse(body).result.elements;
+      //console.log("PERSONLIST: " + JSON.stringify(personList, undefined, 2)); // {"result":{"elements":[{"contactId":"CID_3pIMBkMDJUt5qWp","firstName":"Eeee","lastName":"Egbert","email":"q5@vanpraag.com","phone":null,"extRef":"q5@vanpraag.com","language":null,"unsubscribed":false},{"contactId":"CID_2rypp6zL9UdbiLj","firstName":"Aaaa","lastName":"Aardvaark","email":"q1@vanpraag.com","phone":null,"extRef":"q1@vanpraag.com","language":null,"unsubscribed":false},{"contactId":"CID_aggZq9ziA7j6iiN","firstName":"Bbbb","lastName":"Bullwark","email":"q2@vanpraag.com","phone":null,"extRef":"q2@vanpraag.com","language":null,"unsubscribed":false},{"contactId":"CID_81VryhahElQBxXL","firstName":"Dddd","lastName":"Dopermine","email":"q4@vanpraag.com","phone":null,"extRef":"q4@vanpraag.com","language":null,"unsubscribed":false},{"contactId":"CID_2mWrnio45kZYTTn","firstName":"Cccc","lastName":"Chipotle","email":"q3@vanpraag.com","phone":null,"extRef":"q3@vanpraag.com","language":null,"unsubscribed":false}]
+      //console.log("personList: " + JSON.stringify(personList, undefined, 2));
+      //console.log("RESULT[1]: " + JSON.stringify(personList[1], undefined, 2));
+      console.log("RESULT[1].firstName: " + JSON.stringify(personList[1].firstName, undefined, 2));
+      return personList;
+    });
+  }
+
+  // ----------------------------------
+	
+  mixItUpWorkingButCrap (brand, key, api, surveyId) {
     function shuffle(sourceArray) {
       for (var i = 0; i < sourceArray.length - 1; i++) {
           var j = i + Math.floor(Math.random() * (sourceArray.length - i));
@@ -114,6 +151,12 @@ return Promise.all(contacts.map(function (contact) {
     });
   }
 
+	
+	
+	
+	
+  // -----------------------
+	
   addSubscriber (data) {
     const storage = this.getStorage();
     storage.subscribers.push(data);

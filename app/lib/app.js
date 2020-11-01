@@ -88,8 +88,11 @@ Promise.all([
           let previousMatches = JSON.parse(body).result.embeddedData.previousMatches;
           // Construct short list of contacts
           var contact = { contactId:person.contactId, extRef:person.extRef, previousMatches:previousMatches };
+return Promise.all(contacts.map(function (contact) {
+  return contact.json();
+}));
           //console.log("CONTACT: " + JSON.stringify(contact, undefined, 2));
-          contacts.push(contact);
+     //     contacts.push(contact);
           //console.log("CONTACTS: " + JSON.stringify(contacts, undefined, 2));
           //console.log("---");
           //console.log("Shuffled CONTACTS: " + JSON.stringify(shuffle(contacts), undefined, 2));
@@ -99,7 +102,7 @@ Promise.all([
 ]).then(function (data) {
 	// Log the data to the console
 	// You would do something with both sets of data here
-  console.log("CONTACTS FINAL: " + JSON.stringify(contacts, undefined, 2)); // XXX WHY IS THIS PRINTED FRIST (and hence EMPTY)!?
+  	console.log("CONTACTS FINAL: " + JSON.stringify(contacts, undefined, 2)); // XXX WHY IS THIS PRINTED FRIST (and hence EMPTY)!?
 	console.log(data);
 }).catch(function (error) {
 	// if there's an error, log it

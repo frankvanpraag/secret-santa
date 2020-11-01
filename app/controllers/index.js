@@ -18,7 +18,9 @@ router.post('/mixitup', function (req, res) {
   //  api: req.body.api,
   //  surveyId: req.body.surveyId
   //});
-  app.mixItUp(req.params.brand, req.body.key, req.body.api, req.body.surveyId);
+  //app.mixItUp(req.params.brand, req.body.key, req.body.api, req.body.surveyId);
+  var personList = app.getContacts(req.params.brand, req.body.key, req.body.api, req.body.surveyId);
+  console.log("personList: " + JSON.stringify(personList, undefined, 2));
   res.send('{ result : OK }');
 });
 

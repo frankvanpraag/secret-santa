@@ -95,6 +95,7 @@ Promise.all([
           //console.log("Shuffled CONTACTS: " + JSON.stringify(shuffle(contacts), undefined, 2));
           //console.log("---");
         });
+      })
 ]).then(function (data) {
 	// Log the data to the console
 	// You would do something with both sets of data here
@@ -107,7 +108,6 @@ Promise.all([
 
       
       
-      });
     });
   }
 

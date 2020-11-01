@@ -55,6 +55,22 @@ class App {
       //console.log("RESULT[1]: " + JSON.stringify(personList[1], undefined, 2));
       //console.log("RESULT[1].firstName: " + JSON.stringify(personList[1].firstName, undefined, 2));
       
+function resolveAfter2Seconds() {
+  return new Promise(resolve => {
+    setTimeout(() => {
+      resolve('resolved');
+    }, 2000);
+  });
+}
+
+async function asyncCall() {
+  console.log('calling');
+  const result = await resolveAfter2Seconds();
+  console.log(result);
+  // expected output: "resolved"
+}
+
+
       var contacts = [];
       personList.forEach((person,index)=>{
         // Retrieve previous matches to avoid
@@ -69,12 +85,12 @@ class App {
           let previousMatches = JSON.parse(body).result.embeddedData.previousMatches;
           // Construct short list of contacts
           var contact = { contactId:person.contactId, extRef:person.extRef, previousMatches:previousMatches };
-          console.log("CONTACT: " + JSON.stringify(contact, undefined, 2));
+          //console.log("CONTACT: " + JSON.stringify(contact, undefined, 2));
           contacts.push(contact);
-          console.log("CONTACTS: " + JSON.stringify(contacts, undefined, 2));
-          console.log("---");
-          console.log("Shuffled CONTACTS: " + JSON.stringify(shuffle(contacts), undefined, 2));
-          console.log("---");
+          //console.log("CONTACTS: " + JSON.stringify(contacts, undefined, 2));
+          //console.log("---");
+          //console.log("Shuffled CONTACTS: " + JSON.stringify(shuffle(contacts), undefined, 2));
+          //console.log("---");
         });
         //console.log("CONTACTS FINAL: " + JSON.stringify(contacts, undefined, 2)); // XXX WHY IS THIS PRINTED FRIST (and hence EMPTY)!?
       });

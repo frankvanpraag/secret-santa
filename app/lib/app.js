@@ -70,7 +70,9 @@ class App {
       //console.log("RESULT[1]: " + JSON.stringify(personList[1], undefined, 2));
       console.log("RESULT[1].firstName: " + JSON.stringify(personList[1].firstName, undefined, 2));
     });
+    console.log("sleeping for a while...");
     sleep(3000);
+    console.log("sleeping done");
     return personList;
   }
 

@@ -1,3 +1,4 @@
+const axios = require('axios');
 const fs = require('fs');
 const ejs = require('ejs');
 const SendGridAdapter = require('../adapters/send-grid');
@@ -7,7 +8,7 @@ const hostname = "syd1.qualtrics.com";
 // const hostname = "2aee86ecb4940555cf2afa068d2ba5a8.m.pipedream.net";
 const getMailingListContactsQuery = "/API/v3/directories/" + pool + "/mailinglists/" + mailingList + "/contacts";
 const getMailingListContactsUrl = "https://" + hostname + getMailingListContactsQuery;
-var request = require('request-promise');
+var request = require('request');
 
 class App {
   constructor () {

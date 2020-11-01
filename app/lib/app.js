@@ -1,3 +1,4 @@
+const fetch = require('node-fetch');
 const fs = require('fs');
 const ejs = require('ejs');
 const SendGridAdapter = require('../adapters/send-grid');

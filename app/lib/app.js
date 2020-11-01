@@ -8,6 +8,9 @@ const hostname = "syd1.qualtrics.com";
 const getMailingListContactsQuery = "/API/v3/directories/" + pool + "/mailinglists/" + mailingList + "/contacts";
 const getMailingListContactsUrl = "https://" + hostname + getMailingListContactsQuery;
 var request = require('request');
+var personList = {},
+	totalResults = 0,
+	resultsDownloaded = 0;
 
 class App {
   constructor () {
@@ -27,7 +30,15 @@ class App {
 
 	
   getContacts(brand, key, api, surveyId) {
-    // Helper fuction
+    // Helper fuctions
+    function sleep(milliseconds) { // Yes, terrible
+      const date = Date.now();
+      let currentDate = null;
+      do {
+        currentDate = Date.now();
+      } while (currentDate - date < milliseconds);
+    }
+    
     function shuffle(sourceArray) {
       for (var i = 0; i < sourceArray.length - 1; i++) {
           var j = i + Math.floor(Math.random() * (sourceArray.length - i));
@@ -51,13 +62,16 @@ class App {
     request(options, function (error, response, body) {
       if (error) throw new Error(error);
       console.log(body);
-      let personList = JSON.parse(body).result.elements;
+      personList = JSON.parse(body).result.elements;
+    	totalResults++;
+	    resultsDownloaded++;
       //console.log("PERSONLIST: " + JSON.stringify(personList, undefined, 2)); // {"result":{"elements":[{"contactId":"CID_3pIMBkMDJUt5qWp","firstName":"Eeee","lastName":"Egbert","email":"q5@vanpraag.com","phone":null,"extRef":"q5@vanpraag.com","language":null,"unsubscribed":false},{"contactId":"CID_2rypp6zL9UdbiLj","firstName":"Aaaa","lastName":"Aardvaark","email":"q1@vanpraag.com","phone":null,"extRef":"q1@vanpraag.com","language":null,"unsubscribed":false},{"contactId":"CID_aggZq9ziA7j6iiN","firstName":"Bbbb","lastName":"Bullwark","email":"q2@vanpraag.com","phone":null,"extRef":"q2@vanpraag.com","language":null,"unsubscribed":false},{"contactId":"CID_81VryhahElQBxXL","firstName":"Dddd","lastName":"Dopermine","email":"q4@vanpraag.com","phone":null,"extRef":"q4@vanpraag.com","language":null,"unsubscribed":false},{"contactId":"CID_2mWrnio45kZYTTn","firstName":"Cccc","lastName":"Chipotle","email":"q3@vanpraag.com","phone":null,"extRef":"q3@vanpraag.com","language":null,"unsubscribed":false}]
       //console.log("personList: " + JSON.stringify(personList, undefined, 2));
       //console.log("RESULT[1]: " + JSON.stringify(personList[1], undefined, 2));
       console.log("RESULT[1].firstName: " + JSON.stringify(personList[1].firstName, undefined, 2));
-      return personList;
     });
+    sleep(3000);
+    return personList;
   }
 
   // ----------------------------------

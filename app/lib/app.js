@@ -26,7 +26,7 @@ class App {
   }
 
 	
-  getContacts(brand, key, api, surveyId) {
+  asynch function getContacts(brand, key, api, surveyId) {
     // Helper fuction
     function shuffle(sourceArray) {
       for (var i = 0; i < sourceArray.length - 1; i++) {

@@ -73,6 +73,8 @@ async function asyncCall() {
 asyncCall()
       
       var contacts = [];
+
+Promise.all([      
       personList.forEach((person,index)=>{
         // Retrieve previous matches to avoid
         var options2 = {
@@ -93,7 +95,18 @@ asyncCall()
           //console.log("Shuffled CONTACTS: " + JSON.stringify(shuffle(contacts), undefined, 2));
           //console.log("---");
         });
-        //console.log("CONTACTS FINAL: " + JSON.stringify(contacts, undefined, 2)); // XXX WHY IS THIS PRINTED FRIST (and hence EMPTY)!?
+]).then(function (data) {
+	// Log the data to the console
+	// You would do something with both sets of data here
+  console.log("CONTACTS FINAL: " + JSON.stringify(contacts, undefined, 2)); // XXX WHY IS THIS PRINTED FRIST (and hence EMPTY)!?
+	console.log(data);
+}).catch(function (error) {
+	// if there's an error, log it
+	console.log(error);
+});
+
+      
+      
       });
     });
   }

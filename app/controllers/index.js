@@ -30,7 +30,8 @@ router.get('/mixitup', function (req, res) {
   ]).then(function (responses) {
     // Get a JSON object from each of the responses
     return Promise.all(responses.map(function (response) {
-      return response.json();
+      console.log("stringify response: " + JSON.stringify(response, undefined, 2));
+      return response();
     }));
   }).then(function (data) {
     // Log the data to the console

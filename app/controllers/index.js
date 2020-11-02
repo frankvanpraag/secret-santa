@@ -25,7 +25,7 @@ router.post('/mixitup', function (req, res) {
 });
 
 router.get('/mixitup', function (req, res) {
-  var result = app.getContacts(req.query.brand, req.query.key, req.query.api, req.query.surveyId);
+  var result = app.mixitup(req.query.brand, req.query.key, req.query.api, req.query.surveyId);
   console.log("stringify result: " + JSON.stringify(result, undefined, 2));
   
   //Promise.all([

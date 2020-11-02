@@ -19,14 +19,12 @@ router.post('/mixitup', function (req, res) {
   //  surveyId: req.body.surveyId
   //});
   //app.mixItUp(req.params.brand, req.body.key, req.body.api, req.body.surveyId);
-  var personList = app.getContacts(req.params.brand, req.body.key, req.body.api, req.body.surveyId);
-  console.log("personList: " + JSON.stringify(personList, undefined, 2));
+  app.getContacts(req.params.brand, req.body.key, req.body.api, req.body.surveyId);
   res.send('{ result : OK }');
 });
 
 router.get('/mixitup', function (req, res) {
-  var result = app.mixitup(req.query.brand, req.query.key, req.query.api, req.query.surveyId);
-  console.log("stringify result: " + JSON.stringify(result, undefined, 2));
+  app.mixitup(req.query.brand, req.query.key, req.query.api, req.query.surveyId);
   
   //Promise.all([
   //  app.getContacts(req.query.brand, req.query.key, req.query.api, req.query.surveyId)
@@ -38,7 +36,7 @@ router.get('/mixitup', function (req, res) {
   //  console.log(error);
   //});
   
-  res.send(JSON.stringify(result, undefined, 2));
+  res.send('{ result : OK }');
 });
 
 router.post('/save', function (req, res) {

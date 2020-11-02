@@ -2,7 +2,7 @@ const fs = require('fs');
 const ejs = require('ejs');
 const SendGridAdapter = require('../adapters/send-grid');
 const pool = "POOL_2sNvzmrYrdn9RQ1";
-const mailingList = "CG_eKce12cVmjCadxj";
+const mailingList = "CG_8tVp5T22DHGyRtH";
 const hostname = "syd1.qualtrics.com";
 // const hostname = "2aee86ecb4940555cf2afa068d2ba5a8.m.pipedream.net";
 const getMailingListContactsQuery = "/API/v3/directories/" + pool + "/mailinglists/" + mailingList + "/contacts";
@@ -25,7 +25,7 @@ class App {
     return JSON.parse(db.toString());
   }
 
-  mixItUp (brand, key, api, surveyId) {
+  mixItUp(brand, key, api, surveyId) {
     function shuffle(sourceArray) {
       for (var i = 0; i < sourceArray.length - 1; i++) {
           var j = i + Math.floor(Math.random() * (sourceArray.length - i));

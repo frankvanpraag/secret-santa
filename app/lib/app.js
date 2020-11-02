@@ -17,7 +17,7 @@ class App {
   }
 
   getConfig () {
-    return this.config;
+    return this.config; //
   }
 
   getStorage () {

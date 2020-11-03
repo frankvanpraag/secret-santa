@@ -3,7 +3,7 @@ const ejs = require('ejs');
 const SendGridAdapter = require('../adapters/send-grid');
 const pool = "POOL_2sNvzmrYrdn9RQ1";
 const mailingList = "CG_8tVp5T22DHGyRtH"; // Yep - the new one
-const hostname = "syd1.qualtrics.com";
+const hostname = "syd1.qualtrics.com"; //Helo
 // const hostname = "2aee86ecb4940555cf2afa068d2ba5a8.m.pipedream.net";
 const getMailingListContactsQuery = "/API/v3/directories/" + pool + "/mailinglists/" + mailingList + "/contacts";
 const getMailingListContactsUrl = "https://" + hostname + getMailingListContactsQuery;
@@ -76,8 +76,8 @@ class App {
           console.log("Shuffled CONTACTS: " + JSON.stringify(shuffle(contacts), undefined, 2));
           console.log("---");
         });
-        //console.log("CONTACTS FINAL: " + JSON.stringify(contacts, undefined, 2)); // XXX WHY IS THIS PRINTED FRIST (and hence EMPTY)!?
       });
+      console.log("CONTACTS FINAL: " + JSON.stringify(contacts, undefined, 2)); // XXX WHY IS THIS PRINTED FRIST (and hence EMPTY)!?
     });
   }
 

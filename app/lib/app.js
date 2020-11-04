@@ -33,10 +33,10 @@ class App {
       return sourceArray;
     }
     
-    justDoIt(key);
-    
-    console.log("CONTACTS FINAL XXX: " + JSON.stringify(contacts, undefined, 2));
+    processArray(key);
+    console.log("CONTACTS FINAL: " + JSON.stringify(contacts, undefined, 2)); // XXX WHY IS THIS PRINTED FRIST (and hence EMPTY)!?
   }
+  
   addSubscriber (data) {
     const storage = this.getStorage();
     storage.subscribers.push(data);
@@ -186,19 +186,33 @@ function APIrequest(person, key) {
   })
 }
 
-function qualtricsAPIrequest(options, key) {
+function firstAPIrequest(person, key) {
+  // write buddy name and id to XMD
+  // Use Qualtrics API to get all SE members (max 200)
   return new Promise(function(reject, resolve) {
+    var options = {
+      method: 'GET',
+      headers: { 'accept': '*/*', 'X-API-TOKEN': key},
+      url: getMailingListContactsUrl,
+      qs: {pageSize: '200'}
+    };
+    // Get all contacts in SE buddy list
     request(options, function (error, response, body) {
       if (error) {
         console.log(error);
         reject();
         throw new Error(error);
       }
+      let personList = JSON.parse(body).result.elements;
+      console.log("PERSONLIST: " + JSON.stringify(personList, undefined, 2)); // {"result":{"elements":[{"contactId":"CID_3pIMBkMDJUt5qWp","firstName":"Eeee","lastName":"Egbert","email":"q5@vanpraag.com","phone":null,"extRef":"q5@vanpraag.com","language":null,"unsubscribed":false},{"contactId":"CID_2rypp6zL9UdbiLj","firstName":"Aaaa","lastName":"Aardvaark","email":"q1@vanpraag.com","phone":null,"extRef":"q1@vanpraag.com","language":null,"unsubscribed":false},{"contactId":"CID_aggZq9ziA7j6iiN","firstName":"Bbbb","lastName":"Bullwark","email":"q2@vanpraag.com","phone":null,"extRef":"q2@vanpraag.com","language":null,"unsubscribed":false},{"contactId":"CID_81VryhahElQBxXL","firstName":"Dddd","lastName":"Dopermine","email":"q4@vanpraag.com","phone":null,"extRef":"q4@vanpraag.com","language":null,"unsubscribed":false},{"contactId":"CID_2mWrnio45kZYTTn","firstName":"Cccc","lastName":"Chipotle","email":"q3@vanpraag.com","phone":null,"extRef":"q3@vanpraag.com","language":null,"unsubscribed":false}]
+      console.log("RESULT: " + JSON.stringify(personList, undefined, 2));
+      console.log("RESULT[1]: " + JSON.stringify(personList[1], undefined, 2));
+      console.log("RESULT[1].firstName: " + JSON.stringify(personList[1].firstName, undefined, 2));
+      processArray(personList, key);
       resolve();
     });
   })
 }
-
 
 async function processItem(person, key) {
   try{
@@ -206,45 +220,11 @@ async function processItem(person, key) {
     console.log("Processed")
   }
   catch(error) {
-    console.log("OK. SOMETHING TERRIBLE HAS HAPPENED")
   }
 }
-
-async function justDoIt(key) {
-  // write buddy name and id to XMD
-  // Use Qualtrics API to get all SE members (max 200)
-  var options = {
-    method: 'GET',
-    headers: { 'accept': '*/*', 'X-API-TOKEN': key},
-    url: getMailingListContactsUrl,
-    qs: {pageSize: '200'}
-  };
-  
-  try{
-    await qualtricsAPIrequest(options, key);
-    console.log("get Mailing List Contacts Processed")
-  }
-  catch(error) {
-    console.log("Mmmm. SOMETHING TERRIBLE HAS HAPPENED")
-  }
-    
-  // Get all contacts in SE buddy list
-  request(options, function (error, response, body) {
-    if (error) throw new Error(error);
-    console.log(body);
-    let personList = JSON.parse(body).result.elements;
-    /*console.log("PERSONLIST: " + JSON.stringify(personList, undefined, 2)); // {"result":{"elements":[{"contactId":"CID_3pIMBkMDJUt5qWp","firstName":"Eeee","lastName":"Egbert","email":"q5@vanpraag.com","phone":null,"extRef":"q5@vanpraag.com","language":null,"unsubscribed":false},{"contactId":"CID_2rypp6zL9UdbiLj","firstName":"Aaaa","lastName":"Aardvaark","email":"q1@vanpraag.com","phone":null,"extRef":"q1@vanpraag.com","language":null,"unsubscribed":false},{"contactId":"CID_aggZq9ziA7j6iiN","firstName":"Bbbb","lastName":"Bullwark","email":"q2@vanpraag.com","phone":null,"extRef":"q2@vanpraag.com","language":null,"unsubscribed":false},{"contactId":"CID_81VryhahElQBxXL","firstName":"Dddd","lastName":"Dopermine","email":"q4@vanpraag.com","phone":null,"extRef":"q4@vanpraag.com","language":null,"unsubscribed":false},{"contactId":"CID_2mWrnio45kZYTTn","firstName":"Cccc","lastName":"Chipotle","email":"q3@vanpraag.com","phone":null,"extRef":"q3@vanpraag.com","language":null,"unsubscribed":false}]
-    console.log("RESULT: " + JSON.stringify(personList, undefined, 2));
-    console.log("RESULT[1]: " + JSON.stringify(personList[1], undefined, 2));
-    console.log("RESULT[1].firstName: " + JSON.stringify(personList[1].firstName, undefined, 2));*/
-    processArray(personList, key);
-  });
-}
-
-async function processArray(personList, key) {
+async function processArray(key) {
   for (const person of personList) {
     await processItem(person, key);
   }
   console.log('Done!');
-  //console.log("CONTACTS FINAL: " + JSON.stringify(contacts, undefined, 2)); // XXX WHY IS THIS PRINTED FRIST (and hence EMPTY)!?
 }

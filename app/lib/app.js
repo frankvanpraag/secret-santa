@@ -239,9 +239,9 @@ async function populateContactsArray(key) {
     await personListAPIrequest(key);
     console.log("personListAPIrequest Processed");
     console.log("CONTACTS: " + JSON.stringify(contacts, undefined, 2)); // XXX WHY IS THIS PRINTED FRIST (and hence EMPTY)!?
+    // DO MORE PROCESSING HERE
   }
   catch(error) {
   };
   console.log("populateContactsArray DONE");
-  console.log("CONTACTS FINAL: " + JSON.stringify(contacts, undefined, 2)); // XXX WHY IS THIS PRINTED FRIST (and hence EMPTY)!?
 }

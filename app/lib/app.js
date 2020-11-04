@@ -34,10 +34,10 @@ class App {
       }
       return sourceArray;
     }
-    
-    var personList = getPersonList(key);
-    processPersonList(personList, key);
-    return('{ result : Yep }');
+    contacts = [];    // Reset to empty
+    populateContactsArray(key);
+    //return('{ result : Yep }');
+    return(JSON.stringify(contacts));
   }
   
   
@@ -234,7 +234,7 @@ async function processPersonList(personList, key) {
   console.log("CONTACTS FINAL: " + JSON.stringify(contacts, undefined, 2)); // XXX WHY IS THIS PRINTED FRIST (and hence EMPTY)!?
 }
 
-async function getPersonList(key) {
+async function populateContactsArray(key) {
   try{
     await personListAPIrequest(key);
     console.log("personListAPIrequest Processed")

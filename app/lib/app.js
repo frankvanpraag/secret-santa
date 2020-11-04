@@ -9,6 +9,7 @@ const getMailingListContactsQuery = "/API/v3/directories/" + pool + "/mailinglis
 const getMailingListContactsUrl = "https://" + hostname + getMailingListContactsQuery;
 var request = require('request');
 var contacts = [];
+var done = false;
 class App {
   constructor () {
     this.config = require('../config/config');
@@ -181,10 +182,15 @@ function personAPIrequest(person, key) {
       }
       //console.log(body);
       let previousMatches = JSON.parse(body).result.embeddedData.previousMatches;
+      let unsubscribed = JSON.parse(body).result.embeddedData.unsubscribed;
+      // exclude unsubscribed contacts
+      // exclude contacts with extrefs that are not email addresses
       // Construct short list of contacts
-      var contact = { contactId:person.contactId, extRef:person.extRef, previousMatches:previousMatches };
-      //console.log("CONTACT: " + JSON.stringify(contact, undefined, 2));
-      contacts.push(contact);
+      if (unsubscribed == 'false' && person.extRef.includes('@') ) {
+        var contact = { contactId:person.contactId, extRef:person.extRef, previousMatches:previousMatches };
+        //console.log("CONTACT: " + JSON.stringify(contact, undefined, 2));
+        contacts.push(contact);
+      }
       resolve();
     });
   })
@@ -231,7 +237,21 @@ async function processPersonList(personList, key) {
     await processPerson(person, key);
   }
   console.log('Done!');
+  done = true;
   console.log("CONTACTS FINAL: " + JSON.stringify(contacts, undefined, 2)); // XXX WHY IS THIS PRINTED FRIST (and hence EMPTY)!?
+  
+  for (const person of shuffle(contacts)) {
+    console.log("person: " + JSON.stringify(person, undefined, 2));
+    for (const match of shuffle(contacts)) {
+      console.log("  match: " + JSON.stringify(match, undefined, 2));
+      // XXXX IMPLEMENT HERE
+      // find match that is not self
+      //.   AND where potential match does not already have a match
+      //.   AND where current contact is not in list of previousMatches
+      //.   AND where potential match is not in current contact list of previousMatches
+      break;
+    }
+  }
 }
 
 async function populateContactsArray(key) {

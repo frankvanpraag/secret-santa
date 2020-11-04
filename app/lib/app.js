@@ -240,9 +240,10 @@ async function populateContactsArray(key) {
     await personListAPIrequest(key);
     console.log("personListAPIrequest Processed")
     console.log("CONTACTS FINAL: " + JSON.stringify(contacts, undefined, 2)); // XXX WHY IS THIS PRINTED FRIST (and hence EMPTY)!?
-    return(JSON.stringify(shuffle(contacts), undefined, 2));
   }
   catch(error) {
   }
+  //return(JSON.stringify(shuffle(contacts), undefined, 2));
+  return({rc: OK);
 }
 

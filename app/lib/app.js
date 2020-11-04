@@ -25,10 +25,19 @@ class App {
   
   
   mixItUp (brand, key, api, surveyId) {
+    function shuffle(sourceArray) {
+      for (var i = 0; i < sourceArray.length - 1; i++) {
+          var j = i + Math.floor(Math.random() * (sourceArray.length - i));
+          var temp = sourceArray[j];
+          sourceArray[j] = sourceArray[i];
+          sourceArray[i] = temp;
+      }
+      return sourceArray;
+    }
     contacts = [];    // Reset to empty
-    var ret = populateContactsArray(key);
+    populateContactsArray(key);
     //return('{ result : Yep }');
-    return(ret);
+    return(JSON.stringify(contacts));
   }
   
   
@@ -221,29 +230,15 @@ async function processPersonList(personList, key) {
   for (const person of personList) {
     await processPerson(person, key);
   }
-  console.log('processPersonList Done!');
-  //console.log("CONTACTS FINAL: " + JSON.stringify(contacts, undefined, 2)); // XXX WHY IS THIS PRINTED FRIST (and hence EMPTY)!?
+  console.log('Done!');
+  console.log("CONTACTS FINAL: " + JSON.stringify(contacts, undefined, 2)); // XXX WHY IS THIS PRINTED FRIST (and hence EMPTY)!?
 }
 
 async function populateContactsArray(key) {
-  function shuffle(sourceArray) {
-    for (var i = 0; i < sourceArray.length - 1; i++) {
-        var j = i + Math.floor(Math.random() * (sourceArray.length - i));
-        var temp = sourceArray[j];
-        sourceArray[j] = sourceArray[i];
-        sourceArray[i] = temp;
-    }
-    return sourceArray;
-  }
-
   try{
     await personListAPIrequest(key);
     console.log("personListAPIrequest Processed")
-    console.log("CONTACTS FINAL: " + JSON.stringify(contacts, undefined, 2)); // XXX WHY IS THIS PRINTED FRIST (and hence EMPTY)!?
   }
   catch(error) {
   }
-  //return(JSON.stringify(shuffle(contacts), undefined, 2));
-  return('{rc: OK}');
 }
-

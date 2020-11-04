@@ -30,11 +30,10 @@ class App {
           sourceArray[j] = sourceArray[i];
           sourceArray[i] = temp;
       }
-      firstAPIrequest(key);
       return sourceArray;
     }
     
-    processArray(key);
+    firstAPIrequest(key);
     console.log("CONTACTS FINAL: " + JSON.stringify(contacts, undefined, 2)); // XXX WHY IS THIS PRINTED FRIST (and hence EMPTY)!?
   }
   

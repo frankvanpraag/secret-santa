@@ -8,23 +8,20 @@ const hostname = "syd1.qualtrics.com"; //Helo
 const getMailingListContactsQuery = "/API/v3/directories/" + pool + "/mailinglists/" + mailingList + "/contacts";
 const getMailingListContactsUrl = "https://" + hostname + getMailingListContactsQuery;
 var request = require('request');
-
+var contacts = [];
 class App {
   constructor () {
     this.config = require('../config/config');
     this.storageLocation = __dirname + '/../../data/storage.json';
     this.listLocation = __dirname + '/../../data/list.json';
   }
-
   getConfig () {
     return this.config;
   }
-
   getStorage () {
     let db = fs.readFileSync(this.storageLocation);
     return JSON.parse(db.toString());
   }
-
   mixItUp (brand, key, api, surveyId) {
     function shuffle(sourceArray) {
       for (var i = 0; i < sourceArray.length - 1; i++) {
@@ -35,7 +32,6 @@ class App {
       }
       return sourceArray;
     }
-
     // write buddy name and id to XMD
     // Use Qualtrics API to get all SE members (max 200)
     var options = {
@@ -44,107 +40,67 @@ class App {
       url: getMailingListContactsUrl,
       qs: {pageSize: '200'}
     };
-
     // Get all contacts in SE buddy list
     request(options, function (error, response, body) {
       if (error) throw new Error(error);
       console.log(body);
       let personList = JSON.parse(body).result.elements;
-      //console.log("PERSONLIST: " + JSON.stringify(personList, undefined, 2)); // {"result":{"elements":[{"contactId":"CID_3pIMBkMDJUt5qWp","firstName":"Eeee","lastName":"Egbert","email":"q5@vanpraag.com","phone":null,"extRef":"q5@vanpraag.com","language":null,"unsubscribed":false},{"contactId":"CID_2rypp6zL9UdbiLj","firstName":"Aaaa","lastName":"Aardvaark","email":"q1@vanpraag.com","phone":null,"extRef":"q1@vanpraag.com","language":null,"unsubscribed":false},{"contactId":"CID_aggZq9ziA7j6iiN","firstName":"Bbbb","lastName":"Bullwark","email":"q2@vanpraag.com","phone":null,"extRef":"q2@vanpraag.com","language":null,"unsubscribed":false},{"contactId":"CID_81VryhahElQBxXL","firstName":"Dddd","lastName":"Dopermine","email":"q4@vanpraag.com","phone":null,"extRef":"q4@vanpraag.com","language":null,"unsubscribed":false},{"contactId":"CID_2mWrnio45kZYTTn","firstName":"Cccc","lastName":"Chipotle","email":"q3@vanpraag.com","phone":null,"extRef":"q3@vanpraag.com","language":null,"unsubscribed":false}]
-      //console.log("RESULT: " + JSON.stringify(personList, undefined, 2));
-      //console.log("RESULT[1]: " + JSON.stringify(personList[1], undefined, 2));
-      //console.log("RESULT[1].firstName: " + JSON.stringify(personList[1].firstName, undefined, 2));
-      
-      var contacts = [];
-      personList.forEach((person,index)=>{
-        // Retrieve previous matches to avoid
-        var options2 = {
-          method: 'GET',
-          headers: { 'accept': '*/*', 'X-API-TOKEN': key},
-          url: getMailingListContactsUrl+"/"+person.contactId
-        };
-        request(options2, function (error, response, body) {
-          if (error) throw new Error(error);
-          //console.log(body);
-          let previousMatches = JSON.parse(body).result.embeddedData.previousMatches;
-          // Construct short list of contacts
-          var contact = { contactId:person.contactId, extRef:person.extRef, previousMatches:previousMatches };
-          console.log("CONTACT: " + JSON.stringify(contact, undefined, 2));
-          contacts.push(contact);
-          console.log("CONTACTS: " + JSON.stringify(contacts, undefined, 2));
-          console.log("---");
-          console.log("Shuffled CONTACTS: " + JSON.stringify(shuffle(contacts), undefined, 2));
-          console.log("---");
-        });
-      });
-      console.log("CONTACTS FINAL: " + JSON.stringify(contacts, undefined, 2)); // XXX WHY IS THIS PRINTED FRIST (and hence EMPTY)!?
+      /*console.log("PERSONLIST: " + JSON.stringify(personList, undefined, 2)); // {"result":{"elements":[{"contactId":"CID_3pIMBkMDJUt5qWp","firstName":"Eeee","lastName":"Egbert","email":"q5@vanpraag.com","phone":null,"extRef":"q5@vanpraag.com","language":null,"unsubscribed":false},{"contactId":"CID_2rypp6zL9UdbiLj","firstName":"Aaaa","lastName":"Aardvaark","email":"q1@vanpraag.com","phone":null,"extRef":"q1@vanpraag.com","language":null,"unsubscribed":false},{"contactId":"CID_aggZq9ziA7j6iiN","firstName":"Bbbb","lastName":"Bullwark","email":"q2@vanpraag.com","phone":null,"extRef":"q2@vanpraag.com","language":null,"unsubscribed":false},{"contactId":"CID_81VryhahElQBxXL","firstName":"Dddd","lastName":"Dopermine","email":"q4@vanpraag.com","phone":null,"extRef":"q4@vanpraag.com","language":null,"unsubscribed":false},{"contactId":"CID_2mWrnio45kZYTTn","firstName":"Cccc","lastName":"Chipotle","email":"q3@vanpraag.com","phone":null,"extRef":"q3@vanpraag.com","language":null,"unsubscribed":false}]
+      console.log("RESULT: " + JSON.stringify(personList, undefined, 2));
+      console.log("RESULT[1]: " + JSON.stringify(personList[1], undefined, 2));
+      console.log("RESULT[1].firstName: " + JSON.stringify(personList[1].firstName, undefined, 2));*/
+      processArray(personList, key);
     });
   }
-
   addSubscriber (data) {
     const storage = this.getStorage();
     storage.subscribers.push(data);
-
     fs.writeFileSync(this.storageLocation, JSON.stringify(storage));
   }
-
   haveEmailsAlreadySent () {
     return fs.existsSync(this.listLocation);
   }
-
   createAndSendEmails () {
     const list = this.assignRecipients();
     const messages = this.composeEmails(list);
-
     return this.sendEmails(messages);
   }
-
   resendRecipientList () {
     const list = JSON.parse(fs.readFileSync(this.listLocation).toString());
     const messages = this.composeEmails(list);
-
     return this.sendEmails(messages);
   }
-
   assignRecipients () {
     const storage = this.getStorage();
     const subscribers = this.shuffle(storage.subscribers);
     const list = [];
-
     for (let i = 0; i < subscribers.length; i++) {
       let subscriber = subscribers[i];
       let recipient;
-
       if (i === subscribers.length - 1) {
         recipient = subscribers[0];
       } else {
         recipient = subscribers[i + 1];
       }
-
       list.push({
         person: subscriber.email,
         recipient: recipient.email,
         sent: false
       });
     }
-
     fs.writeFileSync(this.listLocation, JSON.stringify(list));
-
     return list;
   }
-
   composeEmails (emailList) {
     const subject = 'Your Secret Santa drawing';
     const messageBody = fs.readFileSync('app/views/email.ejs').toString();
     const subscribers = this.getStorage().subscribers;
     const messages = [];
-
     for (let i = 0; i < emailList.length; i++) {
       let senderEmail = emailList[i].person;
       let recipientEmail = emailList[i].recipient;
       let sender = this.getItemByEmail(subscribers, senderEmail);
       let recipient = this.getItemByEmail(subscribers, recipientEmail);
-
       if (recipient) {
         messages.push({
           to: senderEmail,
@@ -161,21 +117,16 @@ class App {
         });
       }
     }
-
     return messages;
   }
-
   sendEmails (messages) {
     const emailConfig = this.config['email-server'];
     let adapter;
-
     if (emailConfig.type === 'sendgrid') {
       adapter = new SendGridAdapter(emailConfig.options, emailConfig['from-address']);
     }
-
     adapter.send(messages);
   }
-
   /*
    * Express middleware to check for session
    */
@@ -190,21 +141,17 @@ class App {
       next();
     }
   }
-
   initSession (req) {
     req.session.user = true;
   }
-
   getItemByEmail (list, email) {
     for (let i = 0; i < list.length; i++) {
       if (list[i].email === email) {
         return list[i];
       }
     }
-
     return null;
   }
-
   /**
    * http://bost.ocks.org/mike/shuffle/
    * @param {Array} array
@@ -214,23 +161,56 @@ class App {
     let counter = array.length;
     let temp;
     let index;
-
     // While there are elements in the array
     while (counter > 0) {
       // Pick a random index
       index = Math.floor(Math.random() * counter);
-
       // Decrease counter by 1
       counter--;
-
       // And swap the last element with it
       temp = array[counter];
       array[counter] = array[index];
       array[index] = temp;
     }
-
     return array;
   }
 }
-
 module.exports = new App();
+function APIrequest(person, key) {
+  return new Promise(function(reject, resolve) {
+    var options2 = {
+      method: 'GET',
+      headers: { 'accept': '*/*', 'X-API-TOKEN': key},
+      url: getMailingListContactsUrl+"/"+person.contactId
+    };
+    request(options2, function (error, response, body) {
+      if (error) {
+        console.log(error);
+        reject();
+        throw new Error(error);
+      }
+      //console.log(body);
+      let previousMatches = JSON.parse(body).result.embeddedData.previousMatches;
+      // Construct short list of contacts
+      var contact = { contactId:person.contactId, extRef:person.extRef, previousMatches:previousMatches };
+      //console.log("CONTACT: " + JSON.stringify(contact, undefined, 2));
+      contacts.push(contact);
+      resolve();
+    });
+  })
+}
+async function processItem(person, key) {
+  try{
+    await APIrequest(person, key);
+    console.log("Processed")
+  }
+  catch(error) {
+  }
+}
+async function processArray(personList, key) {
+  for (const person of personList) {
+    await processItem(person, key);
+  }
+  console.log('Done!');
+  console.log("CONTACTS FINAL: " + JSON.stringify(contacts, undefined, 2)); // XXX WHY IS THIS PRINTED FRIST (and hence EMPTY)!?
+}

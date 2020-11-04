@@ -230,15 +230,18 @@ async function processPersonList(personList, key) {
   for (const person of personList) {
     await processPerson(person, key);
   }
-  console.log('Done!');
-  console.log("CONTACTS FINAL: " + JSON.stringify(contacts, undefined, 2)); // XXX WHY IS THIS PRINTED FRIST (and hence EMPTY)!?
+  console.log('processPersonList Done!');
+  // console.log("CONTACTS FINAL: " + JSON.stringify(contacts, undefined, 2)); // XXX WHY IS THIS PRINTED FRIST (and hence EMPTY)!?
 }
 
 async function populateContactsArray(key) {
   try{
     await personListAPIrequest(key);
-    console.log("personListAPIrequest Processed")
+    console.log("personListAPIrequest Processed");
+    console.log("CONTACTS: " + JSON.stringify(contacts, undefined, 2)); // XXX WHY IS THIS PRINTED FRIST (and hence EMPTY)!?
   }
   catch(error) {
-  }
+  };
+  console.log("populateContactsArray DONE");
+  console.log("CONTACTS FINAL: " + JSON.stringify(contacts, undefined, 2)); // XXX WHY IS THIS PRINTED FRIST (and hence EMPTY)!?
 }

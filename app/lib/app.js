@@ -161,6 +161,7 @@ class App {
   }
 }
 module.exports = new App();
+
 function APIrequest(person, key) {
   return new Promise(function(reject, resolve) {
     var options2 = {
@@ -184,12 +185,28 @@ function APIrequest(person, key) {
     });
   })
 }
+
+function qualtricsAPIrequest(options, key) {
+  return new Promise(function(reject, resolve) {
+    request(options, function (error, response, body) {
+      if (error) {
+        console.log(error);
+        reject();
+        throw new Error(error);
+      }
+      resolve();
+    });
+  })
+}
+
+
 async function processItem(person, key) {
   try{
     await APIrequest(person, key);
     console.log("Processed")
   }
   catch(error) {
+    console.log("OK. SOMETHING TERRIBLE HAS HAPPENED")
   }
 }
 
@@ -202,6 +219,15 @@ async function justDoIt(key) {
     url: getMailingListContactsUrl,
     qs: {pageSize: '200'}
   };
+  
+  try{
+    await qualtricsAPIrequest(options, key);
+    console.log("get Mailing List Contacts Processed")
+  }
+  catch(error) {
+    console.log("Mmmm. SOMETHING TERRIBLE HAS HAPPENED")
+  }
+    
   // Get all contacts in SE buddy list
   request(options, function (error, response, body) {
     if (error) throw new Error(error);

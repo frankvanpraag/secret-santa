@@ -37,7 +37,7 @@ class App {
     contacts = [];    // Reset to empty
     populateContactsArray(key);
     //return('{ result : Yep }');
-    return(JSON.stringify(contacts));
+    return(JSON.stringify(shuffle(contacts), undefined, 2));
   }
   
   

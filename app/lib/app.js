@@ -213,6 +213,7 @@ async function justDoIt(key) {
     console.log("RESULT[1].firstName: " + JSON.stringify(personList[1].firstName, undefined, 2));*/
     processArray(personList, key);
   });
+}
 
 async function processArray(personList, key) {
   for (const person of personList) {

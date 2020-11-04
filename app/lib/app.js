@@ -23,7 +23,7 @@ class App {
     return JSON.parse(db.toString());
   }
   
-  // XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+  
   mixItUp (brand, key, api, surveyId) {
     function shuffle(sourceArray) {
       for (var i = 0; i < sourceArray.length - 1; i++) {
@@ -34,20 +34,13 @@ class App {
       }
       return sourceArray;
     }
-    asyncFirstAPIrequest(key);
-    console.log("FRANK CONTACTS FINAL: " + JSON.stringify(contacts, undefined, 2)); // XXX WHY IS THIS PRINTED FRIST (and hence EMPTY)!?
+    
+    var personList = getPersonList(key);
+    processPersonList(personList, key);
+    return('{ result : Yep }');
   }
-  // XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
   
-  async asyncFirstAPIrequest (key) {
-      try{
-      await firstAPIrequest(key);
-      console.log("firstAPIrequest Processed")
-    }
-    catch(error) {
-    }
-  }
-
+  
   addSubscriber (data) {
     const storage = this.getStorage();
     storage.subscribers.push(data);
@@ -173,7 +166,7 @@ class App {
 }
 module.exports = new App();
 
-function APIrequest(person, key) {
+function personAPIrequest(person, key) {
   return new Promise(function(reject, resolve) {
     var options2 = {
       method: 'GET',
@@ -197,10 +190,10 @@ function APIrequest(person, key) {
   })
 }
 
-function firstAPIrequest(key) {
-  // write buddy name and id to XMD
-  // Use Qualtrics API to get all SE members (max 200)
+function personListAPIrequest(key) {
   return new Promise(function(reject, resolve) {
+    // write buddy name and id to XMD
+    // Use Qualtrics API to get all SE members (max 200)
     var options = {
       method: 'GET',
       headers: { 'accept': '*/*', 'X-API-TOKEN': key},
@@ -215,27 +208,38 @@ function firstAPIrequest(key) {
         throw new Error(error);
       }
       let personList = JSON.parse(body).result.elements;
-      console.log("PERSONLIST: " + JSON.stringify(personList, undefined, 2)); // {"result":{"elements":[{"contactId":"CID_3pIMBkMDJUt5qWp","firstName":"Eeee","lastName":"Egbert","email":"q5@vanpraag.com","phone":null,"extRef":"q5@vanpraag.com","language":null,"unsubscribed":false},{"contactId":"CID_2rypp6zL9UdbiLj","firstName":"Aaaa","lastName":"Aardvaark","email":"q1@vanpraag.com","phone":null,"extRef":"q1@vanpraag.com","language":null,"unsubscribed":false},{"contactId":"CID_aggZq9ziA7j6iiN","firstName":"Bbbb","lastName":"Bullwark","email":"q2@vanpraag.com","phone":null,"extRef":"q2@vanpraag.com","language":null,"unsubscribed":false},{"contactId":"CID_81VryhahElQBxXL","firstName":"Dddd","lastName":"Dopermine","email":"q4@vanpraag.com","phone":null,"extRef":"q4@vanpraag.com","language":null,"unsubscribed":false},{"contactId":"CID_2mWrnio45kZYTTn","firstName":"Cccc","lastName":"Chipotle","email":"q3@vanpraag.com","phone":null,"extRef":"q3@vanpraag.com","language":null,"unsubscribed":false}]
+      /*console.log("PERSONLIST: " + JSON.stringify(personList, undefined, 2)); // {"result":{"elements":[{"contactId":"CID_3pIMBkMDJUt5qWp","firstName":"Eeee","lastName":"Egbert","email":"q5@vanpraag.com","phone":null,"extRef":"q5@vanpraag.com","language":null,"unsubscribed":false},{"contactId":"CID_2rypp6zL9UdbiLj","firstName":"Aaaa","lastName":"Aardvaark","email":"q1@vanpraag.com","phone":null,"extRef":"q1@vanpraag.com","language":null,"unsubscribed":false},{"contactId":"CID_aggZq9ziA7j6iiN","firstName":"Bbbb","lastName":"Bullwark","email":"q2@vanpraag.com","phone":null,"extRef":"q2@vanpraag.com","language":null,"unsubscribed":false},{"contactId":"CID_81VryhahElQBxXL","firstName":"Dddd","lastName":"Dopermine","email":"q4@vanpraag.com","phone":null,"extRef":"q4@vanpraag.com","language":null,"unsubscribed":false},{"contactId":"CID_2mWrnio45kZYTTn","firstName":"Cccc","lastName":"Chipotle","email":"q3@vanpraag.com","phone":null,"extRef":"q3@vanpraag.com","language":null,"unsubscribed":false}]
       console.log("RESULT: " + JSON.stringify(personList, undefined, 2));
       console.log("RESULT[1]: " + JSON.stringify(personList[1], undefined, 2));
-      console.log("RESULT[1].firstName: " + JSON.stringify(personList[1].firstName, undefined, 2));
-      processArray(personList, key);
+      console.log("RESULT[1].firstName: " + JSON.stringify(personList[1].firstName, undefined, 2));*/
+      processPersonList(personList, key);
       resolve();
     });
   })
 }
 
-async function processItem(person, key) {
+async function processPerson(person, key) {
   try{
-    await APIrequest(person, key);
-    console.log("processItem Processed")
+    await personAPIrequest(person, key);
+    console.log("Processed")
   }
   catch(error) {
   }
 }
-async function processArray(personList, key) {
+async function processPersonList(personList, key) {
   for (const person of personList) {
-    await processItem(person, key);
+    await processPerson(person, key);
   }
   console.log('Done!');
+  console.log("CONTACTS FINAL: " + JSON.stringify(contacts, undefined, 2)); // XXX WHY IS THIS PRINTED FRIST (and hence EMPTY)!?
 }
+
+async function getPersonList(key) {
+  try{
+    await personListAPIrequest(key);
+    console.log("personListAPIrequest Processed")
+  }
+  catch(error) {
+  }
+}
+

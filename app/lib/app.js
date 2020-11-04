@@ -35,9 +35,9 @@ class App {
       return sourceArray;
     }
     contacts = [];    // Reset to empty
-    populateContactsArray(key);
+    var ret = populateContactsArray(key);
     //return('{ result : Yep }');
-    return(JSON.stringify(shuffle(contacts), undefined, 2));
+    return(ret);
   }
   
   
@@ -230,8 +230,8 @@ async function processPersonList(personList, key) {
   for (const person of personList) {
     await processPerson(person, key);
   }
-  console.log('Done!');
-  console.log("CONTACTS FINAL: " + JSON.stringify(contacts, undefined, 2)); // XXX WHY IS THIS PRINTED FRIST (and hence EMPTY)!?
+  console.log('processPersonList Done!');
+  //console.log("CONTACTS FINAL: " + JSON.stringify(contacts, undefined, 2)); // XXX WHY IS THIS PRINTED FRIST (and hence EMPTY)!?
 }
 
 async function populateContactsArray(key) {
@@ -241,5 +241,7 @@ async function populateContactsArray(key) {
   }
   catch(error) {
   }
+  console.log("CONTACTS FINAL: " + JSON.stringify(contacts, undefined, 2)); // XXX WHY IS THIS PRINTED FRIST (and hence EMPTY)!?
+  return(JSON.stringify(shuffle(contacts), undefined, 2));
 }
 

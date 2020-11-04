@@ -171,9 +171,11 @@ function personAPIrequest(person, key) {
         reject();
         throw new Error(error);
       }
-      //console.log(body);
+      console.log("personAPIrequest: " + body);
       let previousMatches = JSON.parse(body).result.embeddedData.previousMatches;
+      console.log("personAPIrequest previousMatches: " + previousMatches);
       let unsubscribed = JSON.parse(body).result.embeddedData.unsubscribed;
+      console.log("personAPIrequest unsubscribed: " + unsubscribed);
       // exclude unsubscribed contacts
       // exclude contacts with extrefs that are not email addresses
       // Construct short list of contacts

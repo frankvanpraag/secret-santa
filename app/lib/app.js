@@ -174,12 +174,16 @@ function personAPIrequest(person, key) {
       console.log("personAPIrequest: " + body);
       let previousMatches = JSON.parse(body).result.embeddedData.previousMatches;
       console.log("personAPIrequest previousMatches: " + previousMatches);
-      let unsubscribed = JSON.parse(body).result.embeddedData.unsubscribed;
+      let unsubscribed = JSON.parse(body).result.unsubscribed;
       console.log("personAPIrequest unsubscribed: " + unsubscribed);
+      let mailingListUnsubscribed = JSON.parse(body).result.mailingListUnsubscribed;
+      console.log("personAPIrequest mailingListUnsubscribed: " + mailingListUnsubscribed);
+      let directoryUnsubscribed = JSON.parse(body).result.directoryUnsubscribed;
+      console.log("personAPIrequest directoryUnsubscribed: " + directoryUnsubscribed);
       // exclude unsubscribed contacts
       // exclude contacts with extrefs that are not email addresses
       // Construct short list of contacts
-      if (unsubscribed == 'false' && person.extRef.includes('@') ) {
+      if (unsubscribed != 'true' && mailingListUnsubscribed != 'true' && directoryUnsubscribed != 'true' && person.extRef.includes('@') ) {
         var contact = { contactId:person.contactId, extRef:person.extRef, previousMatches:previousMatches };
         //console.log("CONTACT: " + JSON.stringify(contact, undefined, 2));
         contacts.push(contact);

@@ -50,6 +50,7 @@ class App {
       console.log("RESULT[1]: " + JSON.stringify(personList[1], undefined, 2));
       console.log("RESULT[1].firstName: " + JSON.stringify(personList[1].firstName, undefined, 2));*/
       processArray(personList, key);
+      console.log("CONTACTS FINAL XXX: " + JSON.stringify(contacts, undefined, 2));
     });
   }
   addSubscriber (data) {
@@ -212,5 +213,5 @@ async function processArray(personList, key) {
     await processItem(person, key);
   }
   console.log('Done!');
-  console.log("CONTACTS FINAL: " + JSON.stringify(contacts, undefined, 2)); // XXX WHY IS THIS PRINTED FRIST (and hence EMPTY)!?
+  //console.log("CONTACTS FINAL: " + JSON.stringify(contacts, undefined, 2)); // XXX WHY IS THIS PRINTED FRIST (and hence EMPTY)!?
 }

@@ -244,6 +244,6 @@ async function populateContactsArray(key) {
   catch(error) {
   }
   //return(JSON.stringify(shuffle(contacts), undefined, 2));
-  return({rc: OK);
+  return('{rc: OK}');
 }
 

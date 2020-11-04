@@ -33,8 +33,14 @@ class App {
       return sourceArray;
     }
     
-    firstAPIrequest(key);
-    console.log("CONTACTS FINAL: " + JSON.stringify(contacts, undefined, 2)); // XXX WHY IS THIS PRINTED FRIST (and hence EMPTY)!?
+    try{
+      await firstAPIrequest(key);
+      console.log("firstAPIrequest Processed")
+    }
+    catch(error) {
+    }
+
+    console.log("FRANK CONTACTS FINAL: " + JSON.stringify(contacts, undefined, 2)); // XXX WHY IS THIS PRINTED FRIST (and hence EMPTY)!?
   }
   
   addSubscriber (data) {
@@ -217,7 +223,7 @@ function firstAPIrequest(key) {
 async function processItem(person, key) {
   try{
     await APIrequest(person, key);
-    console.log("Processed")
+    console.log("processItem Processed")
   }
   catch(error) {
   }

@@ -30,6 +30,7 @@ class App {
           sourceArray[j] = sourceArray[i];
           sourceArray[i] = temp;
       }
+      firstAPIrequest(key);
       return sourceArray;
     }
     
@@ -186,7 +187,7 @@ function APIrequest(person, key) {
   })
 }
 
-function firstAPIrequest(person, key) {
+function firstAPIrequest(key) {
   // write buddy name and id to XMD
   // Use Qualtrics API to get all SE members (max 200)
   return new Promise(function(reject, resolve) {
@@ -222,7 +223,7 @@ async function processItem(person, key) {
   catch(error) {
   }
 }
-async function processArray(key) {
+async function processArray(personList, key) {
   for (const person of personList) {
     await processItem(person, key);
   }

@@ -24,7 +24,7 @@ router.post('/mixitup', function (req, res) {
 });
 
 router.get('/mixitup', function (req, res) {
-  app.mixItUp(req.query.brand, req.query.key, req.query.api, req.query.surveyId);
+  var ret = app.mixItUp(req.query.brand, req.query.key, req.query.api, req.query.surveyId);
   
   //Promise.all([
   //  app.getContacts(req.query.brand, req.query.key, req.query.api, req.query.surveyId)
@@ -36,7 +36,7 @@ router.get('/mixitup', function (req, res) {
   //  console.log(error);
   //});
   
-  res.send('{ result : OK }');
+  res.send(ret);
 });
 
 router.post('/save', function (req, res) {

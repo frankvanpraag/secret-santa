@@ -22,6 +22,8 @@ class App {
     let db = fs.readFileSync(this.storageLocation);
     return JSON.parse(db.toString());
   }
+  
+  // XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
   mixItUp (brand, key, api, surveyId) {
     function shuffle(sourceArray) {
       for (var i = 0; i < sourceArray.length - 1; i++) {
@@ -32,17 +34,20 @@ class App {
       }
       return sourceArray;
     }
-    
-    try{
+    asyncFirstAPIrequest(key);
+    console.log("FRANK CONTACTS FINAL: " + JSON.stringify(contacts, undefined, 2)); // XXX WHY IS THIS PRINTED FRIST (and hence EMPTY)!?
+  }
+  // XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+  
+  async asyncFirstAPIrequest (key) {
+      try{
       await firstAPIrequest(key);
       console.log("firstAPIrequest Processed")
     }
     catch(error) {
     }
-
-    console.log("FRANK CONTACTS FINAL: " + JSON.stringify(contacts, undefined, 2)); // XXX WHY IS THIS PRINTED FRIST (and hence EMPTY)!?
   }
-  
+
   addSubscriber (data) {
     const storage = this.getStorage();
     storage.subscribers.push(data);

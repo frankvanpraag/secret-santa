@@ -25,15 +25,6 @@ class App {
   
   
   mixItUp (brand, key, api, surveyId) {
-    function shuffle(sourceArray) {
-      for (var i = 0; i < sourceArray.length - 1; i++) {
-          var j = i + Math.floor(Math.random() * (sourceArray.length - i));
-          var temp = sourceArray[j];
-          sourceArray[j] = sourceArray[i];
-          sourceArray[i] = temp;
-      }
-      return sourceArray;
-    }
     contacts = [];    // Reset to empty
     var ret = populateContactsArray(key);
     //return('{ result : Yep }');
@@ -235,6 +226,16 @@ async function processPersonList(personList, key) {
 }
 
 async function populateContactsArray(key) {
+  function shuffle(sourceArray) {
+    for (var i = 0; i < sourceArray.length - 1; i++) {
+        var j = i + Math.floor(Math.random() * (sourceArray.length - i));
+        var temp = sourceArray[j];
+        sourceArray[j] = sourceArray[i];
+        sourceArray[i] = temp;
+    }
+    return sourceArray;
+  }
+
   try{
     await personListAPIrequest(key);
     console.log("personListAPIrequest Processed")

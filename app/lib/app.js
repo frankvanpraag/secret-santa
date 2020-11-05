@@ -250,12 +250,16 @@ async function processPersonList(personList, key) {
   for (const person of shuffle(contacts)) {
     console.log("person: " + JSON.stringify(person, undefined, 2));
     for (const match of shuffle(contacts)) {
-      if (match.matchContactId is null.    // No match yet
+      if (match.matchContactId == null    // No match yet
           && person.extRef != match.extRef // Not matching themselves
           && person.contactId != match.contactId // Not matching themselves
           && !person.previousMatches.contains(match.extRef) // Not matched previously
           && !match.previousMatches.contains(person.extRef) // Not matched previously
       ) {
+        person.matchContactId = match.contactId;
+        person.matchExtRef = match.extRef;
+        match.matchContactId = person.contactId;
+        match.matchExtRef = person.extRef;
         console.log("  match: " + JSON.stringify(match, undefined, 2));
         // XXXX IMPLEMENT HERE
         // find match that is not self

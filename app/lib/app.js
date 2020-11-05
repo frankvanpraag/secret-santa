@@ -205,8 +205,7 @@ function personAPIrequest(person, key) {
               newMatchFirstName:null,
               newMatchLastName:null,
               newMatchFullName:null,
-              matchExtRef:null, 
-              matchContactId:null 
+              newMatchExtRef:null 
             };
         console.log("CONTACT ADDED: " + JSON.stringify(contact, undefined, 2));
         contacts.push(contact);
@@ -271,21 +270,21 @@ async function processPersonList(personList, key) {
   console.log("CONTACTS FINAL: " + JSON.stringify(contacts, undefined, 2)); // XXX WHY IS THIS PRINTED FRIST (and hence EMPTY)!?
   
   for (const person of shuffle(contacts)) {
-    if (person.matchContactId || person.matchExtRef ) continue;  // already matched
+    if (person.newMatchContactId || person.matchExtRef ) continue;  // already matched
     console.log("Checking match for person: " + JSON.stringify(person, undefined, 2));
     for (const match of shuffle(contacts)) {
       // console.log(" person.contactId: "+person.contactId);
       // console.log(" match.contactId: "+match.contactId);
       // console.log(" match.extRef: "+match.extRef);
       // console.log(" person.extRef: "+person.extRef);
-      // console.log(" match.matchContactId: "+match.matchContactId);
-      // console.log(" person.matchContactId: "+person.matchContactId);
+      // console.log(" match.newMatchContactId: "+match.newMatchContactId);
+      // console.log(" person.newMatchContactId: "+person.newMatchContactId);
       // console.log(" match.previousMatches: "+match.previousMatches);
       // console.log(" person.previousMatches: "+person.previousMatches);
       console.log("  Possible Match: " + JSON.stringify(match.extRef, undefined, 2));
       //console.log("  ---> " + JSON.stringify(match, undefined, 2));
-      if (match.matchContactId == null    // No match yet     
-         ) console.log("  Data check 1: match.matchContactId == null");
+      if (match.newMatchContactId == null    // No match yet     
+         ) console.log("  Data check 1: match.newMatchContactId == null");
       if (person.extRef != match.extRef // Not matching themselves
          ) console.log("  Data check 2: person.extRef != match.extRef");
       if (person.contactId != match.contactId // Not matching themselves
@@ -295,7 +294,7 @@ async function processPersonList(personList, key) {
       if (!match.previousMatches  || !match.previousMatches.includes(person.extRef)  // Not matched previously
          ) console.log("  Data check 5: !match.previousMatches  || !match.previousMatches.includes(person.extRef");
 
-      if (match.matchContactId == null    // No match yet
+      if (match.newMatchContactId == null    // No match yet
           && person.extRef != match.extRef // Not matching themselves
           && person.contactId != match.contactId // Not matching themselves
           && ( !person.previousMatches || !person.previousMatches.includes(match.extRef) ) // Not matched previously
@@ -303,24 +302,24 @@ async function processPersonList(personList, key) {
       ) {
         console.log("   ---> Yes, this person is a match!");
         console.log("   ---> Matching "+person.extRef+" with "+match.extRef);
-        person.matchContactId = match.contactId;
-        person.matchExtRef = match.extRef;
-        if (person.previousMatches)
+        person.newMatchContactId = match.contactId;
+        person.newMatchExtRef = match.extRef;
+        if (person.previousMatches && person.currentMatch)
           person.previousMatches += "," + person.currentMatch; // Save last weeks match
         else
-          person.previousMatches = person.currentMatch; // Save last weeks match
-        match.matchContactId = person.contactId;
-        match.matchExtRef = person.extRef;
-        if (match.previousMatches)
+          person.previousMatches = person.currentMatch?person.currentMatch:null; // Save last weeks match
+        match.newMatchContactId = person.contactId;
+        match.newMatchExtRef = person.extRef;
+        if (match.previousMatches && match.currentMatch)
           match.previousMatches += "," + match.currentMatch;  // Save last weeks match
         else
-          match.previousMatches = match.currentMatch;  // Save last weeks match
+          match.previousMatches = match.currentMatch?match.currentMatch:null;  // Save last weeks match
       }
       else {
         console.log("   ---> no match (continue to next match)");
         continue;
       }
-      if (match.matchContactId) {
+      if (match.newMatchContactId) {
         console.log("  BREAK BECAUSE MATCH FOUND: " + JSON.stringify(person.extRef, undefined, 2) + " matched with " + JSON.stringify(match.extRef, undefined, 2));
         break;
       }

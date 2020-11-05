@@ -248,21 +248,30 @@ async function processPersonList(personList, key) {
   console.log("CONTACTS FINAL: " + JSON.stringify(contacts, undefined, 2)); // XXX WHY IS THIS PRINTED FRIST (and hence EMPTY)!?
   
   for (const person of shuffle(contacts)) {
-    console.log("person: " + JSON.stringify(person, undefined, 2));
+    console.log("Checking match for person: " + JSON.stringify(person, undefined, 2));
     for (const match of shuffle(contacts)) {
+      console.log(" person.contactId: "+person.contactId);
+      console.log(" match.contactId: "+match.contactId);
+      console.log(" match.extRef: "+match.extRef);
+      console.log(" person.extRef: "+person.extRef);
+      console.log(" match.matchContactId: "+match.matchContactId);
+      console.log(" person.matchContactId: "+person.matchContactId);
+      console.log(" match.previousMatches: "+match.previousMatches);
+      console.log(" person.previousMatches: "+person.previousMatches);
       if (match.matchContactId == null    // No match yet
           && person.extRef != match.extRef // Not matching themselves
           && person.contactId != match.contactId // Not matching themselves
           && ( !person.previousMatches || !person.previousMatches.includes(match.extRef) ) // Not matched previously
           && ( !match.previousMatches  || !match.previousMatches.includes(person.extRef) ) // Not matched previously
       ) {
+        console.log("   ---> Yes, this person can be matched");
         person.matchContactId = match.contactId;
         person.matchExtRef = match.extRef;
         person.previousMatches += "," + match.extRef;
         match.matchContactId = person.contactId;
         match.matchExtRef = person.extRef;
         match.previousMatches += "," + person.extRef;
-        console.log("  match: " + JSON.stringify(match, undefined, 2));
+        console.log("   ---> matched with: " + JSON.stringify(match, undefined, 2));
         // XXXX IMPLEMENT HERE
         // find match that is not self
         //.   AND where potential match does not already have a match

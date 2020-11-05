@@ -303,6 +303,7 @@ async function processPersonList(personList, key) {
       }
     }
   }
+  console.log("MATCHES FINAL: " + JSON.stringify(contacts, undefined, 2));
 }
 
 async function populateContactsArray(key) {

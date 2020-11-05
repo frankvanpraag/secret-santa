@@ -180,11 +180,33 @@ function personAPIrequest(person, key) {
       console.log("personAPIrequest mailingListUnsubscribed: " + mailingListUnsubscribed);
       let directoryUnsubscribed = JSON.parse(body).result.directoryUnsubscribed;
       console.log("personAPIrequest directoryUnsubscribed: " + directoryUnsubscribed);
+      let currentMatch = JSON.parse(body).result["Current match"];
+      console.log("personAPIrequest currentMatch: " + currentMatch);
+      let currentMatchFirstName = JSON.parse(body).result["Current match first name"];
+      console.log("personAPIrequest currentMatchFirstName: " + currentMatchFirstName);
+      let currentMatchLastName = JSON.parse(body).result["Current match last name"];
+      console.log("personAPIrequest currentMatchLastName: " + currentMatchLastName);
+      let currentMatchFullName = JSON.parse(body).result["Current match full name"];
+      console.log("personAPIrequest currentMatchFullName: " + currentMatchFullName);
       // exclude unsubscribed contacts
       // exclude contacts with extrefs that are not email addresses
       // Construct short list of contacts
       if (unsubscribed != 'true' && mailingListUnsubscribed != 'true' && directoryUnsubscribed != 'true' && person.extRef.includes('@') ) {
-        var contact = { contactId:person.contactId, extRef:person.extRef, previousMatches:previousMatches, matchExtRef:null, matchContactId:null };
+        var contact = 
+            { 
+              contactId:person.contactId, 
+              extRef:person.extRef, 
+              currentMatch:currentMatch,
+              currentMatchFirstName:currentMatchFirstName,
+              currentMatchLastName:currentMatchLastName,
+              currentMatchFullName:currentMatchFullName,
+              previousMatches:previousMatches, 
+              newMatchFirstName:null,
+              newMatchLastName:null,
+              newMatchFullName:null,
+              matchExtRef:null, 
+              matchContactId:null 
+            };
         console.log("CONTACT ADDED: " + JSON.stringify(contact, undefined, 2));
         contacts.push(contact);
       }
@@ -283,15 +305,15 @@ async function processPersonList(personList, key) {
         person.matchContactId = match.contactId;
         person.matchExtRef = match.extRef;
         if (person.previousMatches)
-          person.previousMatches += "," + match.extRef;
+          person.previousMatches += "," + person.currentMatch; // Save last weeks match
         else
-          person.previousMatches = match.extRef;
+          person.previousMatches = person.currentMatch; // Save last weeks match
         match.matchContactId = person.contactId;
         match.matchExtRef = person.extRef;
         if (match.previousMatches)
-          match.previousMatches += "," + person.extRef;
+          match.previousMatches += "," + match.currentMatch;  // Save last weeks match
         else
-          match.previousMatches = person.extRef;
+          match.previousMatches = match.currentMatch;  // Save last weeks match
       }
       else {
         console.log("   ---> no match (continue to next match)");

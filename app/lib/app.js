@@ -180,13 +180,13 @@ function personAPIrequest(person, key) {
       console.log("personAPIrequest mailingListUnsubscribed: " + mailingListUnsubscribed);
       let directoryUnsubscribed = JSON.parse(body).result.directoryUnsubscribed;
       console.log("personAPIrequest directoryUnsubscribed: " + directoryUnsubscribed);
-      let currentMatch = JSON.parse(body).result["Current match"];
+      let currentMatch = JSON.parse(body).result.embeddedData["Current match"];
       console.log("personAPIrequest currentMatch: " + currentMatch);
-      let currentMatchFirstName = JSON.parse(body).result["Current match first name"];
+      let currentMatchFirstName = JSON.parse(body).result.embeddedData["Current match first name"];
       console.log("personAPIrequest currentMatchFirstName: " + currentMatchFirstName);
-      let currentMatchLastName = JSON.parse(body).result["Current match last name"];
+      let currentMatchLastName = JSON.parse(body).result.embeddedData["Current match last name"];
       console.log("personAPIrequest currentMatchLastName: " + currentMatchLastName);
-      let currentMatchFullName = JSON.parse(body).result["Current match full name"];
+      let currentMatchFullName = JSON.parse(body).result.embeddedData["Current match full name"];
       console.log("personAPIrequest currentMatchFullName: " + currentMatchFullName);
       // exclude unsubscribed contacts
       // exclude contacts with extrefs that are not email addresses
@@ -201,6 +201,7 @@ function personAPIrequest(person, key) {
               currentMatchLastName:currentMatchLastName,
               currentMatchFullName:currentMatchFullName,
               previousMatches:previousMatches, 
+              newMatchContactId:null,
               newMatchFirstName:null,
               newMatchLastName:null,
               newMatchFullName:null,

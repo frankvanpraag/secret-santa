@@ -258,8 +258,10 @@ async function processPersonList(personList, key) {
       ) {
         person.matchContactId = match.contactId;
         person.matchExtRef = match.extRef;
+        person.previousMatches += "," + match.extRef;
         match.matchContactId = person.contactId;
         match.matchExtRef = person.extRef;
+        match.previousMatches += "," + person.extRef;
         console.log("  match: " + JSON.stringify(match, undefined, 2));
         // XXXX IMPLEMENT HERE
         // find match that is not self

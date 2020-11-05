@@ -182,12 +182,10 @@ function personAPIrequest(person, key) {
       console.log("personAPIrequest directoryUnsubscribed: " + directoryUnsubscribed);
       let currentMatch = JSON.parse(body).result.embeddedData["Current match"];
       console.log("personAPIrequest currentMatch: " + currentMatch);
-      let currentMatchFirstName = JSON.parse(body).result.embeddedData["Current match first name"];
-      console.log("personAPIrequest currentMatchFirstName: " + currentMatchFirstName);
-      let currentMatchLastName = JSON.parse(body).result.embeddedData["Current match last name"];
-      console.log("personAPIrequest currentMatchLastName: " + currentMatchLastName);
-      let currentMatchFullName = JSON.parse(body).result.embeddedData["Current match full name"];
-      console.log("personAPIrequest currentMatchFullName: " + currentMatchFullName);
+      let firstName = JSON.parse(body).result.embeddedData["firstName"];
+      console.log("personAPIrequest firstName: " + firstName);
+      let lastName = JSON.parse(body).result.embeddedData["lastName"];
+      console.log("personAPIrequest lastName: " + lastName);
       // exclude unsubscribed contacts
       // exclude contacts with extrefs that are not email addresses
       // Construct short list of contacts
@@ -196,10 +194,9 @@ function personAPIrequest(person, key) {
             { 
               contactId:person.contactId, 
               extRef:person.extRef, 
+              firstName:firstName,
+              lastName:lastName,
               currentMatch:currentMatch,
-              currentMatchFirstName:currentMatchFirstName,
-              currentMatchLastName:currentMatchLastName,
-              currentMatchFullName:currentMatchFullName,
               previousMatches:previousMatches, 
               newMatchContactId:null,
               newMatchFirstName:null,
@@ -304,16 +301,27 @@ async function processPersonList(personList, key) {
         console.log("   ---> Matching "+person.extRef+" with "+match.extRef);
         person.newMatchContactId = match.contactId;
         person.newMatchExtRef = match.extRef;
+        person.firstName = match.firstName;
+        person.lastName = match.lastName;
+        //match.newMatchContactId = person.contactId;
+        //match.newMatchExtRef = person.extRef;
+        // Update previous matches with currentMatch - don't forget to clear currentMatch
         if (person.previousMatches && person.currentMatch)
           person.previousMatches += "," + person.currentMatch; // Save last weeks match
         else
-          person.previousMatches = person.currentMatch?person.currentMatch:null; // Save last weeks match
-        match.newMatchContactId = person.contactId;
-        match.newMatchExtRef = person.extRef;
+          person.previousMatches = person.currentMatch; // Save last weeks match
         if (match.previousMatches && match.currentMatch)
           match.previousMatches += "," + match.currentMatch;  // Save last weeks match
         else
-          match.previousMatches = match.currentMatch?match.currentMatch:null;  // Save last weeks match
+          match.previousMatches = match.currentMatch;  // Save last weeks match
+
+        // TODO XXX
+        //newMatchContactId:null,
+        //newMatchFirstName:null,
+        //newMatchLastName:null,
+        //newMatchFullName:null,
+        //newMatchExtRef:null 
+
       }
       else {
         console.log("   ---> no match (continue to next match)");

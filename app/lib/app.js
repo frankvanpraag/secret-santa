@@ -184,8 +184,8 @@ function personAPIrequest(person, key) {
       // exclude contacts with extrefs that are not email addresses
       // Construct short list of contacts
       if (unsubscribed != 'true' && mailingListUnsubscribed != 'true' && directoryUnsubscribed != 'true' && person.extRef.includes('@') ) {
-        var contact = { contactId:person.contactId, extRef:person.extRef, previousMatches:previousMatches };
-        //console.log("CONTACT: " + JSON.stringify(contact, undefined, 2));
+        var contact = { contactId:person.contactId, extRef:person.extRef, previousMatches:previousMatches, matchExtRef:null, matchContactId:null };
+        console.log("CONTACT ADDED: " + JSON.stringify(contact, undefined, 2));
         contacts.push(contact);
       }
       resolve();

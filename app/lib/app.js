@@ -253,8 +253,8 @@ async function processPersonList(personList, key) {
       if (match.matchContactId == null    // No match yet
           && person.extRef != match.extRef // Not matching themselves
           && person.contactId != match.contactId // Not matching themselves
-          && !person.previousMatches.includes(match.extRef) // Not matched previously
-          && !match.previousMatches.includes(person.extRef) // Not matched previously
+          && ( !person.previousMatches || !person.previousMatches.includes(match.extRef) ) // Not matched previously
+          && ( !match.previousMatches  || !match.previousMatches.includes(person.extRef) ) // Not matched previously
       ) {
         person.matchContactId = match.contactId;
         person.matchExtRef = match.extRef;

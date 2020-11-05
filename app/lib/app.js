@@ -277,6 +277,9 @@ async function processPersonList(personList, key) {
         //.   AND where potential match does not already have a match
         //.   AND where current contact is not in list of previousMatches
         //.   AND where potential match is not in current contact list of previousMatches
+      }
+      if (match.matchContactId) {
+        console.log("  MATCH FOUND: " + JSON.stringify(person.extRef, undefined, 2) + " matched with " + JSON.stringify(match.extRef, undefined, 2));
         break;
       }
     }

@@ -250,36 +250,54 @@ async function processPersonList(personList, key) {
   for (const person of shuffle(contacts)) {
     console.log("Checking match for person: " + JSON.stringify(person, undefined, 2));
     for (const match of shuffle(contacts)) {
-      console.log(" person.contactId: "+person.contactId);
-      console.log(" match.contactId: "+match.contactId);
-      console.log(" match.extRef: "+match.extRef);
-      console.log(" person.extRef: "+person.extRef);
-      console.log(" match.matchContactId: "+match.matchContactId);
-      console.log(" person.matchContactId: "+person.matchContactId);
-      console.log(" match.previousMatches: "+match.previousMatches);
-      console.log(" person.previousMatches: "+person.previousMatches);
+      // console.log(" person.contactId: "+person.contactId);
+      // console.log(" match.contactId: "+match.contactId);
+      // console.log(" match.extRef: "+match.extRef);
+      // console.log(" person.extRef: "+person.extRef);
+      // console.log(" match.matchContactId: "+match.matchContactId);
+      // console.log(" person.matchContactId: "+person.matchContactId);
+      // console.log(" match.previousMatches: "+match.previousMatches);
+      // console.log(" person.previousMatches: "+person.previousMatches);
+      console.log("  Possible Match: " + JSON.stringify(match.extRef, undefined, 2));
+      console.log("  ---> " + JSON.stringify(match, undefined, 2));
+      if (match.matchContactId == null    // No match yet     
+         ) console.log("  Data check 1: match.matchContactId == null");
+      if (person.extRef != match.extRef // Not matching themselves
+         ) console.log("  Data check 2: person.extRef != match.extRef");
+      if (person.contactId != match.contactId // Not matching themselves
+         ) console.log("  Data check 3: person.contactId != match.contactId");
+      if (!person.previousMatches || !person.previousMatches.includes(match.extRef)  // Not matched previously
+         ) console.log("  Data check 4: !person.previousMatches || !person.previousMatches.includes(match.extRef)");
+      if (!match.previousMatches  || !match.previousMatches.includes(person.extRef)  // Not matched previously
+         ) console.log("  Data check 5: !match.previousMatches  || !match.previousMatches.includes(person.extRef");
+
       if (match.matchContactId == null    // No match yet
           && person.extRef != match.extRef // Not matching themselves
           && person.contactId != match.contactId // Not matching themselves
           && ( !person.previousMatches || !person.previousMatches.includes(match.extRef) ) // Not matched previously
           && ( !match.previousMatches  || !match.previousMatches.includes(person.extRef) ) // Not matched previously
       ) {
-        console.log("   ---> Yes, this person can be matched");
+        console.log("   ---> Yes, this person is a match!");
+        console.log("   ---> Matching "+person.extRef+" with "+match.extRef);
         person.matchContactId = match.contactId;
         person.matchExtRef = match.extRef;
-        person.previousMatches += "," + match.extRef;
+        if (person.previousMatches)
+          person.previousMatches += "," + match.extRef;
+        else
+          person.previousMatches = match.extRef;
         match.matchContactId = person.contactId;
         match.matchExtRef = person.extRef;
-        match.previousMatches += "," + person.extRef;
-        console.log("   ---> matched with: " + JSON.stringify(match, undefined, 2));
-        // XXXX IMPLEMENT HERE
-        // find match that is not self
-        //.   AND where potential match does not already have a match
-        //.   AND where current contact is not in list of previousMatches
-        //.   AND where potential match is not in current contact list of previousMatches
+        if (match.previousMatches)
+          match.previousMatches += "," + person.extRef;
+        else
+          match.previousMatches = person.extRef;
+      }
+      else {
+        console.log("   ---> no match (continue to next match)");
+        continue;
       }
       if (match.matchContactId) {
-        console.log("  MATCH FOUND: " + JSON.stringify(person.extRef, undefined, 2) + " matched with " + JSON.stringify(match.extRef, undefined, 2));
+        console.log("  BREAK BECAUSE MATCH FOUND: " + JSON.stringify(person.extRef, undefined, 2) + " matched with " + JSON.stringify(match.extRef, undefined, 2));
         break;
       }
     }

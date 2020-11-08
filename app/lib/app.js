@@ -375,17 +375,15 @@ async function processPersonList(personList, key) {
       url: putContactUrl
     };
     // Update those contacts who need to reach out to their buddy
+    console.log("WRITE TO XMD: " + JSON.stringify(data, undefined, 2));
     request(options, function (error, response, body) {
       if (error) {
         console.log(error);
         reject();
         throw new Error(error);
       }
-      let result = JSON.parse(body).result.elements;
-      /*console.log("PERSONLIST: " + JSON.stringify(personList, undefined, 2)); // {"result":{"elements":[{"contactId":"CID_3pIMBkMDJUt5qWp","firstName":"Eeee","lastName":"Egbert","email":"q5@vanpraag.com","phone":null,"extRef":"q5@vanpraag.com","language":null,"unsubscribed":false},{"contactId":"CID_2rypp6zL9UdbiLj","firstName":"Aaaa","lastName":"Aardvaark","email":"q1@vanpraag.com","phone":null,"extRef":"q1@vanpraag.com","language":null,"unsubscribed":false},{"contactId":"CID_aggZq9ziA7j6iiN","firstName":"Bbbb","lastName":"Bullwark","email":"q2@vanpraag.com","phone":null,"extRef":"q2@vanpraag.com","language":null,"unsubscribed":false},{"contactId":"CID_81VryhahElQBxXL","firstName":"Dddd","lastName":"Dopermine","email":"q4@vanpraag.com","phone":null,"extRef":"q4@vanpraag.com","language":null,"unsubscribed":false},{"contactId":"CID_2mWrnio45kZYTTn","firstName":"Cccc","lastName":"Chipotle","email":"q3@vanpraag.com","phone":null,"extRef":"q3@vanpraag.com","language":null,"unsubscribed":false}]
-      console.log("RESULT: " + JSON.stringify(personList, undefined, 2));
-      console.log("RESULT[1]: " + JSON.stringify(personList[1], undefined, 2));
-      console.log("RESULT[1].firstName: " + JSON.stringify(personList[1].firstName, undefined, 2));*/
+      let result = JSON.parse(body).result;
+      console.log("WRITE TO XMD RESULT: " + JSON.stringify(result, undefined, 2));
     });
   }
 }

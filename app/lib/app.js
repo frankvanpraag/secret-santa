@@ -330,6 +330,7 @@ async function processPersonList(personList, key) {
           match.previousMatches = match.currentMatch;  // Save last weeks match
         
         match.availableThisRound = false;  // remove match from future matches
+        person.availableThisRound = false; // remove match from future matches
 //                             // Push update to XM Directory 
 //                             var options = {
 //                               method: 'GET',

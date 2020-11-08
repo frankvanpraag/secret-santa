@@ -7,6 +7,8 @@ const hostname = "syd1.qualtrics.com"; //Helo
 // const hostname = "2aee86ecb4940555cf2afa068d2ba5a8.m.pipedream.net";
 const getMailingListContactsQuery = "/API/v3/directories/" + pool + "/mailinglists/" + mailingList + "/contacts";
 const getMailingListContactsUrl = "https://" + hostname + getMailingListContactsQuery;
+const getContactQuery = "/API/v3/directories/" + pool + "/contacts/";
+const getGetContactUrl = "https://" + hostname + getContactQuery;
 var request = require('request');
 var contacts = [];
 var done = false;
@@ -192,6 +194,7 @@ function personAPIrequest(person, key) {
       if (unsubscribed != 'true' && mailingListUnsubscribed != 'true' && directoryUnsubscribed != 'true' && person.extRef.includes('@') ) {
         var contact = 
             { 
+              availableThisRound:true, 
               contactId:person.contactId, 
               extRef:person.extRef, 
               firstName:firstName,
@@ -280,8 +283,10 @@ async function processPersonList(personList, key) {
       // console.log(" person.previousMatches: "+person.previousMatches);
       console.log("  Possible Match: " + JSON.stringify(match.extRef, undefined, 2));
       //console.log("  ---> " + JSON.stringify(match, undefined, 2));
-      if (match.newMatchContactId == null    // No match yet     
-         ) console.log("  Data check 1: match.newMatchContactId == null");
+      if (match.availableThisRound    // No match yet     
+         ) console.log("  Data check 1: match.availableThisRound == true");
+      //if (match.newMatchContactId == null    // No match yet     
+      //   ) console.log("  Data check 1: match.newMatchContactId == null");
       if (person.extRef != match.extRef // Not matching themselves
          ) console.log("  Data check 2: person.extRef != match.extRef");
       if (person.currentMatch != match.extRef // Not their current match
@@ -293,7 +298,8 @@ async function processPersonList(personList, key) {
       if (!match.previousMatches  || !match.previousMatches.includes(person.extRef)  // Not matched previously
          ) console.log("  Data check 5: !match.previousMatches  || !match.previousMatches.includes(person.extRef");
 
-      if (match.newMatchContactId == null    // No match yet
+      if (match.availableThisRound    // This match is not yet matched with someone else
+          //&& match.newMatchContactId == null    // No match yet
           && person.extRef != match.extRef // Not matching themselves
           && person.contactId != match.contactId // Not matching themselves
           && person.currentMatch != match.extRef
@@ -306,6 +312,7 @@ async function processPersonList(personList, key) {
         person.newMatchExtRef = match.extRef;
         person.firstName = match.firstName;
         person.lastName = match.lastName;
+        match.newMatchContactId = person.contactId;
         //match.newMatchContactId = person.contactId;
         //match.newMatchExtRef = person.extRef;
         // Update previous matches with currentMatch - don't forget to clear currentMatch
@@ -316,13 +323,12 @@ async function processPersonList(personList, key) {
         if (match.previousMatches && match.currentMatch)
           match.previousMatches += "," + match.currentMatch;  // Save last weeks match
         else
-          match.previousMatches = match.currentMatch;  // Save last weeks match
+          match.availableThisRound = false;  // remove match from future matches
         // TODO XXX
-        //newMatchContactId:null,
+        // POOL_2sNvzmrYrdn9RQ1
         //newMatchFirstName:null,
         //newMatchLastName:null,
         //newMatchFullName:null,
-        //newMatchExtRef:null 
       }
       else {
         console.log("   ---> no match (continue to next match)");

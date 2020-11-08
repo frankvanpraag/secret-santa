@@ -184,9 +184,9 @@ function personAPIrequest(person, key) {
       console.log("personAPIrequest directoryUnsubscribed: " + directoryUnsubscribed);
       let currentMatch = JSON.parse(body).result.embeddedData["Current match"];
       console.log("personAPIrequest currentMatch: " + currentMatch);
-      let firstName = JSON.parse(body).result.embeddedData["firstName"];
+      let firstName = JSON.parse(body).result["firstName"];
       console.log("personAPIrequest firstName: " + firstName);
-      let lastName = JSON.parse(body).result.embeddedData["lastName"];
+      let lastName = JSON.parse(body).result["lastName"];
       console.log("personAPIrequest lastName: " + lastName);
       // exclude unsubscribed contacts
       // exclude contacts with extrefs that are not email addresses

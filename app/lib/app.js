@@ -370,7 +370,7 @@ async function processPersonList(personList, key) {
     // Push update to XM Directory 
     var options = {
       method: 'PUT',
-      headers: { 'accept': '*/*', 'X-API-TOKEN': key},
+      headers: { 'content-type': 'application/json', 'accept': '*/*', 'X-API-TOKEN': key},
       data: data,
       url: putContactUrl+person.contactId
     };

@@ -317,7 +317,7 @@ async function processPersonList(personList, key) {
         person.newMatchLastName = match.lastName;
         person.newMatchFullName = match.fullName;
         match.newMatchContactId = person.contactId;
-        //match.newMatchContactId = person.contactId;
+        match.newMatchFullName = person.fullName;
         //match.newMatchExtRef = person.extRef;
         // Update previous matches with currentMatch - don't forget to clear currentMatch
         if (person.previousMatches && person.currentMatch)
@@ -325,9 +325,9 @@ async function processPersonList(personList, key) {
         else
           person.previousMatches = person.currentMatch; // Save last weeks match
         if (match.previousMatches && match.currentMatch)
-          match.previousMatches += "," + match.currentMatch;  // Save last weeks match
+          match.previousMatches += "," + match.currentMatch + "," + person.extRef;  // Save last weeks match
         else
-          match.previousMatches = match.currentMatch;  // Save last weeks match
+          match.previousMatches = match.currentMatch + "," + person.extRef;  // Save last weeks match
         
         match.availableThisRound = false;  // remove match from future matches
         person.availableThisRound = false; // remove match from future matches
@@ -351,9 +351,9 @@ async function processPersonList(personList, key) {
         "embeddedData": 
           { 
             "Current match": person.newMatchExtRef,
-            "Current match first name": person.currentMatchFirstName,
-            "Current match last name": person.currentMatchLastName,
-            "Current match full name": person.currentMatchFullName,
+            "Current match first name": person.newMatchFirstName,
+            "Current match last name": person.newMatchLastName,
+            "Current match full name": person.newMatchFullName,
             "previousMatches": person.previousMatches?person.previousMatches:"" 
           }
       })

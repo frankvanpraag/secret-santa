@@ -7,8 +7,8 @@ const hostname = "syd1.qualtrics.com"; //Helo
 // const hostname = "2aee86ecb4940555cf2afa068d2ba5a8.m.pipedream.net";
 const getMailingListContactsQuery = "/API/v3/directories/" + pool + "/mailinglists/" + mailingList + "/contacts";
 const getMailingListContactsUrl = "https://" + hostname + getMailingListContactsQuery;
-const getContactQuery = "/API/v3/directories/" + pool + "/contacts/";
-const getGetContactUrl = "https://" + hostname + getContactQuery;
+const putContactQuery = "/API/v3/directories/" + pool + "/contacts/";
+const putContactUrl = "https://" + hostname + putContactQuery;
 var request = require('request');
 var contacts = [];
 var done = false;
@@ -331,28 +331,6 @@ async function processPersonList(personList, key) {
         
         match.availableThisRound = false;  // remove match from future matches
         person.availableThisRound = false; // remove match from future matches
-//                             // Push update to XM Directory 
-//                             var options = {
-//                               method: 'GET',
-//                               headers: { 'accept': '*/*', 'X-API-TOKEN': key},
-//                               url: getMailingListContactsUrl,
-//                               qs: {pageSize: '200'}
-//                             };
-//                             // Get all contacts in SE buddy list
-//                             request(options, function (error, response, body) {
-//                               if (error) {
-//                                 console.log(error);
-//                                 reject();
-//                                 throw new Error(error);
-//                               }
-//                               let personList = JSON.parse(body).result.elements;
-//                               /*console.log("PERSONLIST: " + JSON.stringify(personList, undefined, 2)); // {"result":{"elements":[{"contactId":"CID_3pIMBkMDJUt5qWp","firstName":"Eeee","lastName":"Egbert","email":"q5@vanpraag.com","phone":null,"extRef":"q5@vanpraag.com","language":null,"unsubscribed":false},{"contactId":"CID_2rypp6zL9UdbiLj","firstName":"Aaaa","lastName":"Aardvaark","email":"q1@vanpraag.com","phone":null,"extRef":"q1@vanpraag.com","language":null,"unsubscribed":false},{"contactId":"CID_aggZq9ziA7j6iiN","firstName":"Bbbb","lastName":"Bullwark","email":"q2@vanpraag.com","phone":null,"extRef":"q2@vanpraag.com","language":null,"unsubscribed":false},{"contactId":"CID_81VryhahElQBxXL","firstName":"Dddd","lastName":"Dopermine","email":"q4@vanpraag.com","phone":null,"extRef":"q4@vanpraag.com","language":null,"unsubscribed":false},{"contactId":"CID_2mWrnio45kZYTTn","firstName":"Cccc","lastName":"Chipotle","email":"q3@vanpraag.com","phone":null,"extRef":"q3@vanpraag.com","language":null,"unsubscribed":false}]
-//                               console.log("RESULT: " + JSON.stringify(personList, undefined, 2));
-//                               console.log("RESULT[1]: " + JSON.stringify(personList[1], undefined, 2));
-//                               console.log("RESULT[1].firstName: " + JSON.stringify(personList[1].firstName, undefined, 2));*/
-//                               processPersonList(personList, key);
-//                               resolve();
-//                             });
       }
       else {
         console.log("   ---> no match (continue to next match)");
@@ -366,6 +344,49 @@ async function processPersonList(personList, key) {
     }
   }
   console.log("MATCHES FINAL: " + JSON.stringify(contacts, undefined, 2)); // HURRAY!
+  for (const person of contacts) {
+    if (person.newMatchExtRef) // This person is arranging a buddy meetup
+      let data = {
+        "embeddedData": 
+          { 
+            "Current match": person.newMatchExtRef,
+            "Current match first name": person.currentMatchFirstName,
+            "Current match last name": person.currentMatchLastName,
+            "Current match full name": person.currentMatchFullName,
+            "previousMatches": person.previousMatches?person.previousMatches:"" 
+          }
+      }
+    else if (person.previousMatches) // This person sits back and waits for a buddy to contact them
+      let data = {
+        "embeddedData": 
+          { 
+            "previousMatches": person.previousMatches?person.previousMatches:"" 
+          }
+      }
+    else
+      continue; // Skip anyone NOT matched to anyone this round
+
+    // Push update to XM Directory 
+    var options = {
+      method: 'PUT',
+      headers: { 'accept': '*/*', 'X-API-TOKEN': key},
+      body: data,
+      url: putContactUrl
+    };
+    // Update those contacts who need to reach out to their buddy
+    request(options, function (error, response, body) {
+      if (error) {
+        console.log(error);
+        reject();
+        throw new Error(error);
+      }
+      let result = JSON.parse(body).result.elements;
+      /*console.log("PERSONLIST: " + JSON.stringify(personList, undefined, 2)); // {"result":{"elements":[{"contactId":"CID_3pIMBkMDJUt5qWp","firstName":"Eeee","lastName":"Egbert","email":"q5@vanpraag.com","phone":null,"extRef":"q5@vanpraag.com","language":null,"unsubscribed":false},{"contactId":"CID_2rypp6zL9UdbiLj","firstName":"Aaaa","lastName":"Aardvaark","email":"q1@vanpraag.com","phone":null,"extRef":"q1@vanpraag.com","language":null,"unsubscribed":false},{"contactId":"CID_aggZq9ziA7j6iiN","firstName":"Bbbb","lastName":"Bullwark","email":"q2@vanpraag.com","phone":null,"extRef":"q2@vanpraag.com","language":null,"unsubscribed":false},{"contactId":"CID_81VryhahElQBxXL","firstName":"Dddd","lastName":"Dopermine","email":"q4@vanpraag.com","phone":null,"extRef":"q4@vanpraag.com","language":null,"unsubscribed":false},{"contactId":"CID_2mWrnio45kZYTTn","firstName":"Cccc","lastName":"Chipotle","email":"q3@vanpraag.com","phone":null,"extRef":"q3@vanpraag.com","language":null,"unsubscribed":false}]
+      console.log("RESULT: " + JSON.stringify(personList, undefined, 2));
+      console.log("RESULT[1]: " + JSON.stringify(personList[1], undefined, 2));
+      console.log("RESULT[1].firstName: " + JSON.stringify(personList[1].firstName, undefined, 2));*/
+    });
+  }
 }
 
 async function populateContactsArray(key) {

@@ -284,6 +284,8 @@ async function processPersonList(personList, key) {
          ) console.log("  Data check 1: match.newMatchContactId == null");
       if (person.extRef != match.extRef // Not matching themselves
          ) console.log("  Data check 2: person.extRef != match.extRef");
+      if (person.currentMatch != match.extRef // Not their current match
+         ) console.log("  Data check 2a: person.currentMatch != match.extRef");
       if (person.contactId != match.contactId // Not matching themselves
          ) console.log("  Data check 3: person.contactId != match.contactId");
       if (!person.previousMatches || !person.previousMatches.includes(match.extRef)  // Not matched previously
@@ -294,6 +296,7 @@ async function processPersonList(personList, key) {
       if (match.newMatchContactId == null    // No match yet
           && person.extRef != match.extRef // Not matching themselves
           && person.contactId != match.contactId // Not matching themselves
+          && person.currentMatch != match.extRef
           && ( !person.previousMatches || !person.previousMatches.includes(match.extRef) ) // Not matched previously
           && ( !match.previousMatches  || !match.previousMatches.includes(person.extRef) ) // Not matched previously
       ) {

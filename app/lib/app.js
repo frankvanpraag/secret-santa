@@ -372,18 +372,18 @@ async function processPersonList(personList, key) {
       method: 'PUT',
       headers: { 'accept': '*/*', 'X-API-TOKEN': key},
       data: data,
-      url: putContactUrl
+      url: putContactUrl+person.contactId
     };
     // Update those contacts who need to reach out to their buddy
-    console.log("WRITE TO XMD: " + JSON.stringify(data, undefined, 2));
+    console.log("WRITE TO XMD "+person.contactId+" ("+person.extRef+") : " + JSON.stringify(data, undefined, 2));
     request(options, function (error, response, body) {
       if (error) {
         console.log(error);
         reject();
         throw new Error(error);
       }
-      let result = JSON.parse(body).result;
-      console.log("WRITE TO XMD RESULT: " + JSON.stringify(result, undefined, 2));
+      //let result = JSON.parse(body).result;
+      //console.log("WRITE TO XMD RESULT: " + JSON.stringify(result, undefined, 2));
     });
   }
 }

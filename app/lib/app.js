@@ -270,7 +270,7 @@ async function processPersonList(personList, key) {
   console.log("CONTACTS FINAL: " + JSON.stringify(contacts, undefined, 2)); // XXX WHY IS THIS PRINTED FRIST (and hence EMPTY)!?
   
   for (const person of shuffle(contacts)) {
-    if (person.newMatchContactId || person.matchExtRef ) continue;  // already matched
+    if (person.newMatchContactId || person.matchExtRef || person.availableThisRound) continue;  // already matched
     console.log("Checking match for person: " + JSON.stringify(person, undefined, 2));
     for (const match of shuffle(contacts)) {
       // console.log(" person.contactId: "+person.contactId);

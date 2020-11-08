@@ -361,6 +361,10 @@ async function processPersonList(personList, key) {
       data = JSON.stringify({
         "embeddedData": 
           { 
+            "Current match": "",
+            "Current match first name": "",
+            "Current match last name": "",
+            "Current match full name": "",
             "previousMatches": person.previousMatches?person.previousMatches:"" 
           }
       })

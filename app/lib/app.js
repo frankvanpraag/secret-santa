@@ -345,9 +345,9 @@ async function processPersonList(personList, key) {
   }
   console.log("MATCHES FINAL: " + JSON.stringify(contacts, undefined, 2)); // HURRAY!
   for (const person of contacts) {
-    var data = {};
+    var data = "";
     if (person.newMatchExtRef) // This person is arranging a buddy meetup
-      data = {
+      data = JSON.stringify({
         "embeddedData": 
           { 
             "Current match": person.newMatchExtRef,
@@ -356,14 +356,14 @@ async function processPersonList(personList, key) {
             "Current match full name": person.currentMatchFullName,
             "previousMatches": person.previousMatches?person.previousMatches:"" 
           }
-      }
+      })
     else if (person.previousMatches) // This person sits back and waits for a buddy to contact them
-      data = {
+      data = JSON.stringify({
         "embeddedData": 
           { 
             "previousMatches": person.previousMatches?person.previousMatches:"" 
           }
-      }
+      })
     else
       continue; // Skip anyone NOT matched to anyone this round
 
@@ -371,7 +371,7 @@ async function processPersonList(personList, key) {
     var options = {
       method: 'PUT',
       headers: { 'accept': '*/*', 'X-API-TOKEN': key},
-      body: data,
+      data: data,
       url: putContactUrl
     };
     // Update those contacts who need to reach out to their buddy

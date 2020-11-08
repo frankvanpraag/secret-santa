@@ -188,6 +188,8 @@ function personAPIrequest(person, key) {
       console.log("personAPIrequest firstName: " + firstName);
       let lastName = JSON.parse(body).result["lastName"];
       console.log("personAPIrequest lastName: " + lastName);
+      let fullName = firstName + " " + lastName;
+      console.log("personAPIrequest fullName: " + fullName);
       // exclude unsubscribed contacts
       // exclude contacts with extrefs that are not email addresses
       // Construct short list of contacts
@@ -197,6 +199,7 @@ function personAPIrequest(person, key) {
               availableThisRound:true, 
               contactId:person.contactId, 
               extRef:person.extRef, 
+              fullName:fullName,
               firstName:firstName,
               lastName:lastName,
               currentMatch:currentMatch,
@@ -312,7 +315,7 @@ async function processPersonList(personList, key) {
         person.newMatchExtRef = match.extRef;
         person.newMatchFirstName = match.firstName;
         person.newMatchLastName = match.lastName;
-        person.newMatchFullName = match.lastName + " " + match.lastName;
+        person.newMatchFullName = match.fullName;
         match.newMatchContactId = person.contactId;
         //match.newMatchContactId = person.contactId;
         //match.newMatchExtRef = person.extRef;
@@ -324,7 +327,9 @@ async function processPersonList(personList, key) {
         if (match.previousMatches && match.currentMatch)
           match.previousMatches += "," + match.currentMatch;  // Save last weeks match
         else
-          match.availableThisRound = false;  // remove match from future matches
+          match.previousMatches = match.currentMatch;  // Save last weeks match
+        
+        match.availableThisRound = false;  // remove match from future matches
 //                             // Push update to XM Directory 
 //                             var options = {
 //                               method: 'GET',

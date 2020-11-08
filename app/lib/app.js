@@ -371,7 +371,7 @@ async function processPersonList(personList, key) {
     var options = {
       method: 'PUT',
       headers: { 'content-type': 'application/json', 'accept': '*/*', 'X-API-TOKEN': key},
-      data: data,
+      body: data,
       url: putContactUrl+person.contactId
     };
     // Update those contacts who need to reach out to their buddy

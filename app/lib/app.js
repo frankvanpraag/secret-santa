@@ -314,20 +314,19 @@ async function processPersonList(personList, key) {
           match.previousMatches += "," + match.currentMatch;  // Save last weeks match
         else
           match.previousMatches = match.currentMatch;  // Save last weeks match
-
         // TODO XXX
         //newMatchContactId:null,
         //newMatchFirstName:null,
         //newMatchLastName:null,
         //newMatchFullName:null,
         //newMatchExtRef:null 
-
       }
       else {
         console.log("   ---> no match (continue to next match)");
         continue;
       }
-      if (match.newMatchContactId) {
+      // stop processing other possible matches
+      if (person.newMatchContactId) {
         console.log("  BREAK BECAUSE MATCH FOUND: " + JSON.stringify(person.extRef, undefined, 2) + " matched with " + JSON.stringify(match.extRef, undefined, 2));
         break;
       }

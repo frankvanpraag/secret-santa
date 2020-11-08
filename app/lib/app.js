@@ -345,8 +345,9 @@ async function processPersonList(personList, key) {
   }
   console.log("MATCHES FINAL: " + JSON.stringify(contacts, undefined, 2)); // HURRAY!
   for (const person of contacts) {
+    var data = {};
     if (person.newMatchExtRef) // This person is arranging a buddy meetup
-      let data = {
+      data = {
         "embeddedData": 
           { 
             "Current match": person.newMatchExtRef,
@@ -357,7 +358,7 @@ async function processPersonList(personList, key) {
           }
       }
     else if (person.previousMatches) // This person sits back and waits for a buddy to contact them
-      let data = {
+      data = {
         "embeddedData": 
           { 
             "previousMatches": person.previousMatches?person.previousMatches:"" 

@@ -375,11 +375,10 @@ async function processPersonList(personList, key) {
       url: putContactUrl+person.contactId
     };
     // Update those contacts who need to reach out to their buddy
-    console.log("WRITE TO XMD "+person.contactId+" ("+person.extRef+") : " + JSON.stringify(data, undefined, 2));
+    console.log("WRITE TO XMD "+person.contactId+" ("+person.extRef+") : " + JSON.stringify(options, undefined, 2));
     request(options, function (error, response, body) {
       if (error) {
         console.log(error);
-        reject();
         throw new Error(error);
       }
       //let result = JSON.parse(body).result;

@@ -256,6 +256,15 @@ async function processPerson(person, key) {
   }
 }
 async function processPersonList(personList, key) {
+
+  function wait(ms){
+     var start = new Date().getTime();
+     var end = start;
+     while(end < start + ms) {
+       end = new Date().getTime();
+    }
+  }
+  
   function shuffle(sourceArray) {
     for (var i = 0; i < sourceArray.length - 1; i++) {
         var j = i + Math.floor(Math.random() * (sourceArray.length - i));
@@ -416,6 +425,7 @@ async function processPersonList(personList, key) {
     };
     // Update those contacts who need to reach out to their buddy
     //console.log("WRITE TO XMD "+person.contactId+" ("+person.extRef+") : " + JSON.stringify(options, undefined, 2));
+    wait(500); // xxx Sometimes we see 404 errors saying the contact does not exists - who knows why?
     request(options, function (error, response, body) {
       if (error) {
         console.log("WRITE TO XMD ERROR: "+error);
@@ -430,6 +440,7 @@ async function processPersonList(personList, key) {
         if (!JSON.stringify(result, undefined, 2).includes("200 - OK")) // I've seen 404 errors "No contact found" for perfectly valid contactId
         {
             //try one more time
+            wait(3000);
             request(options, function (error, response, body) {
               if (error) {
                 console.log("WRITE TO XMD ERROR (retry): "+error);
@@ -446,9 +457,9 @@ async function processPersonList(personList, key) {
         }
       }
     });
-    console.log("====================== END OF PROCESSING ======================");
-    console.log(lastDebugMessage);
   }
+  console.log("====================== END OF PROCESSING ======================");
+  console.log(lastDebugMessage);
 }
 
 async function populateContactsArray(key) {

@@ -418,8 +418,7 @@ async function processPersonList(personList, key) {
       if (body) {
         let result = JSON.parse(body);
         console.log("WRITE TO XMD BODY: " + JSON.stringify(result, undefined, 2));
-        let s = JSON.stringify(result, undefined, 2);
-        if (!s.contains("200 - OK")) // I've seen 404 errors "No contact found" for perfectly valid contactId
+        if (!JSON.stringify(result, undefined, 2).includes("200 - OK")) // I've seen 404 errors "No contact found" for perfectly valid contactId
         {
             //try one more time
             request(options, function (error, response, body) {

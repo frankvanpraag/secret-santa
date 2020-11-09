@@ -360,7 +360,16 @@ async function processPersonList(personList, key) {
 
   console.log("Timestamp: ", dateString);
 
+  var lastDebugMessage="";
+  
   for (const person of contacts) {
+    if (person.newMatchExtRef) // This person is arranging a buddy meetup
+      lastDebugMessage+="\ndateString+": "+person.extRef+" will initiate contact with "+person.newMatchExtRef+" to arrange buddy meetup";
+    else if (person.previousMatches && person.newMatchFullName) // This person sits back and waits for a buddy to contact them
+      lastDebugMessage+="\ndateString+": "+person.extRef+" will wait patiently for "+person.newMatchFullName+" to initiate buddy meetup";
+    else
+      lastDebugMessage+="\ndateString+": "+person.extRef+" does not have a buddy at this point";
+
     var data = "";
     if (person.newMatchExtRef) // This person is arranging a buddy meetup
       data = JSON.stringify({
@@ -397,7 +406,7 @@ async function processPersonList(personList, key) {
             "Current match full name": ""
           }
       })
-
+    
     // Push update to XM Directory 
     var options = {
       method: 'PUT',
@@ -437,6 +446,8 @@ async function processPersonList(personList, key) {
         }
       }
     });
+    console.log("====================== END OF PROCESSING ======================");
+    console.log(lastDebugMessage);
   }
 }
 

@@ -275,6 +275,7 @@ async function processPersonList(personList, key) {
   
   for (const person of shuffle(contacts)) {
     if (person.newMatchContactId || person.matchExtRef || !person.availableThisRound) continue;  // already matched
+    console.log("");
     console.log("Checking match for person: " + JSON.stringify(person, undefined, 2));
     for (const match of shuffle(contacts)) {
       // console.log(" person.contactId: "+person.contactId);
@@ -311,7 +312,7 @@ async function processPersonList(personList, key) {
           && ( !match.previousMatches  || !match.previousMatches.includes(person.extRef) ) // Not matched previously
       ) {
         console.log("   ---> Yes, this person is a match!");
-        console.log("   ---> Matching "+person.extRef+" with "+match.extRef);
+        console.log("   ===> Matching "+person.extRef+" with "+match.extRef);
         person.newMatchContactId = match.contactId;
         person.newMatchExtRef = match.extRef;
         person.newMatchFirstName = match.firstName;
@@ -342,6 +343,7 @@ async function processPersonList(personList, key) {
       // stop processing other possible matches
       if (person.newMatchContactId) {
         console.log("  BREAK BECAUSE MATCH FOUND: " + JSON.stringify(person.extRef, undefined, 2) + " matched with " + JSON.stringify(match.extRef, undefined, 2));
+        console.log("");
         break;
       }
     }
@@ -407,11 +409,17 @@ async function processPersonList(personList, key) {
     //console.log("WRITE TO XMD "+person.contactId+" ("+person.extRef+") : " + JSON.stringify(options, undefined, 2));
     request(options, function (error, response, body) {
       if (error) {
-        console.log(error);
+        console.log("WRITE TO XMD ERROR: "+error);
         throw new Error(error);
       }
-      //let result = JSON.parse(body).result;
-      //console.log("WRITE TO XMD RESULT: " + JSON.stringify(result, undefined, 2));
+      if (response) {
+        let result = JSON.parse(response);
+        console.log("WRITE TO XMD RESPONSE: " + JSON.stringify(result, undefined, 2));
+      }
+      if (body) {
+        let result = JSON.parse(body);
+        console.log("WRITE TO XMD BODY: " + JSON.stringify(result, undefined, 2));
+      }
     });
   }
 }

@@ -373,7 +373,7 @@ async function processPersonList(personList, key) {
             "previousMatches": person.previousMatches?person.previousMatches:"" 
           }
       })
-    else if (person.previousMatches) // This person sits back and waits for a buddy to contact them
+    else if (person.previousMatches && person.newMatchFullName) // This person sits back and waits for a buddy to contact them
       data = JSON.stringify({
         "embeddedData": 
           { 
@@ -386,7 +386,16 @@ async function processPersonList(personList, key) {
           }
       })
     else
-      continue; // Skip anyone NOT matched to anyone this round
+      data = JSON.stringify({
+        "embeddedData": 
+          { 
+            "Buddy status": dateString+": "+person.extRef+" does not have a buddy at this point",
+            "Current match": "",
+            "Current match first name": "",
+            "Current match last name": "",
+            "Current match full name": ""
+          }
+      })
 
     // Push update to XM Directory 
     var options = {

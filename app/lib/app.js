@@ -418,6 +418,23 @@ async function processPersonList(personList, key) {
       if (body) {
         let result = JSON.parse(body);
         console.log("WRITE TO XMD BODY: " + JSON.stringify(result, undefined, 2));
+        if (result.meta.httpStatus.contains("404") // I've seen 404 errors "No contact found" for perfectly valid contactId
+        {
+            //try one more time
+            request(options, function (error, response, body) {
+              if (error) {
+                console.log("WRITE TO XMD ERROR (retry): "+error);
+                throw new Error(error);
+              }
+              if (response) {
+                console.log("WRITE TO XMD RESPONSE (retry): " + JSON.stringify(response, undefined, 2));
+              }
+              if (body) {
+                let result = JSON.parse(body);
+                console.log("WRITE TO XMD BODY (retry): " + JSON.stringify(result, undefined, 2));
+              }
+            });
+        }
       }
     });
   }

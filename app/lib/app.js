@@ -364,11 +364,11 @@ async function processPersonList(personList, key) {
   
   for (const person of contacts) {
     if (person.newMatchExtRef) // This person is arranging a buddy meetup
-      lastDebugMessage+="\ndateString+": "+person.extRef+" will initiate contact with "+person.newMatchExtRef+" to arrange buddy meetup";
+      lastDebugMessage+="\n"+dateString+": "+person.extRef+" will initiate contact with "+person.newMatchExtRef+" to arrange buddy meetup";
     else if (person.previousMatches && person.newMatchFullName) // This person sits back and waits for a buddy to contact them
-      lastDebugMessage+="\ndateString+": "+person.extRef+" will wait patiently for "+person.newMatchFullName+" to initiate buddy meetup";
+      lastDebugMessage+="\n"+dateString+": "+person.extRef+" will wait patiently for "+person.newMatchFullName+" to initiate buddy meetup";
     else
-      lastDebugMessage+="\ndateString+": "+person.extRef+" does not have a buddy at this point";
+      lastDebugMessage+="\n"+dateString+": "+person.extRef+" does not have a buddy at this point";
 
     var data = "";
     if (person.newMatchExtRef) // This person is arranging a buddy meetup

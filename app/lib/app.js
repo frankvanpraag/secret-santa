@@ -195,26 +195,25 @@ function personAPIrequest(person, key) {
       // exclude unsubscribed contacts
       // exclude contacts with extrefs that are not email addresses
       // Construct short list of contacts
-      if (unsubscribed != 'true' && mailingListUnsubscribed != 'true' && directoryUnsubscribed != 'true' && person.extRef.includes('@') ) {
-        var contact = 
-            { 
-              availableThisRound:true, 
-              contactId:person.contactId, 
-              extRef:person.extRef, 
-              fullName:fullName,
-              firstName:firstName,
-              lastName:lastName,
-              currentMatch:currentMatch,
-              previousMatches:previousMatches, 
-              newMatchContactId:null,
-              newMatchFirstName:null,
-              newMatchLastName:null,
-              newMatchFullName:null,
-              newMatchExtRef:null 
-            };
-        console.log("CONTACT ADDED: " + JSON.stringify(contact, undefined, 2));
-        contacts.push(contact);
-      }
+      var availableThisRound = !unsubscribed && person.extRef.includes('@')
+      var contact = 
+          { 
+            availableThisRound:availableThisRound, 
+            contactId:person.contactId, 
+            extRef:person.extRef, 
+            fullName:fullName,
+            firstName:firstName,
+            lastName:lastName,
+            currentMatch:currentMatch,
+            previousMatches:previousMatches, 
+            newMatchContactId:null,
+            newMatchFirstName:null,
+            newMatchLastName:null,
+            newMatchFullName:null,
+            newMatchExtRef:null 
+          };
+      console.log("CONTACT ADDED: " + JSON.stringify(contact, undefined, 2));
+      contacts.push(contact);
       resolve();
     });
   })

@@ -348,12 +348,24 @@ async function processPersonList(personList, key) {
     }
   }
   console.log("MATCHES FINAL: " + JSON.stringify(contacts, undefined, 2)); // HURRAY!
+  var m = new Date();
+  var dateString =
+      m.getUTCFullYear() + "/" +
+      ("0" + (m.getUTCMonth()+1)).slice(-2) + "/" +
+      ("0" + m.getUTCDate()).slice(-2) + " " +
+      ("0" + m.getUTCHours()).slice(-2) + ":" +
+      ("0" + m.getUTCMinutes()).slice(-2) + ":" +
+      ("0" + m.getUTCSeconds()).slice(-2);
+
+  console.log("Timestamp: ", dateString);
+
   for (const person of contacts) {
     var data = "";
     if (person.newMatchExtRef) // This person is arranging a buddy meetup
       data = JSON.stringify({
         "embeddedData": 
           { 
+            "Buddy status": dateString+": "+person.extRef+" will initiate contact with "+person.newMatchExtRef+" to arrange buddy meetup",
             "Current match": person.newMatchExtRef,
             "Current match first name": person.newMatchFirstName,
             "Current match last name": person.newMatchLastName,
@@ -365,10 +377,11 @@ async function processPersonList(personList, key) {
       data = JSON.stringify({
         "embeddedData": 
           { 
+            "Buddy status": dateString+": "+person.extRef+" will wait patiently for "+person.newMatchFullName+" to initiate buddy meetup",
             "Current match": "",
             "Current match first name": "",
             "Current match last name": "",
-            "Current match full name": "",
+            "Current match full name": person.newMatchFullName,
             "previousMatches": person.previousMatches?person.previousMatches:"" 
           }
       })

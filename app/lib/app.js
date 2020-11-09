@@ -413,8 +413,7 @@ async function processPersonList(personList, key) {
         throw new Error(error);
       }
       if (response) {
-        let result = JSON.parse(response);
-        console.log("WRITE TO XMD RESPONSE: " + JSON.stringify(result, undefined, 2));
+        console.log("WRITE TO XMD RESPONSE: " + JSON.stringify(response, undefined, 2));
       }
       if (body) {
         let result = JSON.parse(body);

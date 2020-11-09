@@ -176,8 +176,10 @@ function personAPIrequest(person, key) {
       console.log("personAPIrequest: " + body);
       let previousMatches = JSON.parse(body).result.embeddedData.previousMatches;
       console.log("personAPIrequest previousMatches: " + previousMatches);
+      // Check if user is fully unsubscribed from entire directory
       let unsubscribed = JSON.parse(body).result.unsubscribed;
       console.log("personAPIrequest unsubscribed: " + unsubscribed);
+      // xxx bug: mailingListUnsubscribed and directoryUnsubscribed are not provided by this API call so they are always false/undefined 
       let mailingListUnsubscribed = JSON.parse(body).result.mailingListUnsubscribed;
       console.log("personAPIrequest mailingListUnsubscribed: " + mailingListUnsubscribed);
       let directoryUnsubscribed = JSON.parse(body).result.directoryUnsubscribed;
@@ -326,8 +328,10 @@ async function processPersonList(personList, key) {
           person.previousMatches = person.currentMatch; // Save last weeks match
         if (match.previousMatches && match.currentMatch)
           match.previousMatches += "," + match.currentMatch + "," + person.extRef;  // Save last weeks match
-        else
+        else if (match.currentMatch)
           match.previousMatches = match.currentMatch + "," + person.extRef;  // Save last weeks match
+        else
+          match.previousMatches = person.extRef;  // Save last weeks match
         
         match.availableThisRound = false;  // remove match from future matches
         person.availableThisRound = false; // remove match from future matches

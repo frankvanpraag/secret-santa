@@ -448,7 +448,7 @@ async function processPersonList(personList, key) {
   var options = {
     method: 'POST',
     headers: { 'content-type': 'application/json', 'accept': '*/*', 'X-API-TOKEN': key},
-    body: { 'transactionIds': [ 'CTR_00001' ], 'creationDate': '2020-12-12T14:15:22Z' },
+    body: { 'transactionIds': [ 'CTR_00005' ], 'creationDate': '2020-12-14T12:12:22Z' },
     url: postBatchesUrl
   };
   console.log("PREPARING NEW BATCH UPDATE: " + JSON.stringify(options, undefined, 2));

@@ -385,7 +385,7 @@ async function processPersonList(personList, key) {
       lastDebugMessage+="\n"+dateString+": "+person.extRef+" does not have a buddy at this point";
 
     if (person.newMatchExtRef) // This person is arranging a buddy meetup
-      batchContacts += JSON.stringify(     
+      batchContacts +=      
           {
             "firstName": person.firstName,
             "lastName": person.lastName,
@@ -402,9 +402,9 @@ async function processPersonList(personList, key) {
               },
             "transactionData" : {"":""}
           }
-      )
+      
     else if (person.previousMatches && person.newMatchFullName) // This person sits back and waits for a buddy to contact them
-      batchContacts += JSON.stringify(     
+      batchContacts +=      
           {
             "firstName": person.firstName,
             "lastName": person.lastName,
@@ -421,9 +421,9 @@ async function processPersonList(personList, key) {
               },
             "transactionData" : {"":""}
           }
-      )
+      
     else
-      batchContacts += JSON.stringify(     
+      batchContacts +=      
           {
             "firstName": person.firstName,
             "lastName": person.lastName,
@@ -439,7 +439,8 @@ async function processPersonList(personList, key) {
               },
             "transactionData" : {"":""}
           }
-      )
+    batchContacts += ",";
+      
   } // end of for loop
   
   var data = "";
@@ -472,7 +473,7 @@ async function processPersonList(personList, key) {
       // ToDo: Call API to update all contacts
       data = JSON.stringify({      
         "transactionMeta": {
-          "batchId": "BT_xxxxxxxx",
+          "batchId": result.id,
           "fields": [""]
         },
         "contacts": [ batchContacts ]

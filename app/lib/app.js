@@ -445,10 +445,11 @@ async function processPersonList(personList, key) {
   // ToDo: Call API to get batchID
   // ToDo: Call API to get batchID
   // Push update to XM Directory 
+  var bbody = JSON.stringify({ "transactionIds": [ "CTR_00005" ], "creationDate": "2020-12-14T12:12:22Z"});
   var options = {
     method: 'POST',
     headers: { 'content-type': 'application/json', 'accept': '*/*', 'X-API-TOKEN': key},
-    body: { 'transactionIds': [ 'CTR_00005' ], 'creationDate': '2020-12-14T12:12:22Z' },
+    body: bbody,
     url: postBatchesUrl
   };
   console.log("PREPARING NEW BATCH UPDATE: " + JSON.stringify(options, undefined, 2));
@@ -456,6 +457,13 @@ async function processPersonList(personList, key) {
   request(options, function (error, response, body) {
     if (error) {
       console.log("BATCH INIT ERROR: "+error);
+      console.log("XXX woulda coulda shoulda: "+JSON.stringify({      
+        "transactionMeta": {
+          "batchId": "BT_xxxxxxxx",
+          "fields": [""]
+        },
+        "contacts": [ batchContacts ]
+      }));
       throw new Error(error);
     }
     if (response) {
@@ -473,7 +481,7 @@ async function processPersonList(personList, key) {
           "fields": [""]
         },
         "contacts": [ batchContacts ]
-      })
+      });
       console.log("xxx now call API to update these contacts: " + JSON.stringify(data, undefined, 2));
       
       if (!JSON.stringify(result, undefined, 2).includes("200 - OK")) // I've seen 404 errors "No contact found" for perfectly valid contactId

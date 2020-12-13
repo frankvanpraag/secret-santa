@@ -495,7 +495,7 @@ async function processPersonList(personList, key) {
 //           });
       }
     }  
-  } // request
+  }); // request
   console.log("====================== END OF PROCESSING ======================");
   console.log(lastDebugMessage);
 }

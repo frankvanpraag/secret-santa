@@ -478,7 +478,7 @@ async function processPersonList(personList, key) {
         },
         "contacts": [ batchContacts ]
       });
-      console.log("xxx now call API to update these contacts: " + data);
+      console.log("xxx now call API to update these contacts: " + JSON.stringify(data, undefined, 2));
       
       if (!JSON.stringify(result, undefined, 2).includes("200 - OK")) // I've seen 404 errors "No contact found" for perfectly valid contactId
       {

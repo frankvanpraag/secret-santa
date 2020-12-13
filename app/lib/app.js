@@ -9,6 +9,8 @@ const getMailingListContactsQuery = "/API/v3/directories/" + pool + "/mailinglis
 const getMailingListContactsUrl = "https://" + hostname + getMailingListContactsQuery;
 const putContactQuery = "/API/v3/directories/" + pool + "/contacts/";
 const putContactUrl = "https://" + hostname + putContactQuery;
+const postBatchesQuery = "/API/v3/directories/" + pool + "/mailinglists/" + mailingList + "/transactioncontacts";
+const postBatchesUrl = "https://" + hostname + postBatchesQuery;
 var request = require('request');
 var contacts = [];
 var done = false;
@@ -371,6 +373,7 @@ async function processPersonList(personList, key) {
 
   var lastDebugMessage="";
   
+  var batchContacts = "";
   for (const person of contacts) {
     if (person.newMatchExtRef) // This person is arranging a buddy meetup
       lastDebugMessage+="\n"+dateString+": "+person.extRef+" will initiate contact with "+person.newMatchExtRef+" to arrange buddy meetup";
@@ -379,85 +382,120 @@ async function processPersonList(personList, key) {
     else
       lastDebugMessage+="\n"+dateString+": "+person.extRef+" does not have a buddy at this point";
 
-    var data = "";
     if (person.newMatchExtRef) // This person is arranging a buddy meetup
-      data = JSON.stringify({
-        "embeddedData": 
-          { 
-            "Buddy status": dateString+": "+person.extRef+" will initiate contact with "+person.newMatchExtRef+" to arrange buddy meetup",
-            "Current match": person.newMatchExtRef,
-            "Current match first name": person.newMatchFirstName,
-            "Current match last name": person.newMatchLastName,
-            "Current match full name": person.newMatchFullName,
-            "previousMatches": person.previousMatches?person.previousMatches:"" 
+      batchContacts += JSON.stringify(     
+          {
+            "firstName": person.firstName,
+            "lastName": person.lastName,
+            "email": person.extRef,
+            "extRef": person.extRef,
+            "embeddedData": 
+              { 
+                "Buddy status": dateString+": "+person.extRef+" will initiate contact with "+person.newMatchExtRef+" to arrange buddy meetup",
+                "Current match": person.newMatchExtRef,
+                "Current match first name": person.newMatchFirstName,
+                "Current match last name": person.newMatchLastName,
+                "Current match full name": person.newMatchFullName,
+                "previousMatches": person.previousMatches?person.previousMatches:"" 
+              },
+            "transactionData" : {"":""}
           }
-      })
+      )
     else if (person.previousMatches && person.newMatchFullName) // This person sits back and waits for a buddy to contact them
-      data = JSON.stringify({
-        "embeddedData": 
-          { 
-            "Buddy status": dateString+": "+person.extRef+" will wait patiently for "+person.newMatchFullName+" to initiate buddy meetup",
-            "Current match": "",
-            "Current match first name": "",
-            "Current match last name": "",
-            "Current match full name": person.newMatchFullName,
-            "previousMatches": person.previousMatches?person.previousMatches:"" 
+      batchContacts += JSON.stringify(     
+          {
+            "firstName": person.firstName,
+            "lastName": person.lastName,
+            "email": person.extRef,
+            "extRef": person.extRef,
+            "embeddedData": 
+              { 
+                "Buddy status": dateString+": "+person.extRef+" will wait patiently for "+person.newMatchFullName+" to initiate buddy meetup",
+                "Current match": "",
+                "Current match first name": "",
+                "Current match last name": "",
+                "Current match full name": person.newMatchFullName,
+                "previousMatches": person.previousMatches?person.previousMatches:"" 
+              },
+            "transactionData" : {"":""}
           }
-      })
+      )
     else
-      data = JSON.stringify({
-        "embeddedData": 
-          { 
-            "Buddy status": dateString+": "+person.extRef+" does not have a buddy at this point",
-            "Current match": "",
-            "Current match first name": "",
-            "Current match last name": "",
-            "Current match full name": ""
+      batchContacts += JSON.stringify(     
+          {
+            "firstName": person.firstName,
+            "lastName": person.lastName,
+            "email": person.extRef,
+            "extRef": person.extRef,
+            "embeddedData": 
+              { 
+                "Buddy status": dateString+": "+person.extRef+" does not have a buddy at this point",
+                "Current match": "",
+                "Current match first name": "",
+                "Current match last name": "",
+                "Current match full name": ""
+              },
+            "transactionData" : {"":""}
           }
+      )
+  } // end of for loop
+  
+  var data = "";
+  // ToDo: Call API to get batchID
+  // ToDo: Call API to get batchID
+  // ToDo: Call API to get batchID
+  // Push update to XM Directory 
+  var options = {
+    method: 'POST',
+    headers: { 'content-type': 'application/json', 'accept': '*/*', 'X-API-TOKEN': key},
+    body: { 'transactionIds': [ 'CTR_00001' ], 'creationDate': '2020-12-12T14:15:22Z' },
+    url: postBatchesUrl
+  };
+  console.log("PREPARING NEW BATCH UPDATE: " + JSON.stringify(options, undefined, 2));
+  wait(500); // xxx Sometimes we see 404 errors saying the contact does not exists - who knows why?
+  request(options, function (error, response, body) {
+    if (error) {
+      console.log("BATCH INIT ERROR: "+error);
+      throw new Error(error);
+    }
+    if (response) {
+      console.log("BATCH INIT RESPONSE: " + JSON.stringify(response, undefined, 2));
+    }
+    if (body) {
+      let result = JSON.parse(body);
+      console.log("BATCH INIT BODY from which to get BT_id: " + JSON.stringify(result, undefined, 2));      
+      // ToDo: Call API to update all contacts
+      // ToDo: Call API to update all contacts
+      // ToDo: Call API to update all contacts
+      data = JSON.stringify({      
+        "transactionMeta": {
+          "batchId": "BT_xxxxxxxx",
+          "fields": [""]
+        },
+        "contacts": [ batchContacts ]
       })
-    
-    // Push update to XM Directory 
-    var options = {
-      method: 'PUT',
-      headers: { 'content-type': 'application/json', 'accept': '*/*', 'X-API-TOKEN': key},
-      body: data,
-      url: putContactUrl+person.contactId
-    };
-    // Update those contacts who need to reach out to their buddy
-    //console.log("WRITE TO XMD "+person.contactId+" ("+person.extRef+") : " + JSON.stringify(options, undefined, 2));
-    wait(500); // xxx Sometimes we see 404 errors saying the contact does not exists - who knows why?
-    request(options, function (error, response, body) {
-      if (error) {
-        console.log("WRITE TO XMD ERROR: "+error);
-        throw new Error(error);
+      console.log("xxx now call API to update these contacts: " + JSON.stringify(data, undefined, 2));
+      
+      if (!JSON.stringify(result, undefined, 2).includes("200 - OK")) // I've seen 404 errors "No contact found" for perfectly valid contactId
+      {
+          //try one more time
+          wait(3000);
+//           request(options, function (error, response, body) {
+//             if (error) {
+//               console.log("WRITE TO XMD ERROR (retry): "+error);
+//               throw new Error(error);
+//             }
+//             if (response) {
+//               console.log("WRITE TO XMD RESPONSE (retry): " + JSON.stringify(response, undefined, 2));
+//             }
+//             if (body) {
+//               let result = JSON.parse(body);
+//               console.log("WRITE TO XMD BODY (retry): " + JSON.stringify(result, undefined, 2));
+//             }
+//           });
       }
-      if (response) {
-        console.log("WRITE TO XMD RESPONSE: " + JSON.stringify(response, undefined, 2));
-      }
-      if (body) {
-        let result = JSON.parse(body);
-        console.log("WRITE TO XMD BODY: " + JSON.stringify(result, undefined, 2));
-        if (!JSON.stringify(result, undefined, 2).includes("200 - OK")) // I've seen 404 errors "No contact found" for perfectly valid contactId
-        {
-            //try one more time
-            wait(3000);
-            request(options, function (error, response, body) {
-              if (error) {
-                console.log("WRITE TO XMD ERROR (retry): "+error);
-                throw new Error(error);
-              }
-              if (response) {
-                console.log("WRITE TO XMD RESPONSE (retry): " + JSON.stringify(response, undefined, 2));
-              }
-              if (body) {
-                let result = JSON.parse(body);
-                console.log("WRITE TO XMD BODY (retry): " + JSON.stringify(result, undefined, 2));
-              }
-            });
-        }
-      }
-    });
-  }
+    }  
+  } // request
   console.log("====================== END OF PROCESSING ======================");
   console.log(lastDebugMessage);
 }

@@ -9,6 +9,8 @@ const getMailingListContactsQuery = "/API/v3/directories/" + pool + "/mailinglis
 const getMailingListContactsUrl = "https://" + hostname + getMailingListContactsQuery;
 const putContactQuery = "/API/v3/directories/" + pool + "/contacts/";
 const putContactUrl = "https://" + hostname + putContactQuery;
+const postNewBatchQuery = "/API/v3/directories/" + pool + "/transactionbatches";
+const postNewBatchUrl = "https://" + hostname + postNewBatchQuery;
 const postBatchesQuery = "/API/v3/directories/" + pool + "/mailinglists/" + mailingList + "/transactioncontacts";
 const postBatchesUrl = "https://" + hostname + postBatchesQuery;
 var request = require('request');
@@ -445,25 +447,18 @@ async function processPersonList(personList, key) {
   // ToDo: Call API to get batchID
   // ToDo: Call API to get batchID
   // Push update to XM Directory 
-  var bbody = JSON.stringify({ "transactionIds": [ "CTR_00005" ], "creationDate": "2020-12-14T12:12:22Z"});
+  var bbody = JSON.stringify({ "transactionIds": [ "CTR_00006" ], "creationDate": "2020-12-14T12:12:22Z"});
   var options = {
     method: 'POST',
     headers: { 'content-type': 'application/json', 'accept': '*/*', 'X-API-TOKEN': key},
     body: bbody,
-    url: postBatchesUrl
+    url: postNewBatchUrl
   };
   console.log("PREPARING NEW BATCH UPDATE: " + JSON.stringify(options, undefined, 2));
   wait(500); // xxx Sometimes we see 404 errors saying the contact does not exists - who knows why?
   request(options, function (error, response, body) {
     if (error) {
       console.log("BATCH INIT ERROR: "+error);
-      console.log("XXX woulda coulda shoulda: "+JSON.stringify({      
-        "transactionMeta": {
-          "batchId": "BT_xxxxxxxx",
-          "fields": [""]
-        },
-        "contacts": [ batchContacts ]
-      }));
       throw new Error(error);
     }
     if (response) {
@@ -482,7 +477,7 @@ async function processPersonList(personList, key) {
         },
         "contacts": [ batchContacts ]
       });
-      console.log("xxx now call API to update these contacts: " + JSON.stringify(data, undefined, 2));
+      console.log("xxx now call API to update these contacts: " + data);
       
       if (!JSON.stringify(result, undefined, 2).includes("200 - OK")) // I've seen 404 errors "No contact found" for perfectly valid contactId
       {

@@ -242,7 +242,13 @@ function personListAPIrequest(key) {
         reject();
         throw new Error(error);
       }
-      let personList = JSON.parse(body).result.elements;
+      // CHECK ACCOUNT "Expiration Date" FOR USER "buddies@qualtrics.com" ON "qfrankp"
+      // CHECK ACCOUNT "Expiration Date" FOR USER "buddies@qualtrics.com" ON "qfrankp"
+      // CHECK ACCOUNT "Expiration Date" FOR USER "buddies@qualtrics.com" ON "qfrankp"
+      let personList = JSON.parse(body).result.elements;  // ERROR WILL OCCUR IF ACCOUNT HAS EXPIRED
+      // CHECK ACCOUNT "Expiration Date" FOR USER "buddies@qualtrics.com" ON "qfrankp"
+      // CHECK ACCOUNT "Expiration Date" FOR USER "buddies@qualtrics.com" ON "qfrankp"
+      // CHECK ACCOUNT "Expiration Date" FOR USER "buddies@qualtrics.com" ON "qfrankp"
       /*console.log("PERSONLIST: " + JSON.stringify(personList, undefined, 2)); // {"result":{"elements":[{"contactId":"CID_3pIMBkMDJUt5qWp","firstName":"Eeee","lastName":"Egbert","email":"q5@vanpraag.com","phone":null,"extRef":"q5@vanpraag.com","language":null,"unsubscribed":false},{"contactId":"CID_2rypp6zL9UdbiLj","firstName":"Aaaa","lastName":"Aardvaark","email":"q1@vanpraag.com","phone":null,"extRef":"q1@vanpraag.com","language":null,"unsubscribed":false},{"contactId":"CID_aggZq9ziA7j6iiN","firstName":"Bbbb","lastName":"Bullwark","email":"q2@vanpraag.com","phone":null,"extRef":"q2@vanpraag.com","language":null,"unsubscribed":false},{"contactId":"CID_81VryhahElQBxXL","firstName":"Dddd","lastName":"Dopermine","email":"q4@vanpraag.com","phone":null,"extRef":"q4@vanpraag.com","language":null,"unsubscribed":false},{"contactId":"CID_2mWrnio45kZYTTn","firstName":"Cccc","lastName":"Chipotle","email":"q3@vanpraag.com","phone":null,"extRef":"q3@vanpraag.com","language":null,"unsubscribed":false}]
       console.log("RESULT: " + JSON.stringify(personList, undefined, 2));
       console.log("RESULT[1]: " + JSON.stringify(personList[1], undefined, 2));
@@ -393,16 +399,19 @@ async function processPersonList(personList, key) {
             "lastName": person.lastName,
             "email": person.extRef,
             "extRef": person.extRef,
-            "embeddedData": 
-              { 
+             "transactionData": {
+               "buddyEmail": person.newMatchExtRef,
+               "buddyFullName": person.newMatchFullName,
+               "buddyStatus": dateString+": "+person.extRef+" will initiate contact with "+person.newMatchExtRef+" to arrange buddy meetup"
+             },
+             "embeddedData": { 
                 "Buddy status": dateString+": "+person.extRef+" will initiate contact with "+person.newMatchExtRef+" to arrange buddy meetup",
                 "Current match": person.newMatchExtRef,
                 "Current match first name": person.newMatchFirstName,
                 "Current match last name": person.newMatchLastName,
                 "Current match full name": person.newMatchFullName,
                 "previousMatches": person.previousMatches?person.previousMatches:"" 
-              },
-            "transactionData" : {"":""}
+             }
           }
       
     else if (person.previousMatches && person.newMatchFullName) // This person sits back and waits for a buddy to contact them
@@ -473,13 +482,17 @@ async function processPersonList(personList, key) {
       // ToDo: Call API to update all contacts
       // ToDo: Call API to update all contacts
       // ToDo: Call API to update all contacts
-      data = JSON.stringify({      
+      data = {      
         "transactionMeta": {
           "batchId": result.id,
-          "fields": [""]
+           "fields": [
+             "buddyEmail",
+             "buddyFullName",
+             "buddyStatus"
+           ]
         },
         "contacts": [ batchContacts ]
-      });
+      };
       console.log("xxx now call API to update these contacts: " + JSON.stringify(data, undefined, 2));
       
       if (!JSON.stringify(result, undefined, 2).includes("200 - OK")) // I've seen 404 errors "No contact found" for perfectly valid contactId

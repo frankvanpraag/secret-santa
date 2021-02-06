@@ -383,7 +383,7 @@ async function processPersonList(personList, key) {
 
   var lastDebugMessage="";
   
-  var batchContacts = {};
+  var batchContacts = [];
   for (const person of contacts) {
     if (person.newMatchExtRef) // This person is arranging a buddy meetup
       lastDebugMessage+="\n"+dateString+": "+person.extRef+" will initiate contact with "+person.newMatchExtRef+" to arrange buddy meetup";

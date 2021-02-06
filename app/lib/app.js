@@ -378,8 +378,18 @@ async function processPersonList(personList, key) {
       ("0" + m.getUTCHours()).slice(-2) + ":" +
       ("0" + m.getUTCMinutes()).slice(-2) + ":" +
       ("0" + m.getUTCSeconds()).slice(-2);
+  // 2020-12-14T12:12:22Z = date format that Qualtrics Batch Process likes
+  var creationDateString =
+      m.getUTCFullYear() + "-" +
+      ("0" + (m.getUTCMonth()+1)).slice(-2) + "-" +
+      ("0" + m.getUTCDate()).slice(-2) + "T" +
+      ("0" + m.getUTCHours()).slice(-2) + ":" +
+      ("0" + m.getUTCMinutes()).slice(-2) + ":" +
+      ("0" + m.getUTCSeconds()).slice(-2) + "Z";
 
   console.log("Timestamp: ", dateString);
+  console.log("CreationDate: ", creationDateString);
+  console.log("CreationDate: 2020-12-14T12:12:22Z is what it should look like");
 
   var lastDebugMessage="-=* SUCCESSFULLY COMPLETED *=-";
   
@@ -475,7 +485,7 @@ async function processPersonList(personList, key) {
   // ToDo: Call API to get batchID
   // ToDo: Call API to get batchID
   // Push update to XM Directory 
-  var bbody = JSON.stringify({ "transactionIds": [ "CTR_00006" ], "creationDate": "2020-12-14T12:12:22Z"});  //xxx todo: current datetime
+  var bbody = JSON.stringify({ "transactionIds": [ "CTR_00006" ], "creationDate": creationDateString});
   var options = {
     method: 'POST',
     headers: { 'content-type': 'application/json', 'accept': '*/*', 'X-API-TOKEN': key},
@@ -516,7 +526,8 @@ async function processPersonList(personList, key) {
       console.log("xxx now call API to update these contacts: " + JSON.stringify(data, undefined, 2));
       
       if (!JSON.stringify(result, undefined, 2).includes("200 - OK"))
-      {
+          console.log("ERROR: Couldn't get a batch ID from Qualtrics. Giving up");
+      else {
           //Run the BATCH update for Contacts
           // ToDo: Call API to get batchID
           // ToDo: Call API to get batchID

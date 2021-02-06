@@ -400,6 +400,7 @@ async function processPersonList(personList, key) {
             "email": person.extRef,
             "extRef": person.extRef,
              "transactionData": {
+               "previousMatches": person.previousMatches?person.previousMatches:"",
                "buddyEmail": person.newMatchExtRef,
                "buddyFullName": person.newMatchFullName,
                "buddyStatus": dateString+": "+person.extRef+" will initiate contact with "+person.newMatchExtRef+" to arrange buddy meetup"
@@ -421,6 +422,11 @@ async function processPersonList(personList, key) {
             "lastName": person.lastName,
             "email": person.extRef,
             "extRef": person.extRef,
+             "transactionData": {
+               "previousMatches": person.previousMatches?person.previousMatches:"",
+               "buddyFullName": person.newMatchFullName,
+               "buddyStatus": dateString+": "+person.extRef+" will wait patiently for "+person.newMatchFullName+" to initiate buddy meetup"
+             },
             "embeddedData": 
               { 
                 "Buddy status": dateString+": "+person.extRef+" will wait patiently for "+person.newMatchFullName+" to initiate buddy meetup",
@@ -429,8 +435,7 @@ async function processPersonList(personList, key) {
                 "Current match last name": "",
                 "Current match full name": person.newMatchFullName,
                 "previousMatches": person.previousMatches?person.previousMatches:"" 
-              },
-            "transactionData" : {"":""}
+              }
           }
       
     else
@@ -440,6 +445,11 @@ async function processPersonList(personList, key) {
             "lastName": person.lastName,
             "email": person.extRef,
             "extRef": person.extRef,
+             "transactionData": {
+               "previousMatches": person.previousMatches?person.previousMatches:"",
+               "buddyFullName": "None",
+               "buddyStatus": dateString+": "+person.extRef+" does not have a buddy at this point"
+             },
             "embeddedData": 
               { 
                 "Buddy status": dateString+": "+person.extRef+" does not have a buddy at this point",
@@ -447,13 +457,16 @@ async function processPersonList(personList, key) {
                 "Current match first name": "",
                 "Current match last name": "",
                 "Current match full name": ""
-              },
-            "transactionData" : {"":""}
+              }
           }
     batchContacts += ",";
       
   } // end of for loop
   
+  // PRINT THIS TO THE CONSOLE
+  console.log("batchContacts to send to https://syd.qualtrics.com/API/v3/directories/{directoryId}/mailinglists/{mailingListId}/transactioncontacts: ");
+  console.log("batchContacts: " + JSON.stringify(batchContacts, undefined, 2));
+
   var data = "";
   // ToDo: Call API to get batchID
   // ToDo: Call API to get batchID

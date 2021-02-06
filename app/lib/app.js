@@ -11,8 +11,8 @@ const putContactQuery = "/API/v3/directories/" + pool + "/contacts/";
 const putContactUrl = "https://" + hostname + putContactQuery;
 const postNewBatchQuery = "/API/v3/directories/" + pool + "/transactionbatches";
 const postNewBatchUrl = "https://" + hostname + postNewBatchQuery;
-const postBatchesQuery = "/API/v3/directories/" + pool + "/mailinglists/" + mailingList + "/transactioncontacts";
-const postBatchesUrl = "https://" + hostname + postBatchesQuery;
+const postBatchUpdateQuery = "/API/v3/directories/" + pool + "/mailinglists/" + mailingList + "/transactioncontacts";
+const postBatchUpdateUrl = "https://" + hostname + postBatchUpdateQuery;
 var request = require('request');
 var contacts = [];
 var done = false;
@@ -381,7 +381,7 @@ async function processPersonList(personList, key) {
 
   console.log("Timestamp: ", dateString);
 
-  var lastDebugMessage="";
+  var lastDebugMessage="-=* SUCCESSFULLY COMPLETED *=-";
   
   var batchContacts = [];
   for (const person of contacts) {
@@ -475,7 +475,7 @@ async function processPersonList(personList, key) {
   // ToDo: Call API to get batchID
   // ToDo: Call API to get batchID
   // Push update to XM Directory 
-  var bbody = JSON.stringify({ "transactionIds": [ "CTR_00006" ], "creationDate": "2020-12-14T12:12:22Z"});
+  var bbody = JSON.stringify({ "transactionIds": [ "CTR_00006" ], "creationDate": "2020-12-14T12:12:22Z"});  //xxx todo: current datetime
   var options = {
     method: 'POST',
     headers: { 'content-type': 'application/json', 'accept': '*/*', 'X-API-TOKEN': key},
@@ -495,44 +495,60 @@ async function processPersonList(personList, key) {
     if (body) {
       let result = JSON.parse(body);
       console.log("BATCH INIT BODY from which to get BT_id: " + JSON.stringify(result, undefined, 2));      
+      let BT_id = JSON.parse(body).result.id; // ID for Qualtrics API Batch Calls
+      console.log("BT_id: " + BT_id);      
       // ToDo: Call API to update all contacts
       // ToDo: Call API to update all contacts
       // ToDo: Call API to update all contacts
       data = {      
-        "transactionMeta": {
-          "batchId": result.id,
-           "fields": [
-             "buddyEmail",
-             "buddyFullName",
-             "buddyStatus"
-           ]
-        },
-        "contacts": [ batchContacts ]
+               "transactionMeta": {
+                 "batchId": "BT_8kuk9J6FKt73mVE",
+                 "fields": [
+                   "transactionData",
+                   "priorMatches",
+                   "buddyEmail",
+                   "buddyFullName",
+                   "buddyStatus"
+                 ]
+               },
+              "contacts": batchContacts
       };
       console.log("xxx now call API to update these contacts: " + JSON.stringify(data, undefined, 2));
       
-      if (!JSON.stringify(result, undefined, 2).includes("200 - OK")) // I've seen 404 errors "No contact found" for perfectly valid contactId
+      if (!JSON.stringify(result, undefined, 2).includes("200 - OK"))
       {
-          //try one more time
-          wait(3000);
-//           request(options, function (error, response, body) {
-//             if (error) {
-//               console.log("WRITE TO XMD ERROR (retry): "+error);
-//               throw new Error(error);
-//             }
-//             if (response) {
-//               console.log("WRITE TO XMD RESPONSE (retry): " + JSON.stringify(response, undefined, 2));
-//             }
-//             if (body) {
-//               let result = JSON.parse(body);
-//               console.log("WRITE TO XMD BODY (retry): " + JSON.stringify(result, undefined, 2));
-//             }
-//           });
+          //Run the BATCH update for Contacts
+          // ToDo: Call API to get batchID
+          // ToDo: Call API to get batchID
+          // ToDo: Call API to get batchID
+          // Push update to XM Directory 
+          var bbody = JSON.stringify(data);
+          var options = {
+            method: 'POST',
+            headers: { 'content-type': 'application/json', 'accept': '*/*', 'X-API-TOKEN': key},
+            body: bbody,
+            url: postBatchUpdateUrl
+          };
+          console.log("PREPARING FINAL BATCH UPDATE: " + JSON.stringify(options, undefined, 2));
+          //wait(3000);
+          request(options, function (error, response, body) {
+            if (error) {
+              console.log("BATCH UPDATE TO XMD ERROR: "+error);
+              throw new Error(error);
+            }
+            if (response) {
+              console.log("BATCH UPDATE TO XMD RESPONSE: " + JSON.stringify(response, undefined, 2));
+            }
+            if (body) {
+              let result = JSON.parse(body);
+              console.log("BATCH UPDATE TO XMD BODY: " + JSON.stringify(result, undefined, 2));
+              console.log(lastDebugMessage);
+            }
+          });
       }
     }  
   }); // request
   console.log("====================== END OF PROCESSING ======================");
-  console.log(lastDebugMessage);
 }
 
 async function populateContactsArray(key) {

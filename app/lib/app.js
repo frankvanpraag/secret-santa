@@ -465,9 +465,9 @@ async function processPersonList(personList, key) {
   
   console.log("====================== LIFE IS GOOD ======================");
   // PRINT THIS TO THE CONSOLE
-  var batchContactsJSON = JSON.parse(batchContacts);
   console.log("batchContactsJSON to send to https://syd.qualtrics.com/API/v3/directories/{directoryId}/mailinglists/{mailingListId}/transactioncontacts: ");
   console.log("batchContacts: " + batchContacts);
+  var batchContactsJSON = JSON.parse(batchContacts);
   console.log("batchContactsJSON: " + JSON.stringify(batchContactsJSON, undefined, 2));
 
   var data = "";

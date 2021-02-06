@@ -234,6 +234,8 @@ function personListAPIrequest(key) {
       qs: {pageSize: '200'}
     };
     // Get all contacts in SE buddy list
+    console.log("Start: " + JSON.stringify(options, undefined, 2));
+   
     request(options, function (error, response, body) {
       if (error) {
         console.log(error);

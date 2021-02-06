@@ -383,7 +383,7 @@ async function processPersonList(personList, key) {
 
   var lastDebugMessage="";
   
-  var batchContacts = "";
+  var batchContacts = {};
   for (const person of contacts) {
     if (person.newMatchExtRef) // This person is arranging a buddy meetup
       lastDebugMessage+="\n"+dateString+": "+person.extRef+" will initiate contact with "+person.newMatchExtRef+" to arrange buddy meetup";
@@ -393,7 +393,7 @@ async function processPersonList(personList, key) {
       lastDebugMessage+="\n"+dateString+": "+person.extRef+" does not have a buddy at this point";
 
     if (person.newMatchExtRef) // This person is arranging a buddy meetup
-      batchContacts +=      
+      batchContacts.push(      
           {
             "firstName": person.firstName,
             "lastName": person.lastName,
@@ -414,9 +414,10 @@ async function processPersonList(personList, key) {
                 "previousMatches": person.previousMatches?person.previousMatches:"" 
              }
           }
+        )
       
     else if (person.previousMatches && person.newMatchFullName) // This person sits back and waits for a buddy to contact them
-      batchContacts +=      
+      batchContacts.push(      
           {
             "firstName": person.firstName,
             "lastName": person.lastName,
@@ -437,9 +438,10 @@ async function processPersonList(personList, key) {
                 "previousMatches": person.previousMatches?person.previousMatches:"" 
               }
           }
+        )
       
     else
-      batchContacts +=      
+      batchContacts.push(      
           {
             "firstName": person.firstName,
             "lastName": person.lastName,
@@ -459,16 +461,14 @@ async function processPersonList(personList, key) {
                 "Current match full name": ""
               }
           }
-    batchContacts += ",";
+        )
       
   } // end of for loop
   
   console.log("====================== LIFE IS GOOD ======================");
   // PRINT THIS TO THE CONSOLE
-  console.log("batchContactsJSON to send to https://syd.qualtrics.com/API/v3/directories/{directoryId}/mailinglists/{mailingListId}/transactioncontacts: ");
-  console.log("batchContacts: " + batchContacts);
-  var batchContactsJSON = JSON.parse(batchContacts);
-  console.log("batchContactsJSON: " + JSON.stringify(batchContactsJSON, undefined, 2));
+  console.log("batchContacts to send to https://syd.qualtrics.com/API/v3/directories/{directoryId}/mailinglists/{mailingListId}/transactioncontacts: ");
+  console.log("batchContacts: " + JSON.stringify(batchContacts, undefined, 2));
 
   var data = "";
   // ToDo: Call API to get batchID

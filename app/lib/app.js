@@ -507,7 +507,7 @@ async function processPersonList(personList, key) {
              "buddyStatus"
            ]
         },
-        "contacts": [ batchContactsJSON ]
+        "contacts": [ batchContacts ]
       };
       console.log("xxx now call API to update these contacts: " + JSON.stringify(data, undefined, 2));
       

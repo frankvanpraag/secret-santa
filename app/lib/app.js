@@ -463,6 +463,7 @@ async function processPersonList(personList, key) {
       
   } // end of for loop
   
+  console.log("====================== LIFE IS GOOD ======================");
   // PRINT THIS TO THE CONSOLE
   console.log("batchContacts to send to https://syd.qualtrics.com/API/v3/directories/{directoryId}/mailinglists/{mailingListId}/transactioncontacts: ");
   console.log("batchContacts: " + JSON.stringify(batchContacts, undefined, 2));

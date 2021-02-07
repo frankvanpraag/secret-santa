@@ -347,10 +347,13 @@ async function processPersonList(personList, key) {
           person.previousMatches += "," + person.currentMatch; // Save last weeks match
         else
           person.previousMatches = person.currentMatch; // Save last weeks match
+        
         if (match.previousMatches && match.currentMatch)
           match.previousMatches += "," + match.currentMatch + "," + person.extRef;  // Save last weeks match
         else if (match.currentMatch)
           match.previousMatches = match.currentMatch + "," + person.extRef;  // Save last weeks match
+        else if (match.previousMatches)
+          console.log("Preserving "+person.extRef+" previousMatches: "+match.previousMatches);
         else
           match.previousMatches = person.extRef;  // Save last weeks match
         

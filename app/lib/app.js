@@ -344,18 +344,20 @@ async function processPersonList(personList, key) {
         //match.newMatchExtRef = person.extRef;
         // Update previous matches with currentMatch - don't forget to clear currentMatch
         if (person.previousMatches && person.currentMatch)
-          person.previousMatches += "," + person.currentMatch; // Save last weeks match
+          person.previousMatches += "," + person.currentMatch; // Add this match
+        else if (person.currentMatch)
+          person.previousMatches = person.currentMatch; // New list with this match
         else
-          person.previousMatches = person.currentMatch; // Save last weeks match
+          console.log("Preserving "+person.extRef+" previousMatches: "+person.previousMatches);
         
         if (match.previousMatches && match.currentMatch)
-          match.previousMatches += "," + match.currentMatch + "," + person.extRef;  // Save last weeks match
+          match.previousMatches += "," + match.currentMatch + "," + person.extRef;  // Append person and previous match to list
         else if (match.currentMatch)
-          match.previousMatches = match.currentMatch + "," + person.extRef;  // Save last weeks match
+          match.previousMatches = match.currentMatch + "," + person.extRef;  // New list with person and previous match to list
         else if (match.previousMatches)
-          console.log("Preserving "+person.extRef+" previousMatches: "+match.previousMatches);
+          match.previousMatches += "," + person.extRef;  // New list with person
         else
-          match.previousMatches = person.extRef;  // Save last weeks match
+          match.previousMatches = person.extRef; // Hadnt been matched before
         
         match.availableThisRound = false;  // remove match from future matches
         person.availableThisRound = false; // remove match from future matches

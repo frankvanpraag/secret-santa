@@ -478,7 +478,8 @@ async function processPersonList(personList, key) {
                 "Current match": "",
                 "Current match first name": "",
                 "Current match last name": "",
-                "Current match full name": ""
+                "Current match full name": "",
+                "previousMatches": person.previousMatches?person.previousMatches:"" 
               }
           }
         )

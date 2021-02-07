@@ -396,11 +396,11 @@ async function processPersonList(personList, key) {
   var batchContacts = [];
   for (const person of contacts) {
     if (person.newMatchExtRef) // This person is arranging a buddy meetup
-      lastDebugMessage+="\n"+dateString+": "+person.extRef+" will initiate contact with "+person.newMatchExtRef+" to arrange buddy meetup";
+      lastDebugMessage+="\n"+person.extRef+" will initiate contact with "+person.newMatchExtRef+" to arrange buddy meetup. "+dateString;
     else if (person.previousMatches && person.newMatchFullName) // This person sits back and waits for a buddy to contact them
-      lastDebugMessage+="\n"+dateString+": "+person.extRef+" will wait patiently for "+person.newMatchFullName+" to initiate buddy meetup";
+      lastDebugMessage+="\n"+person.extRef+" will wait patiently for "+person.newMatchFullName+" to initiate buddy meetup. "+dateString;
     else
-      lastDebugMessage+="\n"+dateString+": "+person.extRef+" does not have a buddy at this point";
+      lastDebugMessage+="\n"+person.extRef+" does not have a buddy at this point. "+dateString;
 
     if (person.newMatchExtRef) // This person is arranging a buddy meetup
       batchContacts.push(      
@@ -410,16 +410,16 @@ async function processPersonList(personList, key) {
             "email": person.extRef,
             "extRef": person.extRef,
              "transactionData": {
-               "priorMatches": person.previousMatches?person.previousMatches.replace(",", " "):"",
+               "priorMatches": person.previousMatches?person.previousMatches.replaceAll(",", " "):"",
                "buddyEmail": person.newMatchExtRef,
                "buddyFullName": person.newMatchFullName,
-               "buddyStatus": dateString+": "+person.extRef+" will initiate contact with "+person.newMatchExtRef+" to arrange buddy meetup"
+               "buddyStatus": person.extRef+" initiates contact with "+person.newMatchExtRef+" to arrange buddy meetup. "+dateString
              },
              "embeddedData": { 
-                "Buddy status": dateString+": "+person.extRef+" will initiate contact with "+person.newMatchExtRef+" to arrange buddy meetup",
+                "Buddy status": person.extRef+" initiates contact with "+person.newMatchExtRef+" to arrange buddy meetup. "+dateString,
                 "Current match": person.newMatchExtRef,
-                "Current match first name": person.newMatchFirstName,
-                "Current match last name": person.newMatchLastName,
+                // "Current match first name": person.newMatchFirstName,
+                // "Current match last name": person.newMatchLastName,
                 "Current match full name": person.newMatchFullName,
                 "previousMatches": person.previousMatches?person.previousMatches:"" 
              }
@@ -434,13 +434,13 @@ async function processPersonList(personList, key) {
             "email": person.extRef,
             "extRef": person.extRef,
              "transactionData": {
-               "priorMatches": person.previousMatches?person.previousMatches.replace(",", " "):"",
+               "priorMatches": person.previousMatches?person.previousMatches.replaceAll(",", " "):"",
                "buddyFullName": person.newMatchFullName,
-               "buddyStatus": dateString+": "+person.extRef+" will wait patiently for "+person.newMatchFullName+" to initiate buddy meetup"
+               "buddyStatus": "Waiting patiently for "+person.newMatchFullName+" to initiate buddy meetup with "+person.extRef+". "+dateString
              },
             "embeddedData": 
               { 
-                "Buddy status": dateString+": "+person.extRef+" will wait patiently for "+person.newMatchFullName+" to initiate buddy meetup",
+                "Buddy status": "Waiting patiently for "+person.newMatchFullName+" to initiate buddy meetup with "+person.extRef+". "+dateString,
                 "Current match": "",
                 "Current match first name": "",
                 "Current match last name": "",
@@ -458,13 +458,13 @@ async function processPersonList(personList, key) {
             "email": person.extRef,
             "extRef": person.extRef,
              "transactionData": {
-               "priorMatches": person.previousMatches?person.previousMatches.replace(",", " "):"",
+               "priorMatches": person.previousMatches?person.previousMatches.replaceAll(",", " "):"",
                "buddyFullName": "None",
-               "buddyStatus": dateString+": "+person.extRef+" does not have a buddy at this point"
+               "buddyStatus": "No Buddy for "+person.extRef+". "+dateString
              },
             "embeddedData": 
               { 
-                "Buddy status": dateString+": "+person.extRef+" does not have a buddy at this point",
+                "Buddy status": "No Buddy for "+person.extRef+". "+dateString,
                 "Current match": "",
                 "Current match first name": "",
                 "Current match last name": "",
@@ -493,7 +493,7 @@ async function processPersonList(personList, key) {
     url: postNewBatchUrl
   };
   console.log("PREPARING NEW BATCH UPDATE: " + JSON.stringify(options, undefined, 2));
-  wait(500); // xxx Sometimes we see 404 errors saying the contact does not exists - who knows why?
+  //wait(500); // xxx Sometimes we see 404 errors saying the contact does not exists - who knows why?
   request(options, function (error, response, body) {
     if (error) {
       console.log("BATCH INIT ERROR: "+error);

@@ -410,7 +410,7 @@ async function processPersonList(personList, key) {
             "email": person.extRef,
             "extRef": person.extRef,
              "transactionData": {
-               "priorMatches": person.previousMatches?person.previousMatches.replaceAll(",", " "):"",
+               "priorMatches": person.previousMatches?person.previousMatches.replace(/,/g, ' '):"",
                "buddyEmail": person.newMatchExtRef,
                "buddyFullName": person.newMatchFullName,
                "buddyStatus": person.extRef+" initiates contact with "+person.newMatchExtRef+" to arrange buddy meetup. "+dateString
@@ -434,7 +434,7 @@ async function processPersonList(personList, key) {
             "email": person.extRef,
             "extRef": person.extRef,
              "transactionData": {
-               "priorMatches": person.previousMatches?person.previousMatches.replaceAll(",", " "):"",
+               "priorMatches": person.previousMatches?person.previousMatches.replace(/,/g, ' '):"",
                "buddyFullName": person.newMatchFullName,
                "buddyStatus": "Waiting patiently for "+person.newMatchFullName+" to initiate buddy meetup with "+person.extRef+". "+dateString
              },
@@ -458,7 +458,7 @@ async function processPersonList(personList, key) {
             "email": person.extRef,
             "extRef": person.extRef,
              "transactionData": {
-               "priorMatches": person.previousMatches?person.previousMatches.replaceAll(",", " "):"",
+               "priorMatches": person.previousMatches?person.previousMatches.replace(/,/g, ' '):"",
                "buddyFullName": "None",
                "buddyStatus": "No Buddy for "+person.extRef+". "+dateString
              },

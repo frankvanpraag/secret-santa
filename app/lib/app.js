@@ -405,7 +405,12 @@ async function processPersonList(personList, key) {
     else if (person.previousMatches && person.newMatchFullName) // This person sits back and waits for a buddy to contact them
       lastDebugMessage+="\n"+person.extRef+" will wait patiently for "+person.newMatchFullName+" to initiate buddy meetup. "+dateString;
     else
+    {
       lastDebugMessage+="\n"+person.extRef+" does not have a buddy at this point. "+dateString;
+      console.log(person.extRef+" does not have a buddy at this point.");
+      console.log("   ---> Clearing "+person.extRef+".previousMatches ("+person.previousMatches+")");
+      person.previousMatches="";  // Clear previous matches so they have a good chance of matching next time
+    }
 
     if (person.newMatchExtRef) // This person is arranging a buddy meetup
       batchContacts.push(      

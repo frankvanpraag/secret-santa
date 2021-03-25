@@ -423,10 +423,10 @@ async function processPersonList(personList, key) {
                "priorMatches": person.previousMatches?person.previousMatches.replace(/,/g, ' '):"",
                "buddyEmail": person.newMatchExtRef,
                "buddyFullName": person.newMatchFullName,
-               "buddyStatus": person.extRef+" initiates contact with "+person.newMatchExtRef+" to arrange buddy meetup. "+dateString
+               "buddyStatus": person.extRef+" to set up a 20-30 minute meeting to connect with "+person.newMatchExtRef
              },
              "embeddedData": { 
-                "Buddy status": person.extRef+" initiates contact with "+person.newMatchExtRef+" to arrange buddy meetup. "+dateString,
+                "Buddy status": person.extRef+" to set up a 20-30 minute meeting to connect with "+person.newMatchExtRef,
                 "Current match": person.newMatchExtRef,
                 // "Current match first name": person.newMatchFirstName,
                 // "Current match last name": person.newMatchLastName,
@@ -446,11 +446,11 @@ async function processPersonList(personList, key) {
              "transactionData": {
                "priorMatches": person.previousMatches?person.previousMatches.replace(/,/g, ' '):"",
                "buddyFullName": person.newMatchFullName,
-               "buddyStatus": "Waiting patiently for "+person.newMatchFullName+" to initiate buddy meetup with "+person.extRef+". "+dateString
+               "buddyStatus": person.extRef+" to wait patiently for "+person.newMatchFullName+" to set up a 20-30 minute meeting"
              },
             "embeddedData": 
               { 
-                "Buddy status": "Waiting patiently for "+person.newMatchFullName+" to initiate buddy meetup with "+person.extRef+". "+dateString,
+                "Buddy status": person.extRef+" to wait patiently for "+person.newMatchFullName+" to set up a 20-30 minute meeting",
                 "Current match": "",
                 "Current match first name": "",
                 "Current match last name": "",

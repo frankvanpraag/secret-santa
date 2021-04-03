@@ -477,7 +477,7 @@ async function processPersonList(personList, key) {
             "embeddedData": 
               { 
                 "Buddy status": "No Buddy",
-                "Buddy status message": "No Buddy for "+person.extRef+". "+dateString,
+                "Buddy status message": "to do nothing because no buddy has been assigned",
                 "Current match": "",
                 "Current match first name": "",
                 "Current match last name": "",

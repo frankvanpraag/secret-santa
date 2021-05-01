@@ -231,7 +231,7 @@ function personListAPIrequest(key) {
       method: 'GET',
       headers: { 'accept': '*/*', 'X-API-TOKEN': key},
       url: getMailingListContactsUrl,
-      qs: {pageSize: '200'}
+      qs: {pageSize: '2000'}
     };
     // Get all contacts in SE buddy list
     console.log("Start: " + JSON.stringify(options, undefined, 2));

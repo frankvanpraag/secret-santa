@@ -1,8 +1,8 @@
 const fs = require('fs');
 const ejs = require('ejs');
 const SendGridAdapter = require('../adapters/send-grid');
-const pool = "POOL_2sNvzmrYrdn9RQ1";
-const mailingList = "CG_8tVp5T22DHGyRtH"; // Yep - the new one
+const pool = "POOL_cJd9pY8oePdHgvn";
+const mailingList = "CG_2tKVb2WqJ8Aw9aD"; // Yep - the new one
 const hostname = "syd1.qualtrics.com"; //Helo
 // const xxxhostname = "2aee86ecb4940555cf2afa068d2ba5a8.m.pipedream.net";
 const getMailingListContactsQuery = "/API/v3/directories/" + pool + "/mailinglists/" + mailingList + "/contacts";

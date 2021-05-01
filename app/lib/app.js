@@ -409,7 +409,7 @@ async function processPersonList(personList, key) {
       lastDebugMessage+="\n"+person.extRef+" does not have a buddy at this point. "+dateString;
       console.log(person.extRef+" does not have a buddy at this point.");
       console.log("   ---> Clearing "+person.extRef+".previousMatches ("+person.previousMatches+")");
-      person.previousMatches=" ";  // Clear previous matches so they have a good chance of matching next time
+      person.previousMatches=":";  // Clear previous matches so they have a good chance of matching next time
     }
 
     if (person.newMatchExtRef) // This person is arranging a buddy meetup
@@ -453,7 +453,7 @@ async function processPersonList(personList, key) {
               { 
                 "Buddy status": "Waiting",
                 "Buddy status message": person.extRef+" to wait patiently for "+person.newMatchFullName+" to set up a 20-30 minute meeting",
-                "Current match": " ",
+                "Current match": person.newMatchExtRef,
                 "Current match first name": "",
                 "Current match last name": "",
                 "Current match full name": person.newMatchFullName,
@@ -478,10 +478,10 @@ async function processPersonList(personList, key) {
               { 
                 "Buddy status": "No Buddy",
                 "Buddy status message": "to do nothing because no buddy has been assigned",
-                "Current match": " ",
+                "Current match": "No Buddy",
                 "Current match first name": "",
                 "Current match last name": "",
-                "Current match full name": " ",
+                "Current match full name": "No Buddy",
                 "previousMatches": person.previousMatches?person.previousMatches:"" 
               }
           }

@@ -428,7 +428,7 @@ async function processPersonList(personList, key) {
              "embeddedData": { 
                 "Buddy status": "Initiator",
                 "Buddy status message": person.extRef+" to set up a 20-30 minute meeting to connect with "+person.newMatchExtRef,
-                "Current match": person.newMatchExtRef,
+                "Current match": person.newMatchFullName,
                 // "Current match first name": person.newMatchFirstName,
                 // "Current match last name": person.newMatchLastName,
                 "Current match full name": person.newMatchFullName,

@@ -341,7 +341,7 @@ async function processPersonList(personList, key) {
         person.newMatchFullName = match.fullName;
         match.newMatchContactId = person.contactId;
         match.newMatchFullName = person.fullName;
-        //match.newMatchExtRef = person.extRef;
+        match.newMatchExtRef = ""; // clear previous match
         // Update previous matches with currentMatch - don't forget to clear currentMatch
         if (person.previousMatches && person.currentMatch)
           person.previousMatches = person.currentMatch + "," + person.previousMatches; // Add this match

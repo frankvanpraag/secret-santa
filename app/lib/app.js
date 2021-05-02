@@ -453,7 +453,7 @@ async function processPersonList(personList, key) {
               { 
                 "Buddy status": "Waiting",
                 "Buddy status message": person.extRef+" to wait patiently for "+person.newMatchFullName+" to set up a 20-30 minute meeting",
-                "Current match": person.newMatchExtRef,
+                "Current match": person.newMatchFullName,
                 //"Current match first name": "",
                 //"Current match last name": "",
                 "Current match full name": person.newMatchFullName,

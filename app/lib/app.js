@@ -454,8 +454,8 @@ async function processPersonList(personList, key) {
                 "Buddy status": "Waiting",
                 "Buddy status message": person.extRef+" to wait patiently for "+person.newMatchFullName+" to set up a 20-30 minute meeting",
                 "Current match": person.newMatchExtRef,
-                "Current match first name": "",
-                "Current match last name": "",
+                //"Current match first name": "",
+                //"Current match last name": "",
                 "Current match full name": person.newMatchFullName,
                 "previousMatches": person.previousMatches?person.previousMatches:"" 
               }
@@ -479,8 +479,8 @@ async function processPersonList(personList, key) {
                 "Buddy status": "No Buddy",
                 "Buddy status message": "to do nothing because no buddy has been assigned",
                 "Current match": "No Buddy",
-                "Current match first name": "",
-                "Current match last name": "",
+                //"Current match first name": "",
+                //"Current match last name": "",
                 "Current match full name": "No Buddy",
                 "previousMatches": person.previousMatches?person.previousMatches:"" 
               }
